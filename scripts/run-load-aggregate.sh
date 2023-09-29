@@ -8,7 +8,31 @@
 # Author: Georgios Panayiotou
 
 
-# Change working directory
-cd ~/workspace/mln-lib-comp/scripts/
+# If needed: change working directory. 
+# For now, assuming we are working inside scripts.
 
-# 
+
+# Run each executable. First by file, then by library.
+
+# cs-aarhus
+echo "---AUCS---"
+python3 load-aggregate/pymnet-load-aggregate.py aucs # Pymnet
+# multinet (python)
+# MuxViz
+# multinet (R)
+
+# Py3plex?
+# netmem?
+# mully? 
+# MLG.jl?
+echo "--------------------"
+echo ""
+
+# Find other large networks to aggregate into one aspect.
+
+
+
+
+
+# Rscript script_name.R
+# python3 script_name.py
