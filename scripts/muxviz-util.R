@@ -3,7 +3,6 @@
 # Imports
 library(muxViz)
 
-
 # Loads a network from node/edge/layer files, coded as a config file.
 load_net <- function(filenames){
 	# # Commented code. MuxViz has a reading bug on this function.
@@ -32,7 +31,7 @@ load_net <- function(filenames){
 	df_nodes <- utils::read.table(as.character(df_config$layout.file),header=T)
 	n <- nrow(df_nodes)
 	# Convert dataframe to SupraAdjacencyMatrix
-	net <- BuildSupraAdjacencyMatrixFromExtendedEdgelist(
+	net_sam <- BuildSupraAdjacencyMatrixFromExtendedEdgelist(
 		df_edges,					# dataframe
 		l,							# number of layers
 		n,							# number of nodes
@@ -40,9 +39,9 @@ load_net <- function(filenames){
 	)
 	# Spent a good few hours figuring this out. This API needs work.
 	# Since, apparently, num of layers and nodes is also needed for validation,
-	# 	return array c(net,l,n) and decode later.
-	net_params <- c(net,l,n)
-	return(net_params)
+	# 	return array c(net_sam,l,n) and decode later.
+	net <- c(net_sam,l,n)
+	return(net)
 }
 
 build <- function(){
@@ -54,11 +53,11 @@ build_rem <- function(){
 }
 
 # Aggregates a network
-aggregate <- function(net_params){
+aggregate <- function(net){
   net_aggr<-GetAggregateNetworkFromSupraAdjacencyMatrix(
-  	net_params[[1]],					# original net in SAM format
-  	net_params[[2]],					# number of layers
-  	net_params[[3]]					# number of nodes
+  	net[[1]],						# original net in SAM format
+  	net[[2]],						# number of layers
+  	net[[3]]						# number of nodes
   )
   return(net_aggr)
 }
