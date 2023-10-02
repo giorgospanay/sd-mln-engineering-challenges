@@ -1,13 +1,15 @@
 import sys
 import importlib.util
-
-# NOTE: change data path accordingly. This should work if the script is located
-#       in scripts/(some_benchmark_folder)/ for the original setup
-data_path="../data/"
+# Imports for timing and memory trace
+import time
+import tracemalloc
 
 # Global variables for module importers. See main(.). 
 spec=None
 module=None
+
+### EXPERIMENT CODE DEFINITIONS ###
+# Use module.[necessary_functions()] to import from different libraries.
 
 # experiment 1: Load a network and aggregate
 def exp1(filenames):
@@ -15,7 +17,7 @@ def exp1(filenames):
 	tracemalloc.start()
 	time_load_s=time.time()
 	# --------------------------
-	net=module.load(filenames)
+	net=module.load_net(filenames)
 	# --------------------------
 	time_load_e=time.time()
 	time_load_t=time_load_e-time_load_s
@@ -68,12 +70,12 @@ def exp6(filenames):
 def exp7(filenames):
 	return
 
-# Chicken chow main. Set up so that the same main function template can be used
-#   on all experiments; most of the changes need to be done on the load(), 
-#   build(), aggregate(), ... and experiment() methods. 
+# Chicken chow main. Set up so that the same main util template can be used
+#   on all experiments; most of the changes need to be done on the load_net(), 
+#   build(), aggregate(), ... methods. 
 # 
 # Expecting commandline arguments for script to run. 
-#   Example: python3 experiments.py e_id lib file [size]
+# Example: python3 experiments.py e_id lib file [size]
 #	where:
 #		e_id -- The experiment id to run. See details on function comments & paper.
 #		lib  -- The Python library to use. Options now: {pymnet, multinet, 
@@ -85,44 +87,62 @@ def exp7(filenames):
 def main():
 	global data_path, spec, module
 	filenames=[]
+	lib_input_type=0
 
 	# Halt if no arguments. Otherwise get arg for file identifier
 	if len(sys.argv)<4:
-		sys.exit("No file argument given. Available options: {synth N, london, euair, aucs, fftw, citation, ff}")
-	e_id=sys.argv[1]
+		sys.exit("Not enough arguments given. Usage: python3 experiments.py exp_id library file [size]")
+	e_id=int(sys.argv[1])
 	lib=sys.argv[2]
 	file=sys.argv[3]
 
 	### LIBRARY MODULE IMPORTS ###
-
+	#
 	# Import library util sources. All source util files contain the functions 
 	# 	necessary to run experiments as per the paper.
 	# In order to run similar experiments for a new library, one should create 
 	#	the file (lib)-util.py with the necessary functions (see all other python
 	#	utililty scripts listed here) and import the source code here.
+	#
+	# Also, here one should note the file input type for the library.
+	# Available codes (feel free to define own if necessary):
+	# 	1 -- multinet-native, one file for all
+	#	2 -- Node/edge/layer files input
+	#	3 -- MuxViz input, node/edge/layer-files coded in a semicolon-separated 
+	#		config.file
+	#
  	# Pymnet import
 	if lib=="pymnet":
-		spec=importlib.util.spec_from_file_location("pymnet-util","pymnet-util.py")
+		spec=importlib.util.spec_from_file_location("pymnet_util","pymnet-util.py")
+		lib_input_type=2
 	# Py3plex import
 	elif lib=="py3plex":
-		spec=importlib.util.spec_from_file_location("py3plex-util","py3plex-util.py")
+		spec=importlib.util.spec_from_file_location("py3plex_util","py3plex-util.py")
+		lib_input_type=2
 	# multinet import
 	elif lib=="multinet":
-		spec=importlib.util.spec_from_file_location("multinet-util","multinet-util.py")
+		spec=importlib.util.spec_from_file_location("multinet_util","multinet-util.py")
+		lib_input_type=1
 	# netmem import
 	elif lib=="netmem":
-		spec=importlib.util.spec_from_file_location("netmem-util","netmem-util.py")
+		spec=importlib.util.spec_from_file_location("netmem_util","netmem-util.py")
+		# TODO: fix
+		lib_input_type=0 
 	# Should not reach here
 	else:
 		return
-	module=importlib.util_module_from_spec(spec)
+	module=importlib.util.module_from_spec(spec)
 	spec.loader.exec_module(module)
 
 
 	### DATASET IMPORTS ###
+	#
+	# Note: filenames should be in a format that the load/build... functions
+	#		can process. Define new code for lib_input_type if necessary.
+	#
 
 	# Load synthetic multilayer network data. Expect second argument N (size)
-	# NOTE: Uncomment (and if necessary, edit) filepaths/input format for library
+	# NOTE: if necessary, edit filepaths/input format for library
 	if file=="synth":
 		n=int(sys.argv[4])
 		if n==0:
@@ -132,23 +152,38 @@ def main():
 
 	# Load London transport data (london-transport).
 	elif file=="london":
-		filenames=["london-transport/london_transport_nodes.txt","london-transport/london_transport_multiplex.edges","london-transport/london_transport_layers.txt"]
-		# filenames=""
+		if lib_input_type==1:
+			filenames=["../data/london-transport/"]
+		elif lib_input_type==2:	
+			filenames=["../data/london-transport/london_transport_nodes.txt","../data/london-transport/london_transport_multiplex.edges","../data/london-transport/london_transport_layers.txt"]
+		elif lib_input_type==3:
+			filenames=["../data/london-transport/london.config"]
 
 	# Load EUAir transport data (euair-transport)
 	elif file=="euair":
-		filenames=["euair-transport/EUAirTransportation_nodes.txt","euair-transport/EUAirTransportation_multiplex.edges","euair-transport/EUAirTransportation_layers.txt"]
-		# filenames=""
-
+		if lib_input_type==1:
+			filenames=["euair-transport/"]
+		elif lib_input_type==2:	
+			filenames=["../data/euair-transport/EUAirTransportation_nodes.txt","../data/euair-transport/EUAirTransportation_multiplex.edges","../data/euair-transport/EUAirTransportation_layers.txt"]
+		elif lib_input_type==3:
+			filenames=["../data/euair-transport/euair.config"]
 	# Load CS@Aarhus data (cs-aarhus)
 	elif file=="aucs":
-		filenames=["cs-aarhus/CS-Aarhus_nodes.txt","cs-aarhus/CS-Aarhus_multiplex.edges","cs-aarhus/CS-Aarhus_layers.txt"]
-		# filenames="cs-aarhus/aucs.mpx"
+		if lib_input_type==1:
+			filenames=["../data/cs-aarhus/aucs.mpx"]
+		elif lib_input_type==2:	
+			filenames=["../data/cs-aarhus/CS-Aarhus_nodes.txt","../data/cs-aarhus/CS-Aarhus_multiplex.edges","../data/cs-aarhus/CS-Aarhus_layers.txt"]
+		elif lib_input_type==3:
+			filenames=["../data/cs-aarhus/aucs.config"]
 	
 	# Load FriendFeed-Twitter data (ff-tw)
 	elif file=="fftw":
-		filenames=[]
-		# filenames="ff-tw/fftw.mpx"
+		if lib_input_type==1:
+			filenames=["../data/ff-tw/fftw.mpx"]
+		elif lib_input_type==2:	
+			filenames=[""]
+		elif lib_input_type==3:
+			filenames=[""]
 	
 	# Load citation data (journal-citation)
 	elif file=="citation":
