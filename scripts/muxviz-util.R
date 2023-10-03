@@ -5,14 +5,14 @@ library(muxViz)
 
 # Loads a network from node/edge/layer files, coded as a config file.
 load_net <- function(filenames){
-	# # Commented code. MuxViz has a reading bug on this function.
+	# # Commented code. MuxViz has a bug on this function on the current version.
 	# net <- buildMultilayerNetworkFromMuxvizFiles(
-	# 	paste(data_path,filenames[1],sep=""),				# config file path
-	# 	T, 													# is directed
-	# 	F,		 											# is weighted
-	# 	"ordinal", 											# multislice type
-	# 	format="muxviz general", 							# format generic mln
-	# 	verbose=F 											# verbose. Set to F
+	# 	filenames[1],				# config file path
+	# 	T, 							# is directed
+	# 	F,		 					# is weighted
+	# 	"ordinal", 					# multislice type
+	# 	format="muxviz general", 	# format generic mln
+	# 	verbose=F 					# verbose. Set to F
 	# )
 
 	# Instead: reading dataframe with only extended edge lists. At the time of writing,
