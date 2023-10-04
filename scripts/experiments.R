@@ -1,24 +1,35 @@
+# Other imports
+library(pryr)
 
 # Loads a network from file and aggregates it into a monoplex.
 # Time performance. Also, track memory consumption -- to be done manually??
 exp1 <- function(filenames){
-	time_load_s <- Sys.time()
+	# Load file. Track performance & memory consumption
+	
 	# --------------------------
-	net <- load_net(filenames)
+	trace_load_curr <- mem_change({
+		time_load_s <- Sys.time()
+		net <- load_net(filenames)
+		time_load_e <- Sys.time()
+		time_load_t <- time_load_e-time_load_s
+	})
 	# --------------------------
-  	time_load_e <- Sys.time()
-  	time_load_t <- time_load_e-time_load_s
 
-
-  	time_aggr_s <- Sys.time()
+  	# Aggregate net. Track performance & memory consumption
 	# --------------------------
-	net_aggr <- aggregate(net)
+	trace_aggr_curr <- mem_change({
+		time_aggr_s <- Sys.time()
+		net_aggr <- aggregate(net)
+		time_aggr_e <- Sys.time()
+		time_aggr_t <- time_aggr_e-time_aggr_s
+	})
 	# --------------------------
-  	time_aggr_e <- Sys.time()
-  	time_aggr_t <- time_aggr_e-time_aggr_s
+	
 
-  	cat(sprintf("Loading time: %f\n",time_load_t))
-  	cat(sprintf("Aggregate time: %f\n",time_aggr_t))
+  	cat(sprintf("Loading time (in sec.): %f\n",time_load_t))
+  	cat(sprintf("Loading mem curr (in bytes): %d\n",trace_load_curr))
+  	cat(sprintf("Aggregate time (in sec.): %f\n",time_aggr_t))
+  	cat(sprintf("Aggregate mem curr (in bytes): %d\n",trace_aggr_curr))
 }
 
 # More experiments go here

@@ -21,10 +21,11 @@ def exp1(filenames):
 	# --------------------------
 	time_load_e=time.time()
 	time_load_t=time_load_e-time_load_s
-	trace_load=tracemalloc.get_traced_memory()
+	trace_load_curr, trace_load_peak=tracemalloc.get_traced_memory()
 	tracemalloc.stop()
 
-	# Sleep? (To clearly check memory consumption over time). Maybe not needed.
+	# Sleep to clear traces?
+	#time.sleep(3)
 
 	# Aggregate the network. Time performance, check memory consumption
 	tracemalloc.start()
@@ -34,14 +35,16 @@ def exp1(filenames):
 	# --------------------------
 	time_aggr_e=time.time()
 	time_aggr_t=time_aggr_e-time_aggr_s
-	trace_aggr=tracemalloc.get_traced_memory()
+	trace_aggr_curr,trace_aggr_peak=tracemalloc.get_traced_memory()
 	tracemalloc.stop()
 
 	# Print stats.
-	print("Loading time: "+str(time_load_t))
-	print("Loading mem: "+str(trace_load))
-	print("Aggregate time: "+str(time_aggr_t))
-	print("Aggregate mem: "+str(trace_aggr))
+	print("Loading time (in sec.): "+str(time_load_t))
+	print("Loading mem curr (in bytes): "+str(trace_load_curr))
+	#print("Loading mem peak: "+str(trace_load_peak))
+	print("Aggregate time (in sec.): "+str(time_aggr_t))
+	print("Aggregate mem curr (in bytes): "+str(trace_aggr_curr))
+	#print("Aggregate mem peak: "+str(trace_aggr_peak))
 
 	# Return aggregated network for debug.
 	return net_aggr
@@ -162,7 +165,7 @@ def main():
 	# Load EUAir transport data (euair-transport)
 	elif file=="euair":
 		if lib_input_type==1:
-			filenames=["euair-transport/"]
+			filenames=["../data/euair-transport/"]
 		elif lib_input_type==2:	
 			filenames=["../data/euair-transport/EUAirTransportation_nodes.txt","../data/euair-transport/EUAirTransportation_multiplex.edges","../data/euair-transport/EUAirTransportation_layers.txt"]
 		elif lib_input_type==3:

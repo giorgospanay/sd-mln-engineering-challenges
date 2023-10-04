@@ -10,7 +10,7 @@ py_libs=["pymnet","multinet","py3plex","netmem"]
 # List of R libraries for experiments
 r_libs=["muxviz","multinet","mully"]
 # List of Julia libraries for experiments
-jl_libs=["mlg.jl"]
+jl_libs=["mlg"]
 # List of all datasets
 data_list=["synth","aucs","london","euair","fftw","ff","citation"]
 
@@ -21,12 +21,12 @@ log_path="../logs/"
 # Warning: writing to a log file (specifically, decoding the bytestring returned
 # 	from calling subprocess shell) assumes a utf-8 encoding. Should be ok in the vast 
 #	majority of cases.
-def exp(e_id,pylibs,rlibs,jllibs,datasets):
+def run_exp(e_id,pylibs,rlibs,jllibs,datasets):
 	global log_path
 	# Base commands
 	cmdbase_py="python3 experiments.py "
 	cmdbase_r="Rscript experiments.R "
-	cmdbase_jl="python3 experiments.py "
+	cmdbase_jl="julia experiments.jl "
 
 	# Log write directory
 	logwd=log_path+"exp"+str(e_id)+"/"
@@ -54,16 +54,16 @@ def exp(e_id,pylibs,rlibs,jllibs,datasets):
 			with open(logwd+str(e_id)+"_"+ds+"_"+r_lib+"_r.txt","w") as wf:
 				wf.write(res.decode("utf-8"))
 				wf.close()
-		# # Run on all Julia libs
-		# for jl_lib in jllibs:
-		# 	# Generate command and open shell
-		# 	runjl=cmdbase_jl+str(e_id)+" "+jl_lib+" "+ds
-		# 	res=subprocess.check_output(runjl,shell=True,stderr=subprocess.STDOUT)
-		# 	# Save output to logpath.
-		# 	# File naming format: eid_ds(-size)_lib_lang.txt
-		# 	with open(logwd+str(e_id)+"_"+ds+"_"+jl_lib+"_jl.txt","w") as wf:
-		# 		wf.write(res.decode("utf-8"))
-		# 		wf.close()
+		# Run on all Julia libs
+		for jl_lib in jllibs:
+			# Generate command and open shell
+			runjl=cmdbase_jl+str(e_id)+" "+jl_lib+" "+ds
+			res=subprocess.check_output(runjl,shell=True,stderr=subprocess.STDOUT)
+			# Save output to logpath.
+			# File naming format: eid_ds(-size)_lib_lang.txt
+			with open(logwd+str(e_id)+"_"+ds+"_"+jl_lib+"_jl.txt","w") as wf:
+				wf.write(res.decode("utf-8"))
+				wf.close()
 
 	return
 
@@ -86,19 +86,9 @@ def main():
 	# print(result2)
 
 	# Call experiment function for debug
-	exp(1,["pymnet"],["muxviz"],[],["aucs"])
+	run_exp(1,["pymnet"],["muxviz"],[],["aucs","london","euair"])
 
 	return
-
-
-# For experiments in Python: call subprocess.
-# python3 experiments.py experiment_id library dataset [size]
-
-# For experiments in R: 
-# Rscript experiments.R experiment_id library dataset [size]
-
-# For experiments in Julia:
-# 
 
 # Python stuff
 if __name__ == "__main__":
