@@ -1,0 +1,6 @@
+Exp1: lib=pymnet, file=euair
+Loading time (in sec.): 0.04214191436767578
+Loading mem curr (in bytes): 1178887
+Aggregate time (in sec.): 1.606395959854126
+Aggregate mem curr (in bytes): 803602
+-------------------------------

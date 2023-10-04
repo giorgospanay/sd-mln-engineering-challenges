@@ -156,7 +156,7 @@ def main():
 	# Load London transport data (london-transport).
 	elif file=="london":
 		if lib_input_type==1:
-			filenames=["../data/london-transport/"]
+			filenames=["../data/london-transport/london-full.mpx"]
 		elif lib_input_type==2:	
 			filenames=["../data/london-transport/london_transport_nodes.txt","../data/london-transport/london_transport_multiplex.edges","../data/london-transport/london_transport_layers.txt"]
 		elif lib_input_type==3:

@@ -1,4 +1,4 @@
-nodeID nodeLabel
+layerID layerLabel
 1 Lufthansa
 2 Ryanair
 3 Easyjet
@@ -36,3 +36,4 @@ nodeID nodeLabel
 35 Wideroe
 36 TNT_Airways
 37 Olympic_Air
+

@@ -1,0 +1,6 @@
+Exp1: lib=muxviz, file=euair
+Loading time (in sec.): 0.377665
+Loading mem curr (in bytes): 81115584
+Aggregate time (in sec.): 0.040286
+Aggregate mem curr (in bytes): 2842672
+-------------------------------

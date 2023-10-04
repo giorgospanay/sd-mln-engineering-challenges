@@ -118,7 +118,7 @@ main <- function(){
 	# Load London transport data (london-transport)
 	else if (file=="london"){
 		if (lib_input_type==1){
-			filenames<-c("../data/london-transport/")
+			filenames<-c("../data/london-transport/london-full.mpx")
 		}
 		else if (lib_input_type==2){
 			filenames<-c("../data/london-transport/london_transport_nodes.txt","../data/london-transport/london_transport_multiplex.edges","../data/london-transport/london_transport_layers.txt")

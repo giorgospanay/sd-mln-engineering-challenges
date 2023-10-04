@@ -1,0 +1,6 @@
+Exp1: lib=muxviz, file=london
+Loading time (in sec.): 0.375276
+Loading mem curr (in bytes): 81035696
+Aggregate time (in sec.): 0.027262
+Aggregate mem curr (in bytes): 2720328
+-------------------------------
