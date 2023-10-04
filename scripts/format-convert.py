@@ -13,7 +13,16 @@ def multiplex_edge_to_multilayer_edge(read_file,write_file):
 	wf.close()
 
 
-# Convert multiplex edgelist, layers, nodes file to multinet native file, in.
+# Convert multiplex edgelist to multinet simple multiplex file, unweighted
+def multiplex_edge_to_multinet_simple(read_file,write_file):
+	wf=open(write_file,"w")
+	with open(read_file,"r") as rf:
+		for line in rf.readlines():
+			tokens=line.split(" ")
+			wf.write(""+tokens[1]+","+tokens[2]+","+tokens[0]+"\n")
+	wf.close()
+
+# Convert multiplex edgelist, layers, nodes file to multinet native file, in
 # 	#TYPE multilayer mode
 def multiplex_edge_to_multinet_full(read_actor,read_edge,read_layer,write_file):
 	wf=open(write_file,"w")
@@ -89,6 +98,16 @@ def multiplex_edge_to_multinet_full(read_actor,read_edge,read_layer,write_file):
 
 def main():
 
+	multiplex_edge_to_multinet_simple(
+		"../data/euair-transport/EUAirTransportation_multiplex.edges",
+		"../data/euair-transport/euair.mpx"
+	)
+
+	# multiplex_edge_to_multinet_simple(
+	# 	"../data/london-transport/london_transport_multiplex.edges",
+	# 	"../data/london-transport/london.mpx"
+	# )
+
 	# multiplex_edge_to_multinet_full(
 	# 	"../data/london-transport/london_transport_nodes.txt",
 	# 	"../data/london-transport/london_transport_multiplex.edges",
@@ -96,12 +115,12 @@ def main():
 	# 	"../data/london-transport/london-full.mpx"
 	# )
 
-	multiplex_edge_to_multinet_full(
-		"../data/euair-transport/EUAirTransportation_nodes.txt",
-		"../data/euair-transport/EUAirTransportation_multiplex.edges",
-		"../data/euair-transport/EUAirTransportation_layers.txt",
-		"../data/euair-transport/euair-full.mpx"
-	)
+	# multiplex_edge_to_multinet_full(
+	# 	"../data/euair-transport/EUAirTransportation_nodes.txt",
+	# 	"../data/euair-transport/EUAirTransportation_multiplex.edges",
+	# 	"../data/euair-transport/EUAirTransportation_layers.txt",
+	# 	"../data/euair-transport/euair-full.mpx"
+	# )
 
 	# multiplex_edge_to_multilayer_edge(
 	# 	"../data/london-transport/london_transport_multiplex.edges",

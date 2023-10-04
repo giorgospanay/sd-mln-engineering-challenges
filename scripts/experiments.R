@@ -118,7 +118,8 @@ main <- function(){
 	# Load London transport data (london-transport)
 	else if (file=="london"){
 		if (lib_input_type==1){
-			filenames<-c("../data/london-transport/london-full.mpx")
+			filenames<-c("../data/london-transport/london.mpx")
+			# filenames<-c("../data/london-transport/london-full.mpx")
 		}
 		else if (lib_input_type==2){
 			filenames<-c("../data/london-transport/london_transport_nodes.txt","../data/london-transport/london_transport_multiplex.edges","../data/london-transport/london_transport_layers.txt")
@@ -130,7 +131,8 @@ main <- function(){
 	# Load EUAir transport data (euair-transport)
 	else if (file=="euair"){
 		if (lib_input_type==1){
-			filenames<-c("../data/euair-transport/")
+			filenames<-c("../data/euair-transport/euair.mpx")
+			# filenames<-c("../data/euair-transport/euair-full.mpx")
 		}
 		else if (lib_input_type==2){
 			filenames<-c("../data/euair-transport/EUAirTransportation_nodes.txt","../data/euair-transport/EUAirTransportation_multiplex.edges","../data/euair-transport/EUAirTransportation_layers.txt")

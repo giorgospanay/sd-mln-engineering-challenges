@@ -156,7 +156,8 @@ def main():
 	# Load London transport data (london-transport).
 	elif file=="london":
 		if lib_input_type==1:
-			filenames=["../data/london-transport/london-full.mpx"]
+			filenames=["../data/london-transport/london.mpx"]
+			# filenames=["../data/london-transport/london-full.mpx"]
 		elif lib_input_type==2:	
 			filenames=["../data/london-transport/london_transport_nodes.txt","../data/london-transport/london_transport_multiplex.edges","../data/london-transport/london_transport_layers.txt"]
 		elif lib_input_type==3:
@@ -165,7 +166,8 @@ def main():
 	# Load EUAir transport data (euair-transport)
 	elif file=="euair":
 		if lib_input_type==1:
-			filenames=["../data/euair-transport/"]
+			filenames=["../data/euair-transport/euair.mpx"]
+			# filenames=["../data/euair-transport/euair-full.mpx"]
 		elif lib_input_type==2:	
 			filenames=["../data/euair-transport/EUAirTransportation_nodes.txt","../data/euair-transport/EUAirTransportation_multiplex.edges","../data/euair-transport/EUAirTransportation_layers.txt"]
 		elif lib_input_type==3:

@@ -1,4 +1,5 @@
-#TYPE multiplex
+#TYPE 
+multiplex
 
 #LAYERS
 facebook,UNDIRECTED
@@ -74,7 +75,7 @@ U140,G8,Assistant
 U141,G3,PhD
 U142,G3,PhD
 
-#NODES
+--#NODES
 
 #EDGES
 U102,U139,lunch
