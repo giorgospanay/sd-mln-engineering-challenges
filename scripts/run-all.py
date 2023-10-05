@@ -38,32 +38,59 @@ def run_exp(e_id,pylibs,rlibs,jllibs,datasets):
 		for py_lib in pylibs:
 			# Generate command and open shell
 			runpy=cmdbase_py+str(e_id)+" "+py_lib+" "+ds
-			res=subprocess.check_output(runpy,shell=True,stderr=subprocess.STDOUT)
-			# Save output to logpath.
-			# File naming format: eid_ds(-size)_lib_lang.txt
-			with open(logwd+str(e_id)+"_"+ds+"_"+py_lib+"_py.txt","w") as wf:
-				wf.write(res.decode("utf-8"))
-				wf.close()
+			try:
+				res=subprocess.check_output(runpy,shell=True,stderr=subprocess.STDOUT)
+				# Save output to logpath.
+				# File naming format: eid_ds(-size)_lib_lang.txt
+				with open(logwd+str(e_id)+"_"+ds+"_"+py_lib+"_py.txt","w") as wf:
+					wf.write(res.decode("utf-8"))
+					wf.close()
+			except subprocess.CalledProcessError as e:
+				# Save error to logpath.
+				with open(logwd+str(e_id)+"_"+ds+"_"+py_lib+"_py.txt","w") as wf:
+					wf.write(e.stdout)
+					wf.write("\n---------------------------\n")
+					wf.write(e.stderr)
+					wf.write("\n---------------------------\n")
+					wf.close()
 		# Run on all R libs
 		for r_lib in rlibs:
 			# Generate command and open shell
 			runr=cmdbase_r+str(e_id)+" "+r_lib+" "+ds
-			res=subprocess.check_output(runr,shell=True,stderr=subprocess.STDOUT)
-			# Save output to logpath.
-			# File naming format: eid_ds(-size)_lib_lang.txt
-			with open(logwd+str(e_id)+"_"+ds+"_"+r_lib+"_r.txt","w") as wf:
-				wf.write(res.decode("utf-8"))
-				wf.close()
+			try:
+				res=subprocess.check_output(runr,shell=True,stderr=subprocess.STDOUT)
+				# Save output to logpath.
+				# File naming format: eid_ds(-size)_lib_lang.txt
+				with open(logwd+str(e_id)+"_"+ds+"_"+r_lib+"_r.txt","w") as wf:
+					wf.write(res.decode("utf-8"))
+					wf.close()
+			except subprocess.CalledProcessError as e:
+				# Save error to logpath.
+				with open(logwd+str(e_id)+"_"+ds+"_"+r_lib+"_r.txt","w") as wf:
+					wf.write(e.stdout)
+					wf.write("\n---------------------------\n")
+					wf.write(e.stderr)
+					wf.write("\n---------------------------\n")
+					wf.close()
 		# Run on all Julia libs
 		for jl_lib in jllibs:
 			# Generate command and open shell
 			runjl=cmdbase_jl+str(e_id)+" "+jl_lib+" "+ds
-			res=subprocess.check_output(runjl,shell=True,stderr=subprocess.STDOUT)
-			# Save output to logpath.
-			# File naming format: eid_ds(-size)_lib_lang.txt
-			with open(logwd+str(e_id)+"_"+ds+"_"+jl_lib+"_jl.txt","w") as wf:
-				wf.write(res.decode("utf-8"))
-				wf.close()
+			try:
+				res=subprocess.check_output(runjl,shell=True,stderr=subprocess.STDOUT)
+				# Save output to logpath.
+				# File naming format: eid_ds(-size)_lib_lang.txt
+				with open(logwd+str(e_id)+"_"+ds+"_"+jl_lib+"_jl.txt","w") as wf:
+					wf.write(res.decode("utf-8"))
+					wf.close()
+			except subprocess.CalledProcessError as e:
+				# Save error to logpath.
+				with open(logwd+str(e_id)+"_"+ds+"_"+jl_lib+"_jl.txt","w") as wf:
+					wf.write(e.stdout)
+					wf.write("\n---------------------------\n")
+					wf.write(e.stderr)
+					wf.write("\n---------------------------\n")
+					wf.close()			
 
 	return
 
