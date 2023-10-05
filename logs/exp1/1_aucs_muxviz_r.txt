@@ -1,6 +1,0 @@
-Exp1: lib=muxviz, file=aucs
-Loading time (in sec.): 0.672514
-Loading mem curr (in bytes): 81032968
-Aggregate time (in sec.): 0.088697
-Aggregate mem curr (in bytes): 2712400
--------------------------------
