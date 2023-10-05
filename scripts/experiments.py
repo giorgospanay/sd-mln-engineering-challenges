@@ -186,9 +186,9 @@ def main():
 		if lib_input_type==1:
 			filenames=["../data/ff-tw/fftw.mpx"]
 		elif lib_input_type==2:	
-			filenames=[""]
+			filenames=["../data/ff-tw/fftw_nodes.txt","../data/ff-tw/fftw_multiplex.edges","../data/ff-tw/fftw_layers.txt"]
 		elif lib_input_type==3:
-			filenames=[""]
+			filenames=["../data/ff-tw/fftw.config"]
 	
 	# Load citation data (journal-citation)
 	elif file=="citation":
@@ -197,8 +197,12 @@ def main():
 
 	# Load FriendFeed data (friendfeed)
 	elif file=="ff":
-		filenames=[]
-		# filenames=""
+		if lib_input_type==1:
+			filenames=["../data/friendfeed/friendfeed.mpx"]
+		elif lib_input_type==2:	
+			filenames=["../data/friendfeed/friendfeed_nodes.txt","../data/friendfeed/friendfeed_multiplex.edges","../data/friendfeed/friendfeed_layers.txt"]
+		elif lib_input_type==3:
+			filenames=["../data/friendfeed/friendfeed.config"]
 	
 	# Should not reach here. Add more cases for datasets here.
 	else:

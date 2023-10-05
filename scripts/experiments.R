@@ -5,7 +5,6 @@ library(pryr)
 # Time performance. Also, track memory consumption -- to be done manually??
 exp1 <- function(filenames){
 	# Load file. Track performance & memory consumption
-	
 	# --------------------------
 	trace_load_curr <- mem_change({
 		time_load_s <- Sys.time()
@@ -159,10 +158,10 @@ main <- function(){
 			filenames<-c("../data/ff-tw/fftw.mpx")
 		}
 		else if (lib_input_type==2){
-			filenames<-c("")
+			filenames<-c("../data/ff-tw/fftw_nodes.txt","../data/ff-tw/fftw_multiplex.edges","../data/ff-tw/fftw_layers.txt")
 		}	
 		else if (lib_input_type==3){
-			filenames<-c("")
+			filenames<-c("../data/ff-tw/fftw.config")
 		}
 	}
 	# Load citation data (journal-citation)
@@ -171,7 +170,15 @@ main <- function(){
 	}
 	# Load FriendFeed data (friendfeed)
 	else if (file=="ff"){
-		filenames<-c("")
+		if (lib_input_type==1){
+			filenames<-c("../data/friendfeed/friendfeed.mpx")
+		}
+		else if (lib_input_type==2){
+			filenames<-c("../data/friendfeed/friendfeed_nodes.txt","../data/friendfeed/friendfeed_multiplex.edges","../data/friendfeed/friendfeed_layers.txt")
+		}	
+		else if (lib_input_type==3){
+			filenames<-c("../data/friendfeed/friendfeed.config")
+		}
 	}
 	# Should not reach here. Add more cases for datasets above.
 	else{

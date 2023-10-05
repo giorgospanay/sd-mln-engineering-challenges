@@ -94,34 +94,226 @@ def multiplex_edge_to_multinet_full(read_actor,read_edge,read_layer,write_file):
 	rf_layer.close()
 	return
 
+# Converts from multinet file to multiplex node/edge/layer files.
+# Does not convert attributes apart from node/layerLabel
+def multinet_simple_to_multiplex_edge(read_file,write_nodes,write_edges,write_layers):
+	actor_dict={}
+	layer_dict={}
+	actor_index=1
+	layer_index=1
+	# Open files
+	rf=open(read_file,"r")
+	wf_node=open(write_nodes,"w")
+	wf_edge=open(write_edges,"w")
+	wf_layer=open(write_layers,"w")
+
+	# Get all lines
+	mpx_lines=rf.readlines()
+	header_check=mpx_lines[0].strip()
+
+	# Check if header leads with #section, --comment or blank line. 
+	# If so, assume a simple multiplex edge file and process. 
+	if not(header_check=="" or header_check[0]=="-" or header_check[0]=="#"):
+		# For each edge:
+		for line in mpx_lines:
+			if line.strip()!="":
+				# Break if section start
+				if line[0]=="#":
+					break
+				# Ignore comment lines
+				if line[0:2]=="--":
+					continue
+				# Format for simple multiplex: nodeSrc nodeDst layer
+				tokens=line.split(",")
+				# Save node and layer labels into dictionary for later retrieval.
+				# 	Searching through a list would be VERY costly.
+				ns_ind=-1
+				nd_ind=-1
+				l_ind=-1
+				# For nodeSrc:
+				if tokens[0] not in actor_dict:
+					actor_dict[tokens[0]]=actor_index
+					ns_ind=actor_index
+					actor_index=actor_index+1
+				else:
+					ns_ind=actor_dict[tokens[0]]
+				# For nodeDst:
+				if tokens[1] not in actor_dict:
+					actor_dict[tokens[1]]=actor_index
+					nd_ind=actor_index
+					actor_index=actor_index+1
+				else:
+					nd_ind=actor_dict[tokens[1]]
+				# For layer:
+				if tokens[2] not in layer_dict:
+					layer_dict[tokens[2]]=layer_index
+					l_ind=layer_index
+					layer_index=layer_index+1
+				else:
+					l_ind=layer_dict[tokens[2]]
+
+				# Write found edge into edgefile. Assign weight=1
+				# Format: layer nodeSrc nodeDst weight
+				edge_str=str(l_ind)+" "+str(ns_ind)+" "+str(nd_ind)+" 1\n"
+				wf_edge.write(edge_str)
+
+	# Otherwise: only check type section (options: multiplex, multilayer) for format.
+	# 	Drop all other attributes and additional actors not in edgefile.
+	# 	WARNING: if weight is coded as an attribute, it will not be parsed. 
+	else:
+		# net_type by default 0 for multiplex, set to 1 for multilayer.
+		net_type=0
+		line_count=0
+		# Check lines to find #TYPE section
+		for line in mpx_lines:
+			# If #TYPE found:
+			if "#TYPE" in line or "# TYPE" in line:
+				# Try to find "multilayer" on same or next line. If not found, assume multiplex.
+				if "multilayer" in line.lower():
+					net_type=1
+					line_count=line_count+1
+					break
+				elif "multilayer" in mpx_lines[line_count+1].lower():
+					net_type=1
+					line_count=line_count+2
+					break
+				elif "multiplex" in line.lower():
+					net_type=0
+					line_count=line_count+1
+					break
+				elif "multiplex" in mpx_lines[line_count+1].lower():
+					net_type=0
+					line_count=line_count+2
+					break
+			line_count=line_count+1
+		# When found: continue until edge section is found
+		edge_found=0
+		for line in mpx_lines[line_count:]:
+			# If #EDGES not found, continue
+			if edge_found==0 and ("#EDGES" not in line and "# EDGES" not in line):
+				line_count=line_count+1
+				continue
+			# Edges found- move to next section
+			elif edge_found==0:
+				edge_found=1
+				continue
+			
+			# When found: start parsing edges until new section found
+			if line.strip()!="":
+				# Continue if section start
+				if line[0]=="#":
+					continue
+				# Ignore comment lines
+				if line[0:2]=="--":
+					continue
+				# Format for simple multiplex: nodeSrc nodeDst layer
+				tokens=line.split(",")
+
+				# If multiplex network type:
+				if net_type==0:
+					# Save node and layer labels into dictionary for later retrieval.
+					# 	Searching through a list would be VERY costly.
+					ns_ind=-1
+					nd_ind=-1
+					l_ind=-1
+					# For nodeSrc:
+					if tokens[0] not in actor_dict:
+						actor_dict[tokens[0]]=actor_index
+						ns_ind=actor_index
+						actor_index=actor_index+1
+					else:
+						ns_ind=actor_dict[tokens[0]]
+					# For nodeDst:
+					if tokens[1] not in actor_dict:
+						actor_dict[tokens[1]]=actor_index
+						nd_ind=actor_index
+						actor_index=actor_index+1
+					else:
+						nd_ind=actor_dict[tokens[1]]
+					# For layer:
+					if tokens[2] not in layer_dict:
+						layer_dict[tokens[2]]=layer_index
+						l_ind=layer_index
+						layer_index=layer_index+1
+					else:
+						l_ind=layer_dict[tokens[2]]
+
+					# Write found edge into edgefile. Assign weight=1
+					# Format: layer nodeSrc nodeDst weight
+					edge_str=str(l_ind)+" "+str(ns_ind)+" "+str(nd_ind)+" 1\n"
+					wf_edge.write(edge_str)
+				# else if multilayer network type:
+				elif net_type==1:
+					# Save node and layer labels into dictionary for later retrieval.
+					# 	Searching through a list would be VERY costly.
+					ns_ind=-1
+					nd_ind=-1
+					ls_ind=-1
+					ld_ind=-1
+					# For nodeSrc:
+					if tokens[0] not in actor_dict:
+						actor_dict[tokens[0]]=actor_index
+						ns_ind=actor_index
+						actor_index=actor_index+1
+					else:
+						ns_ind=actor_dict[tokens[0]]
+					# For nodeDst:
+					if tokens[2] not in actor_dict:
+						actor_dict[tokens[2]]=actor_index
+						nd_ind=actor_index
+						actor_index=actor_index+1
+					else:
+						nd_ind=actor_dict[tokens[2]]
+					# For layerSrc:
+					if tokens[1] not in layer_dict:
+						layer_dict[tokens[1]]=layer_index
+						ls_ind=layer_index
+						layer_index=layer_index+1
+					else:
+						ls_ind=layer_dict[tokens[1]]
+					# For layerDst:
+					if tokens[3] not in layer_dict:
+						layer_dict[tokens[3]]=layer_index
+						ld_ind=layer_index
+						layer_index=layer_index+1
+					else:
+						ld_ind=layer_dict[tokens[3]]
+
+					# Write found edge into edgefile. Assign weight=1
+					# Format: nodeSrc layerSrc nodeDst layerDst weight
+					edge_str=str(ns_ind)+" "+str(ls_ind)+" "+str(nd_ind)+" "+str(ld_ind)+" 1\n"
+					wf_edge.write(edge_str)
+			line_count=line_count+1
+
+
+	# Finally, write the node and layer files from the dictionaries
+	wf_node.write("nodeID nodeLabel\n") # Header
+	for actor_k in actor_dict.keys():
+		# Format: nodeID nodeLabel
+		node_str=str(actor_dict[actor_k])+" "+actor_k+"\n"
+		wf_node.write(node_str)
+	wf_node.write("\n")
+
+	wf_layer.write("layerID layerLabel\n") # Header
+	for layer_k in layer_dict.keys():
+		# Format layerID layerLabel
+		layer_str=str(layer_dict[layer_k])+" "+layer_k+"\n"
+		wf_layer.write(layer_str)
+	wf_layer.write("\n")
+
+	# Close files
+	rf.close()
+	wf_node.close()
+	wf_edge.close()
+	wf_layer.close()
 
 
 def main():
 
-	multiplex_edge_to_multinet_simple(
-		"../data/euair-transport/EUAirTransportation_multiplex.edges",
-		"../data/euair-transport/euair.mpx"
-	)
+		
 
-	# multiplex_edge_to_multinet_simple(
-	# 	"../data/london-transport/london_transport_multiplex.edges",
-	# 	"../data/london-transport/london.mpx"
-	# )
-
-	# multiplex_edge_to_multinet_full(
-	# 	"../data/london-transport/london_transport_nodes.txt",
-	# 	"../data/london-transport/london_transport_multiplex.edges",
-	# 	"../data/london-transport/london_transport_layers.txt",
-	# 	"../data/london-transport/london-full.mpx"
-	# )
-
-	# multiplex_edge_to_multinet_full(
-	# 	"../data/euair-transport/EUAirTransportation_nodes.txt",
-	# 	"../data/euair-transport/EUAirTransportation_multiplex.edges",
-	# 	"../data/euair-transport/EUAirTransportation_layers.txt",
-	# 	"../data/euair-transport/euair-full.mpx"
-	# )
-
+	## OLD CONVERSIONS
+	#
 	# multiplex_edge_to_multilayer_edge(
 	# 	"../data/london-transport/london_transport_multiplex.edges",
 	# 	"../data/london-transport/london_transport_multilayer.edges"
@@ -134,6 +326,40 @@ def main():
 	# 	"../data/cs-aarhus/CS-Aarhus_multiplex.edges",
 	# 	"../data/cs-aarhus/CS-Aarhus_multilayer.edges"
 	# )
+	# multiplex_edge_to_multinet_simple(
+	# 	"../data/euair-transport/EUAirTransportation_multiplex.edges",
+	# 	"../data/euair-transport/euair.mpx"
+	# )
+	# multiplex_edge_to_multinet_simple(
+	# 	"../data/london-transport/london_transport_multiplex.edges",
+	# 	"../data/london-transport/london.mpx"
+	# )
+	# multiplex_edge_to_multinet_full(
+	# 	"../data/london-transport/london_transport_nodes.txt",
+	# 	"../data/london-transport/london_transport_multiplex.edges",
+	# 	"../data/london-transport/london_transport_layers.txt",
+	# 	"../data/london-transport/london-full.mpx"
+	# )
+	# multiplex_edge_to_multinet_full(
+	# 	"../data/euair-transport/EUAirTransportation_nodes.txt",
+	# 	"../data/euair-transport/EUAirTransportation_multiplex.edges",
+	# 	"../data/euair-transport/EUAirTransportation_layers.txt",
+	# 	"../data/euair-transport/euair-full.mpx"
+	# )
+	# multinet_simple_to_multiplex_edge(
+	# 	"../data/ff-tw/fftw.mpx",
+	# 	"../data/ff-tw/fftw_nodes.txt",
+	# 	"../data/ff-tw/fftw_multiplex.edges",
+	# 	"../data/ff-tw/fftw_layers.txt"
+	# )
+	# multinet_simple_to_multiplex_edge(
+	# 	"../data/friendfeed/friendfeed.mpx",
+	# 	"../data/friendfeed/friendfeed_nodes.txt",
+	# 	"../data/friendfeed/friendfeed_multiplex.edges",
+	# 	"../data/friendfeed/friendfeed_layers.txt"
+	# )
+
+	
 
 
 

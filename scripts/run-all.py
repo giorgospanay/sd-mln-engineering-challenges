@@ -86,7 +86,7 @@ def main():
 	# print(result2)
 
 	# Call experiment function for debug
-	run_exp(1,["pymnet"],["muxviz"],[],["aucs","london","euair"])
+	run_exp(1,["pymnet"],["muxviz","multinet"],[],["aucs","london","euair","fftw","ff"])
 
 	return
 
