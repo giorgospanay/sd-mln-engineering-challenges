@@ -48,10 +48,12 @@ def run_exp(e_id,pylibs,rlibs,jllibs,datasets):
 			except subprocess.CalledProcessError as e:
 				# Save error to logpath.
 				with open(logwd+str(e_id)+"_"+ds+"_"+py_lib+"_py.txt","w") as wf:
-					wf.write(e.stdout)
-					wf.write("\n---------------------------\n")
-					wf.write(e.stderr)
-					wf.write("\n---------------------------\n")
+					if e.stdout!=None:
+						wf.write(e.stdout.decode("utf-8"))
+						wf.write("\n---------------------------\n")
+					if e.stderr!=None:
+						wf.write(e.stderr.decode("utf-8"))
+						wf.write("\n---------------------------\n")
 					wf.close()
 		# Run on all R libs
 		for r_lib in rlibs:
@@ -67,10 +69,12 @@ def run_exp(e_id,pylibs,rlibs,jllibs,datasets):
 			except subprocess.CalledProcessError as e:
 				# Save error to logpath.
 				with open(logwd+str(e_id)+"_"+ds+"_"+r_lib+"_r.txt","w") as wf:
-					wf.write(e.stdout)
-					wf.write("\n---------------------------\n")
-					wf.write(e.stderr)
-					wf.write("\n---------------------------\n")
+					if e.stdout!=None:
+						wf.write(e.stdout.decode("utf-8"))
+						wf.write("\n---------------------------\n")
+					if e.stderr!=None:
+						wf.write(e.stderr.decode("utf-8"))
+						wf.write("\n---------------------------\n")
 					wf.close()
 		# Run on all Julia libs
 		for jl_lib in jllibs:
@@ -85,12 +89,14 @@ def run_exp(e_id,pylibs,rlibs,jllibs,datasets):
 					wf.close()
 			except subprocess.CalledProcessError as e:
 				# Save error to logpath.
-				with open(logwd+str(e_id)+"_"+ds+"_"+jl_lib+"_jl.txt","w") as wf:
-					wf.write(e.stdout)
-					wf.write("\n---------------------------\n")
-					wf.write(e.stderr)
-					wf.write("\n---------------------------\n")
-					wf.close()			
+				with open(logwd+str(e_id)+"_"+ds+"_"+jl_lib+"_jl.txt","w"	) as wf:
+					if e.stdout!=None:
+						wf.write(e.stdout.decode("utf-8"))
+						wf.write("\n---------------------------\n")
+					if e.stderr!=None:
+						wf.write(e.stderr.decode("utf-8"))
+						wf.write("\n---------------------------\n")
+					wf.close()		
 
 	return
 
@@ -113,7 +119,8 @@ def main():
 	# print(result2)
 
 	# Call experiment function for debug
-	run_exp(1,["pymnet"],["muxviz","multinet"],[],["aucs","london","euair","fftw","ff"])
+	run_exp(1,[],["multinet"],[],["ff"])
+	#run_exp(1,["pymnet"],["muxviz","multinet"],[],["aucs","london","euair","fftw","ff"])
 
 	return
 

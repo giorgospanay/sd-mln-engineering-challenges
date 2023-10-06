@@ -310,7 +310,12 @@ def multinet_simple_to_multiplex_edge(read_file,write_nodes,write_edges,write_la
 
 def main():
 
-		
+	multiplex_edge_to_multilayer_edge(
+		"../data/florentine/Padgett-Florentine-Families_multiplex.edges",
+		"../data/florentine/Padgett-Florentine-Families_multilayer.edges"
+	)
+
+	
 
 	## OLD CONVERSIONS
 	#
@@ -358,7 +363,24 @@ def main():
 	# 	"../data/friendfeed/friendfeed_multiplex.edges",
 	# 	"../data/friendfeed/friendfeed_layers.txt"
 	# )
-
+	# multinet_simple_to_multiplex_edge(
+	# 	"../data/ff-tw/fftw.mpx",
+	# 	"../data/ff-tw/fftw_nodes.txt",
+	# 	"../data/ff-tw/fftw_multiplex.edges",
+	# 	"../data/ff-tw/fftw_layers.txt"
+	# )
+	# multiplex_edge_to_multilayer_edge(
+	# 	"../data/ff-tw/fftw_multiplex.edges",
+	# 	"../data/ff-tw/fftw_multilayer.edges"
+	# )
+	# multiplex_edge_to_multilayer_edge(
+	# 	"../data/friendfeed/friendfeed_multiplex.edges",
+	# 	"../data/friendfeed/friendfeed_multilayer.edges"
+	# )
+	# multiplex_edge_to_multinet_simple(
+	#  	"../data/friendfeed/friendfeed_multiplex.edges",
+	#  	"../data/friendfeed/ff_simple.mpx"
+	# )
 	
 
 

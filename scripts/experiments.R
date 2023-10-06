@@ -171,7 +171,7 @@ main <- function(){
 	# Load FriendFeed data (friendfeed)
 	else if (file=="ff"){
 		if (lib_input_type==1){
-			filenames<-c("../data/friendfeed/friendfeed.mpx")
+			filenames<-c("../data/friendfeed/ff_simple.mpx")
 		}
 		else if (lib_input_type==2){
 			filenames<-c("../data/friendfeed/friendfeed_nodes.txt","../data/friendfeed/friendfeed_multiplex.edges","../data/friendfeed/friendfeed_layers.txt")

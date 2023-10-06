@@ -33,10 +33,20 @@ get_degree <- function(net){
 
 
 plot_network <- function(net){
-
+	plot(net)
 }
 
 # Run InfoMap
 run_infomap <- function(net){
 
+}
+
+# Main function. Used for poster viz
+main <- function(){
+	net <- ml_florentine()
+	plot_network(net)
+}
+
+if(!interactive()){
+	main()
 }

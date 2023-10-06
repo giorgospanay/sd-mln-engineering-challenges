@@ -198,7 +198,7 @@ def main():
 	# Load FriendFeed data (friendfeed)
 	elif file=="ff":
 		if lib_input_type==1:
-			filenames=["../data/friendfeed/friendfeed.mpx"]
+			filenames=["../data/friendfeed/ff_simple.mpx"]
 		elif lib_input_type==2:	
 			filenames=["../data/friendfeed/friendfeed_nodes.txt","../data/friendfeed/friendfeed_multiplex.edges","../data/friendfeed/friendfeed_layers.txt"]
 		elif lib_input_type==3:
