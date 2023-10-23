@@ -108,7 +108,7 @@ def bar_plot(ax, data, colors=None, total_width=0.8, single_width=1, legend=True
 ## Execute experiments ##
 # Warning: writing to a log file (specifically, decoding the bytestring returned
 # 	from calling subprocess shell) assumes a utf-8 encoding. Should be ok in the vast 
-#	majority of cases.
+#	majority (if not all) of cases.
 def run_exp(e_id,pylibs,rlibs,jllibs,datasets):
 	global log_path
 	# Base commands
@@ -177,7 +177,7 @@ def run_exp(e_id,pylibs,rlibs,jllibs,datasets):
 					wf.close()
 			except subprocess.CalledProcessError as e:
 				# Save error to logpath.
-				with open(logwd+str(e_id)+"_"+ds+"_"+jl_lib+"_jl.txt","w"	) as wf:
+				with open(logwd+str(e_id)+"_"+ds+"_"+jl_lib+"_jl.txt","w") as wf:
 					if e.stdout!=None:
 						wf.write(e.stdout.decode("utf-8"))
 						wf.write("\n---------------------------\n")
