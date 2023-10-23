@@ -194,11 +194,21 @@ main <- function(){
 	if (e_id==1){
 		exp1(filenames)
 	} 
-	# Experiment 2:
+	# Experiment 2: Build net from files & calculate degree dist.
 	else if (e_id==2){
 
+	} 
+	# Experiment 3: Load net from file & run InfoMap
+	else if (e_id==3){
+
 	}
-	# ...
+	# Experiment 4: Build net from files & visualize.
+	else if (e_id==4){
+
+	}
+	#
+	# ... Other experiments here ...
+	#
 	# Should not reach here
 	else {
 		stop("Experiment id not found. See comments/paper for available args")

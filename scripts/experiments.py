@@ -49,29 +49,18 @@ def exp1(filenames):
 	# Return aggregated network for debug.
 	return net_aggr
 
-# experiment 2: 
+# experiment 2: Build a network from files and calculate degree distributions
 def exp2(filenames):
 	return
 
-# experiment 3: 
+# experiment 3: Load a network from file and run InfoMap
 def exp3(filenames):
 	return
 
-# experiment 4: 
+# experiment 4: Build a network from files and visualize with different layouts
 def exp4(filenames):
 	return
 
-# experiment 5: 
-def exp5(filenames):
-	return
-
-# experiment 6: 
-def exp6(filenames):
-	return
-
-# experiment 7: 
-def exp7(filenames):
-	return
 
 # Chicken chow main. Set up so that the same main util template can be used
 #   on all experiments; most of the changes need to be done on the load_net(), 
@@ -216,24 +205,18 @@ def main():
 	# Experiment 1: Load net from file & aggregate
 	if e_id==1:
 		exp1(filenames)
-	# Experiment 2: 
+	# Experiment 2: Build net from files & calculate degree distributions
 	elif e_id==2:
 		exp2(filenames)
-	# Experiment 3: 
+	# Experiment 3: Load net from file & run InfoMap
 	elif e_id==3:
 		exp3(filenames)
-	# Experiment 4:
+	# Experiment 4: Build net from files & visualize layouts.
 	elif e_id==4:
 		exp4(filenames)
-	# Experiment 5:
-	elif e_id==5:
-		exp5(filenames)
-	# Experiment 6:
-	elif e_id==6:
-		exp6(filenames)
-	# Experiment 7:
-	elif e_id==7:
-		exp7(filenames)
+	#
+	# ... Other experiments here ...
+	#
 	# Should not reach here
 	else:
 		return

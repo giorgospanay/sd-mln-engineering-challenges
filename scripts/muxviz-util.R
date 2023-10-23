@@ -49,33 +49,37 @@ load_net <- function(filenames){
 		T 							# is directed? (Setting to T for benchmark)
 	)
 	# Spent a good few hours figuring this out. This API needs work.
-	# Since, apparently, num of layers and nodes is also needed for validation,
+	# Since num of layers and nodes is also needed for validation,
 	# 	return array c(net_sam,l,n) and decode later.
 	net <- c(net_sam,l,n)
 	return(net)
 }
 
-build <- function(){
-
-}
 
 build_rem <- function(){
 
 }
 
-# Aggregates a network
+# Aggregates an aspect of the network
 aggregate <- function(net){
-  net_aggr<-GetAggregateNetworkFromSupraAdjacencyMatrix(
-  	net[[1]],						# original net in SAM format
-  	net[[2]],						# number of layers
-  	net[[3]]						# number of nodes
-  )
-  return(net_aggr)
+	net_aggr<-GetAggregateNetworkFromSupraAdjacencyMatrix(
+		net[[1]],						# original net in SAM format
+		net[[2]],						# number of layers
+		net[[3]]						# number of nodes
+	)
+	return(net_aggr)
 }
 
-get_degree <- function(){
-
+# Get degree distribution from the network
+get_degree <- function(net){
+	degs<-GetMultiDegree(
+		net[[1]],						# original net in SAM format
+  		net[[2]],						# number of layers
+  		net[[3]],						# number of nodes
+  		F 								# is directed? (set to F for benchmark)
+	)
 }
+
 
 plot_network <- function(net,sam){
 	# # Convert to network list for visualization
@@ -92,8 +96,21 @@ plot_network <- function(net,sam){
 	plot_multiplex3D_fix(sam, col)
 }
 
+# Run InfoMap community detection
 run_infomap <- function(){
+	# Path for InfoMap 0.x binary, required by MuxViz.
+	# NOTE: Change accordingly for own setup.
+	pathInfomap <- "../bin/infomap-0.x/Infomap"
 
+	# Get communities
+	commResult <- GetMultilayerCommunities_Infomap(
+		net[[1]],						# original net in SAM format
+  		net[[2]],						# number of layers
+  		net[[3]],						# number of nodes
+		bin.path=pathInfomap,			# InfoMap binary path
+		isDirected=F 					# directed = F
+	)
+	return(commResult)
 }
 
 # Auxiliary for plotting
