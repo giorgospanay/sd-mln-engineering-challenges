@@ -183,6 +183,8 @@ main <- function(){
 	e_id <- strtoi(args[1])
 	lib <- args[2]
 	file <- args[3]
+	n<-0
+	l<-0
 
 	### LIBRARY MODULE IMPORTS ###
 
@@ -231,98 +233,106 @@ main <- function(){
 	# Add more here.
 
 
-	### DATASET IMPORTS ###
-	#
-	# Note: filenames should be in a format that the load/build... functions
-	#		can process. Define new code for lib_input_type if necessary.
-	#
+	if (e_id<4){
+		### DATASET IMPORTS ###
+		#
+		# Note: filenames should be in a format that the load/build... functions
+		#		can process. Define new code for lib_input_type if necessary.
+		#
 
-	# Load synthetic multilayer network data. Expect second argument N (size)
-	if (file=="synth"){
-		filenames<-c("")
-	}
-	# Load London transport data (london-transport)
-	else if (file=="london"){
-		if (lib_input_type==1){
-			filenames<-c("../data/london-transport/london.mpx")
-			# filenames<-c("../data/london-transport/london-full.mpx")
+		# Load synthetic multilayer network data. Expect second argument N (size)
+		if (file=="synth"){
+			filenames<-c("")
 		}
-		else if (lib_input_type==2){
-			filenames<-c("../data/london-transport/london_transport_nodes.txt","../data/london-transport/london_transport_multiplex.edges","../data/london-transport/london_transport_layers.txt")
+		# Load London transport data (london-transport)
+		else if (file=="london"){
+			if (lib_input_type==1){
+				filenames<-c("../data/london-transport/london.mpx")
+				# filenames<-c("../data/london-transport/london-full.mpx")
+			}
+			else if (lib_input_type==2){
+				filenames<-c("../data/london-transport/london_transport_nodes.txt","../data/london-transport/london_transport_multiplex.edges","../data/london-transport/london_transport_layers.txt")
+			}
+			else if (lib_input_type==3){
+				filenames<-c("../data/london-transport/london.config")
+			}
+			else if (lib_input_type==4){
+				filenames<-c("../data/london-transport/london_transport_netmem.edges")
+			}
 		}
-		else if (lib_input_type==3){
-			filenames<-c("../data/london-transport/london.config")
+		# Load EUAir transport data (euair-transport)
+		else if (file=="euair"){
+			if (lib_input_type==1){
+				filenames<-c("../data/euair-transport/euair.mpx")
+				# filenames<-c("../data/euair-transport/euair-full.mpx")
+			}
+			else if (lib_input_type==2){
+				filenames<-c("../data/euair-transport/EUAirTransportation_nodes.txt","../data/euair-transport/EUAirTransportation_multiplex.edges","../data/euair-transport/EUAirTransportation_layers.txt")
+			}
+			else if (lib_input_type==3){
+				filenames<-c("../data/euair-transport/euair.config")
+			}
+			else if (lib_input_type==4){
+				filenames<-c("../data/euair-transport/EUAirTransportation_netmem.edges")
+			}
 		}
-		else if (lib_input_type==4){
-			filenames<-c("../data/london-transport/london_transport_netmem.edges")
-		}
-	}
-	# Load EUAir transport data (euair-transport)
-	else if (file=="euair"){
-		if (lib_input_type==1){
-			filenames<-c("../data/euair-transport/euair.mpx")
-			# filenames<-c("../data/euair-transport/euair-full.mpx")
-		}
-		else if (lib_input_type==2){
-			filenames<-c("../data/euair-transport/EUAirTransportation_nodes.txt","../data/euair-transport/EUAirTransportation_multiplex.edges","../data/euair-transport/EUAirTransportation_layers.txt")
-		}
-		else if (lib_input_type==3){
-			filenames<-c("../data/euair-transport/euair.config")
-		}
-		else if (lib_input_type==4){
-			filenames<-c("../data/euair-transport/EUAirTransportation_netmem.edges")
-		}
-	}
-	# Load CS@Aarhus data (cs-aarhus)
-	else if (file=="aucs"){
-		if (lib_input_type==1){
-			filenames<-c("../data/cs-aarhus/aucs.mpx")
-		}
-		else if (lib_input_type==2){	
-			filenames<-c("../data/cs-aarhus/CS-Aarhus_nodes.txt","../data/cs-aarhus/CS-Aarhus_multiplex.edges","../data/cs-aarhus/CS-Aarhus_layers.txt")
-		}
-		else if (lib_input_type==3){
-			filenames<-c("../data/cs-aarhus/aucs.config")
-		}
-		else if (lib_input_type==4){
-			filenames<-c("../data/cs-aarhus/CS-Aarhus_netmem.edges")
-		}
+		# Load CS@Aarhus data (cs-aarhus)
+		else if (file=="aucs"){
+			if (lib_input_type==1){
+				filenames<-c("../data/cs-aarhus/aucs.mpx")
+			}
+			else if (lib_input_type==2){	
+				filenames<-c("../data/cs-aarhus/CS-Aarhus_nodes.txt","../data/cs-aarhus/CS-Aarhus_multiplex.edges","../data/cs-aarhus/CS-Aarhus_layers.txt")
+			}
+			else if (lib_input_type==3){
+				filenames<-c("../data/cs-aarhus/aucs.config")
+			}
+			else if (lib_input_type==4){
+				filenames<-c("../data/cs-aarhus/CS-Aarhus_netmem.edges")
+			}
 
-	}
-	# Load FriendFeed-Twitter data (ff-tw)
-	else if (file=="fftw"){
-		if (lib_input_type==1){
-			filenames<-c("../data/ff-tw/fftw.mpx")
 		}
-		else if (lib_input_type==2){
-			filenames<-c("../data/ff-tw/fftw_nodes.txt","../data/ff-tw/fftw_multiplex.edges","../data/ff-tw/fftw_layers.txt")
-		}	
-		else if (lib_input_type==3){
-			filenames<-c("../data/ff-tw/fftw.config")
-		}
-		else if (lib_input_type==4){
-			filenames<-c("../data/ff-tw/fftw_netmem.edges")
-		}
+		# Load FriendFeed-Twitter data (ff-tw)
+		else if (file=="fftw"){
+			if (lib_input_type==1){
+				filenames<-c("../data/ff-tw/fftw.mpx")
+			}
+			else if (lib_input_type==2){
+				filenames<-c("../data/ff-tw/fftw_nodes.txt","../data/ff-tw/fftw_multiplex.edges","../data/ff-tw/fftw_layers.txt")
+			}	
+			else if (lib_input_type==3){
+				filenames<-c("../data/ff-tw/fftw.config")
+			}
+			else if (lib_input_type==4){
+				filenames<-c("../data/ff-tw/fftw_netmem.edges")
+			}
 
+		}
+		# Load FriendFeed data (friendfeed)
+		else if (file=="ff"){
+			if (lib_input_type==1){
+				filenames<-c("../data/friendfeed/ff_simple.mpx")
+			}
+			else if (lib_input_type==2){
+				filenames<-c("../data/friendfeed/friendfeed_nodes.txt","../data/friendfeed/friendfeed_multiplex.edges","../data/friendfeed/friendfeed_layers.txt")
+			}	
+			else if (lib_input_type==3){
+				filenames<-c("../data/friendfeed/friendfeed.config")
+			}
+			else if (lib_input_type==4){
+				filenames<-c("../data/friendfeed/friendfeed_netmem.edges")
+			}
+		}
+		# Should not reach here. Add more cases for datasets above.
+		else{
+			stop("Dataset not found. See available arguments")
+		}
 	}
-	# Load FriendFeed data (friendfeed)
-	else if (file=="ff"){
-		if (lib_input_type==1){
-			filenames<-c("../data/friendfeed/ff_simple.mpx")
-		}
-		else if (lib_input_type==2){
-			filenames<-c("../data/friendfeed/friendfeed_nodes.txt","../data/friendfeed/friendfeed_multiplex.edges","../data/friendfeed/friendfeed_layers.txt")
-		}	
-		else if (lib_input_type==3){
-			filenames<-c("../data/friendfeed/friendfeed.config")
-		}
-		else if (lib_input_type==4){
-			filenames<-c("../data/friendfeed/friendfeed_netmem.edges")
-		}
-	}
-	# Should not reach here. Add more cases for datasets above.
+	# For generation experiments: retrieve tokens n-l
 	else{
-		stop("Dataset not found. See available arguments")
+		toks<-strsplit(file,"-")
+		n<-strtoi(toks[[1]][1])
+		l<-strtoi(toks[[1]][2])
 	}
 
 
@@ -334,7 +344,7 @@ main <- function(){
 	if (e_id==1){
 		exp1(filenames)
 	} 
-	# Experiment 2: Load net from files & calculate degree dist.
+	# Experiment 2: Load net from files & calculate degree 
 	else if (e_id==2){
 		exp2(filenames)
 	} 
@@ -342,9 +352,13 @@ main <- function(){
 	else if (e_id==3){
 		exp3(filenames)
 	}
-	# Experiment 4: Build net from files & visualize.
+	# Experiment 4: Generate networks & aggregate
 	else if (e_id==4){
-		exp4(filenames)
+		exp4(n,l)
+	}
+	# Experiment 5: Generate networks & calculate degrees
+	else if (e_id==5){
+		exp5(n,l)
 	}
 	#
 	# ... Other experiments here ...

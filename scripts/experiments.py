@@ -225,6 +225,9 @@ def main():
 	e_id=int(sys.argv[1])
 	lib=sys.argv[2]
 	file=sys.argv[3]
+	# Needed for experiments with net generation
+	n=0
+	l=0
 
 	### LIBRARY MODULE IMPORTS ###
 	#
@@ -260,82 +263,88 @@ def main():
 	module=importlib.util.module_from_spec(spec)
 	spec.loader.exec_module(module)
 
+	# Loading experiments:
+	if (e_id<4):
+		### DATASET IMPORTS ###
+		#
+		# Note: filenames should be in a format that the load/build... functions
+		#		can process. Define new code for lib_input_type if necessary.
+		#
 
-	### DATASET IMPORTS ###
-	#
-	# Note: filenames should be in a format that the load/build... functions
-	#		can process. Define new code for lib_input_type if necessary.
-	#
+		# Load synthetic multilayer network data. Expect second argument N (size)
+		# NOTE: if necessary, edit filepaths/input format for library
+		if file=="synth":
+			n=int(sys.argv[4])
+			if n==0:
+				sys.exit("No size argument given for synthetic data. Available options: {100,200,500,1000,2000,5000,10000,20000,50000}")
 
-	# Load synthetic multilayer network data. Expect second argument N (size)
-	# NOTE: if necessary, edit filepaths/input format for library
-	if file=="synth":
-		n=int(sys.argv[4])
-		if n==0:
-			sys.exit("No size argument given for synthetic data. Available options: {100,200,500,1000,2000,5000,10000,20000,50000}")
+			# 
 
-		# 
+		# Load London transport data (london-transport).
+		elif file=="london":
+			if lib_input_type==1:
+				filenames=["../data/london-transport/london.mpx"]
+				# filenames=["../data/london-transport/london-full.mpx"]
+			elif lib_input_type==2:	
+				filenames=["../data/london-transport/london_transport_nodes.txt","../data/london-transport/london_transport_multiplex.edges","../data/london-transport/london_transport_layers.txt"]
+			elif lib_input_type==3:
+				filenames=["../data/london-transport/london.config"]
+			elif lib_input_type==4:
+				filenames=["../data/london-transport/london_transport_netmem.edges"]
 
-	# Load London transport data (london-transport).
-	elif file=="london":
-		if lib_input_type==1:
-			filenames=["../data/london-transport/london.mpx"]
-			# filenames=["../data/london-transport/london-full.mpx"]
-		elif lib_input_type==2:	
-			filenames=["../data/london-transport/london_transport_nodes.txt","../data/london-transport/london_transport_multiplex.edges","../data/london-transport/london_transport_layers.txt"]
-		elif lib_input_type==3:
-			filenames=["../data/london-transport/london.config"]
-		elif lib_input_type==4:
-			filenames=["../data/london-transport/london_transport_netmem.edges"]
+		# Load EUAir transport data (euair-transport)
+		elif file=="euair":
+			if lib_input_type==1:
+				filenames=["../data/euair-transport/euair.mpx"]
+				# filenames=["../data/euair-transport/euair-full.mpx"]
+			elif lib_input_type==2:	
+				filenames=["../data/euair-transport/EUAirTransportation_nodes.txt","../data/euair-transport/EUAirTransportation_multiplex.edges","../data/euair-transport/EUAirTransportation_layers.txt"]
+			elif lib_input_type==3:
+				filenames=["../data/euair-transport/euair.config"]
+			elif lib_input_type==4:
+				filenames=["../data/euair-transport/EUAirTransportation_netmem.edges"]
 
-	# Load EUAir transport data (euair-transport)
-	elif file=="euair":
-		if lib_input_type==1:
-			filenames=["../data/euair-transport/euair.mpx"]
-			# filenames=["../data/euair-transport/euair-full.mpx"]
-		elif lib_input_type==2:	
-			filenames=["../data/euair-transport/EUAirTransportation_nodes.txt","../data/euair-transport/EUAirTransportation_multiplex.edges","../data/euair-transport/EUAirTransportation_layers.txt"]
-		elif lib_input_type==3:
-			filenames=["../data/euair-transport/euair.config"]
-		elif lib_input_type==4:
-			filenames=["../data/euair-transport/EUAirTransportation_netmem.edges"]
+		# Load CS@Aarhus data (cs-aarhus)
+		elif file=="aucs":
+			if lib_input_type==1:
+				filenames=["../data/cs-aarhus/aucs.mpx"]
+			elif lib_input_type==2:	
+				filenames=["../data/cs-aarhus/CS-Aarhus_nodes.txt","../data/cs-aarhus/CS-Aarhus_multiplex.edges","../data/cs-aarhus/CS-Aarhus_layers.txt"]
+			elif lib_input_type==3:
+				filenames=["../data/cs-aarhus/aucs.config"]
+			elif lib_input_type==4:
+				filenames=["../data/cs-aarhus/CS-Aarhus_netmem.edges"]
+		
+		# Load FriendFeed-Twitter data (ff-tw)
+		elif file=="fftw":
+			if lib_input_type==1:
+				filenames=["../data/ff-tw/fftw.mpx"]
+			elif lib_input_type==2:	
+				filenames=["../data/ff-tw/fftw_nodes.txt","../data/ff-tw/fftw_multiplex.edges","../data/ff-tw/fftw_layers.txt"]
+			elif lib_input_type==3:
+				filenames=["../data/ff-tw/fftw.config"]
+			elif lib_input_type==4:
+				filenames=["../data/ff-tw/fftw_netmem.edges"]
+		# Load FriendFeed data (friendfeed)
+		elif file=="ff":
+			if lib_input_type==1:
+				filenames=["../data/friendfeed/ff_simple.mpx"]
+			elif lib_input_type==2:	
+				filenames=["../data/friendfeed/friendfeed_nodes.txt","../data/friendfeed/friendfeed_multiplex.edges","../data/friendfeed/friendfeed_layers.txt"]
+			elif lib_input_type==3:
+				filenames=["../data/friendfeed/friendfeed.config"]
+			elif lib_input_type==4:
+				filenames=["../data/friendfeed/friendfeed_netmem.edges"]
 
-	# Load CS@Aarhus data (cs-aarhus)
-	elif file=="aucs":
-		if lib_input_type==1:
-			filenames=["../data/cs-aarhus/aucs.mpx"]
-		elif lib_input_type==2:	
-			filenames=["../data/cs-aarhus/CS-Aarhus_nodes.txt","../data/cs-aarhus/CS-Aarhus_multiplex.edges","../data/cs-aarhus/CS-Aarhus_layers.txt"]
-		elif lib_input_type==3:
-			filenames=["../data/cs-aarhus/aucs.config"]
-		elif lib_input_type==4:
-			filenames=["../data/cs-aarhus/CS-Aarhus_netmem.edges"]
-	
-	# Load FriendFeed-Twitter data (ff-tw)
-	elif file=="fftw":
-		if lib_input_type==1:
-			filenames=["../data/ff-tw/fftw.mpx"]
-		elif lib_input_type==2:	
-			filenames=["../data/ff-tw/fftw_nodes.txt","../data/ff-tw/fftw_multiplex.edges","../data/ff-tw/fftw_layers.txt"]
-		elif lib_input_type==3:
-			filenames=["../data/ff-tw/fftw.config"]
-		elif lib_input_type==4:
-			filenames=["../data/ff-tw/fftw_netmem.edges"]
-	# Load FriendFeed data (friendfeed)
-	elif file=="ff":
-		if lib_input_type==1:
-			filenames=["../data/friendfeed/ff_simple.mpx"]
-		elif lib_input_type==2:	
-			filenames=["../data/friendfeed/friendfeed_nodes.txt","../data/friendfeed/friendfeed_multiplex.edges","../data/friendfeed/friendfeed_layers.txt"]
-		elif lib_input_type==3:
-			filenames=["../data/friendfeed/friendfeed.config"]
-		elif lib_input_type==4:
-			filenames=["../data/friendfeed/friendfeed_netmem.edges"]
-
-	
-	# Should not reach here. Add more cases for datasets here.
+		
+		# Should not reach here. Add more cases for datasets here.
+		else:
+			return
+	# For generation experiments 4 & 5: dimensions coded as n-l instead of dataset
 	else:
-		return
+		toks=split(file,"-")
+		n=int(toks[0])
+		l=int(toks[1])
 	
 
 	### EXPERIMENTS ###
@@ -351,9 +360,12 @@ def main():
 	# Experiment 3: Load net from file & run InfoMap
 	elif e_id==3:
 		exp3(filenames)
-	# Experiment 4: Load net from files & visualize layouts.
+	# Experiment 4: Generate net & aggregate
 	elif e_id==4:
-		exp4(filenames)
+		exp4(n,l)
+	# Experiment 4: Generate net & calculate degrees
+	elif e_id==5:
+		exp5(n,l)
 	#
 	# ... Other experiments here ...
 	#
