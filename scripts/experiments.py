@@ -342,7 +342,7 @@ def main():
 			return
 	# For generation experiments 4 & 5: dimensions coded as n-l instead of dataset
 	else:
-		toks=split(file,"-")
+		toks=file.split("-")
 		n=int(toks[0])
 		l=int(toks[1])
 	
