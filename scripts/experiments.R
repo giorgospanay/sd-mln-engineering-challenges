@@ -95,6 +95,69 @@ exp3 <- function(filenames){
   	return(comms)
 }
 
+# Generates a multiplex network and aggregates it into a monoplex.
+# Time performance. Also, track memory consumption -- to be done manually??
+exp4 <- function(n,l){
+	# Generate net. Track performance & memory consumption
+	# --------------------------
+	trace_gens_curr <- mem_change({
+		time_gens_s <- Sys.time()
+		net <- gen_network(n,l)
+		time_gens_e <- Sys.time()
+		time_gens_t <- time_gens_e-time_gens_s
+	})
+	# --------------------------
+
+  	# Aggregate net. Track performance & memory consumption
+	# --------------------------
+	trace_aggr_curr <- mem_change({
+		time_aggr_s <- Sys.time()
+		net_aggr <- aggregate(net)
+		time_aggr_e <- Sys.time()
+		time_aggr_t <- time_aggr_e-time_aggr_s
+	})
+	# --------------------------
+	
+
+  	cat(sprintf("Generate time (in sec.): %f\n",time_gens_t))
+  	cat(sprintf("Generate mem curr (in bytes): %d\n",trace_gens_curr))
+  	cat(sprintf("Aggregate time (in sec.): %f\n",time_aggr_t))
+  	cat(sprintf("Aggregate mem curr (in bytes): %d\n",trace_aggr_curr))
+
+  	return(net_aggr)
+}
+
+# Generates a multiplex network and gets degrees for all nodes.
+exp5 <- function(n,l){
+	#  Generate net. Track performance & memory consumption
+	# --------------------------
+	trace_gens_curr <- mem_change({
+		time_gens_s <- Sys.time()
+		net <- gen_network(n,l)
+		time_gens_e <- Sys.time()
+		time_gens_t <- time_gens_e-time_gens_s
+	})
+	# --------------------------
+
+  	# Calculate degrees. Track performance & memory consumption
+	# --------------------------
+	trace_degs_curr <- mem_change({
+		time_degs_s <- Sys.time()
+		degs <- get_degree(net)
+		time_degs_e <- Sys.time()
+		time_degs_t <- time_degs_e-time_degs_s
+	})
+	# --------------------------
+	
+
+  	ccat(sprintf("Generate time (in sec.): %f\n",time_gens_t))
+  	cat(sprintf("Generate mem curr (in bytes): %d\n",trace_gens_curr))
+  	cat(sprintf("Degree time (in sec.): %f\n",time_degs_t))
+  	cat(sprintf("Degree mem curr (in bytes): %d\n",trace_degs_curr))
+
+  	return(degs)
+}
+
 # More experiments go here
 
 # Chicken chow main. Set up so that the same main util template can be used

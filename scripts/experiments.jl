@@ -56,8 +56,42 @@ function exp3(filenames)
     return comms
 end
 
+# Generate network and aggregate
+function exp4(n,l)
+    time_gens_s = Dates.value(now())
+    net = gen_network(n,l)
+    time_gens_e = Dates.value(now())
+    time_gens_t = time_gens_e - time_gens_s
+
+    time_aggr_s = Dates.value(now())
+    net_aggr = aggregate(net)
+    time_aggr_e = Dates.value(now())
+    time_aggr_t = time_aggr_e - time_aggr_s
+
+    println("Generate time (in sec.): ", values(time_gens_t)/1000.0)
+    println("Aggregate time (in sec.): ", values(time_aggr_t)/1000.0)
+    return net_aggr
+end
+
+# Generate network and get degrees
+function exp5(n,l)
+    ime_gens_s = Dates.value(now())
+    net = gen_network(n,l)
+    time_gens_e = Dates.value(now())
+    time_gens_t = time_gens_e - time_gens_s
+
+    time_degs_s = Dates.value(now())
+    degs = get_degree(net)
+    time_degs_e = Dates.value(now())
+    time_degs_t = time_degs_e - time_degs_s
+
+    println("Generate time (in sec.): ", values(time_gens_t)/1000.0)
+    println("Degree time (in sec.): ", values(time_degs_t)/1000.0)
+    return degs
+end
+
 # Load network from file and visualize
-function exp4(filenames)
+function exp99(filenames)
     # Not available for current libraries. Populate here if necessary.
 end
 

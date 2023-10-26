@@ -121,9 +121,83 @@ def exp3(filenames):
 	#print("Aggregate mem peak: "+str(trace_aggr_peak))
 	return comms
 
-# experiment 4: Build a network from files and visualize with different layouts
-def exp4(filenames):
+# experiment 99: Build a network from files and visualize with different layouts
+def exp99(filenames):
 	return
+
+# experiment 4: Randomly generate network and aggregate
+def exp4(n,l):
+	# Generate network. Time performance, check memory consumption
+	tracemalloc.start()
+	time_gens_s=time.time()
+	# --------------------------
+	net=module.gen_network(n,l)
+	# --------------------------
+	time_gens_e=time.time()
+	time_gens_t=time_gens_e-time_gens_s
+	trace_gens_curr, trace_gens_peak=tracemalloc.get_traced_memory()
+	tracemalloc.stop()
+
+	# Sleep to clear traces?
+	#time.sleep(3)
+
+	# Aggregate the network. Time performance, check memory consumption
+	tracemalloc.start()
+	time_aggr_s=time.time()
+	# --------------------------
+	net_aggr=module.aggregate(net)
+	# --------------------------
+	time_aggr_e=time.time()
+	time_aggr_t=time_aggr_e-time_aggr_s
+	trace_aggr_curr,trace_aggr_peak=tracemalloc.get_traced_memory()
+	tracemalloc.stop()
+
+	# Print stats.
+	print("Generate time (in sec.): "+str(time_gens_t))
+	print("Generate mem curr (in bytes): "+str(trace_gens_curr))
+	#print("Loading mem peak: "+str(trace_load_peak))
+	print("Aggregate time (in sec.): "+str(time_aggr_t))
+	print("Aggregate mem curr (in bytes): "+str(trace_aggr_curr))
+	#print("Aggregate mem peak: "+str(trace_aggr_peak))
+
+	# Return aggregated network for debug.
+	return net_aggr
+
+# experiment 5: Randomly generate network and calculate degrees
+def exp5(n,l):
+	# Generate network. Time performance, check memory consumption
+	tracemalloc.start()
+	time_gens_s=time.time()
+	# --------------------------
+	net=module.gen_network(n,l)
+	# --------------------------
+	time_gens_e=time.time()
+	time_gens_t=time_gens_e-time_gens_s
+	trace_gens_curr, trace_gens_peak=tracemalloc.get_traced_memory()
+	tracemalloc.stop()
+
+	# Sleep to clear traces?
+	#time.sleep(3)
+
+	# Calculate degrees. Time performance, check memory consumption
+	tracemalloc.start()
+	time_degs_s=time.time()
+	# --------------------------
+	degs=module.get_degree(net)
+	# --------------------------
+	time_degs_e=time.time()
+	time_degs_t=time_degs_e-time_degs_s
+	trace_degs_curr,trace_degs_peak=tracemalloc.get_traced_memory()
+	tracemalloc.stop()
+
+	# Print stats.
+	print("Generate time (in sec.): "+str(time_gens_t))
+	print("Generate mem curr (in bytes): "+str(trace_gens_curr))
+	#print("Loading mem peak: "+str(trace_load_peak))
+	print("Degree time (in sec.): "+str(time_degs_t))
+	print("Degree mem curr (in bytes): "+str(trace_degs_curr))
+	#print("Aggregate mem peak: "+str(trace_aggr_peak))
+	return degs
 
 
 # Chicken chow main. Set up so that the same main util template can be used
