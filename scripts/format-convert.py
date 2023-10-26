@@ -1,4 +1,32 @@
+### File for format converters between libraries. Use if necessary ###
 
+# Convert multiplex edgelist file to netmem custom multiplex edgelist file.
+# Expected format: first line-- max_node_id, max_layer_id. rest of file-- as is.
+def multiplex_edge_to_netmem_multiplex(read_file,write_file):
+	wf=open(write_file,"w")
+	lines=[]
+	max_node_id=0
+	max_layer_id=0
+	with open(read_file,"r") as rf:
+		lines=rf.readlines()
+		# First pass; Find max node id and layer id
+		for line in lines:
+			tokens=line.split(" ")
+			# Format: layer n_src n_dst weight
+			n1=int(tokens[1])
+			n2=int(tokens[2])
+			lid=int(tokens[0])
+			if max_layer_id<=lid:
+				max_layer_id=lid
+			if max_node_id<=n1:
+				max_node_id=n1
+			if max_node_id<=n2:
+				max_node_id=n2
+		# Second pass: write header line, rest of file as is.
+		wf.write(""+str(max_node_id)+","+str(max_layer_id)+"\n")
+		for line in lines:
+			wf.write(line)
+	wf.close()
 
 # Convert multiplex edgelist file to general multilayer edgelist file (MuxViz),
 # 	in order for load() function to work properly with multiplex edgelists.
@@ -310,9 +338,25 @@ def multinet_simple_to_multiplex_edge(read_file,write_nodes,write_edges,write_la
 
 def main():
 
-	multiplex_edge_to_multilayer_edge(
-		"../data/florentine/Padgett-Florentine-Families_multiplex.edges",
-		"../data/florentine/Padgett-Florentine-Families_multilayer.edges"
+	multiplex_edge_to_netmem_multiplex(
+		"../data/london-transport/london_transport_multiplex.edges",
+		"../data/london-transport/london_transport_netmem.edges"
+	)
+	multiplex_edge_to_netmem_multiplex(
+		"../data/euair-transport/EUAirTransportation_multiplex.edges",
+		"../data/euair-transport/EUAirTransportation_netmem.edges"
+	)
+	multiplex_edge_to_netmem_multiplex(
+		"../data/cs-aarhus/CS-Aarhus_multiplex.edges",
+		"../data/cs-aarhus/CS-Aarhus_netmem.edges"
+	)
+	multiplex_edge_to_netmem_multiplex(
+		"../data/friendfeed/friendfeed_multiplex.edges",
+		"../data/friendfeed/friendfeed_netmem.edges"
+	)
+	multiplex_edge_to_netmem_multiplex(
+		"../data/ff-tw/fftw_multiplex.edges",
+		"../data/ff-tw/fftw_netmem.edges"
 	)
 
 	
@@ -380,6 +424,10 @@ def main():
 	# multiplex_edge_to_multinet_simple(
 	#  	"../data/friendfeed/friendfeed_multiplex.edges",
 	#  	"../data/friendfeed/ff_simple.mpx"
+	# )
+	# multiplex_edge_to_multilayer_edge(
+	# 	"../data/florentine/Padgett-Florentine-Families_multiplex.edges",
+	# 	"../data/florentine/Padgett-Florentine-Families_multilayer.edges"
 	# )
 	
 

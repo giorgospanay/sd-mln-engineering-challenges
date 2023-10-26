@@ -46,7 +46,7 @@ load_net <- function(filenames){
 		df_edges,					# dataframe
 		l,							# number of layers
 		n,							# number of nodes
-		T 							# is directed? (Setting to T for benchmark)
+		F 							# is directed? (Setting to F for benchmark.)
 	)
 	# Spent a good few hours figuring this out. This API needs work.
 	# Since num of layers and nodes is also needed for validation,
@@ -104,11 +104,11 @@ run_infomap <- function(){
 
 	# Get communities
 	commResult <- GetMultilayerCommunities_Infomap(
-		net[[1]],						# original net in SAM format
-  		net[[2]],						# number of layers
-  		net[[3]],						# number of nodes
-		bin.path=pathInfomap,			# InfoMap binary path
-		isDirected=F 					# directed = F
+		net[[1]],						    # original net in SAM format
+  	net[[2]],						    # number of layers
+  	net[[3]],						    # number of nodes
+		bin.path=pathInfomap,		# InfoMap binary path
+		isDirected=F 					  # directed = F
 	)
 	return(commResult)
 }
@@ -117,13 +117,13 @@ run_infomap <- function(){
 sam_to_netlist <- function(net){
 	NodesTensor <- SupraAdjacencyToNodesTensor(
 		net[[1]],						# original net in SAM format
-  		net[[2]],						# number of layers
-  		net[[3]]						# number of nodes
-  	)
-  	g.list<-list()
-  	for (l in 1:net[[2]]){
-	  	g.list[[l]] <- igraph::graph_from_adjacency_matrix(NodesTensor[[l]], 
-	  		weighted = T, mode ="directed")
+  	net[[2]],						# number of layers
+  	net[[3]]						# number of nodes
+  )
+  g.list<-list()
+  for (l in 1:net[[2]]){
+	  g.list[[l]] <- igraph::graph_from_adjacency_matrix(NodesTensor[[l]], 
+	  	weighted = T, mode ="directed")
   }
   	return(g.list)
 }
@@ -384,10 +384,10 @@ plot_multiplex3D_fix <-
   }
 
 
-net<-load_net(c("../data/cs-aarhus/aucs.config"))
-netlist<-sam_to_netlist(net)
+# net<-load_net(c("../data/cs-aarhus/aucs.config"))
+# netlist<-sam_to_netlist(net)
 
-plot_network(net,netlist)
-rgl.snapshot("aucs3.png",fmt="png")
+# plot_network(net,netlist)
+# rgl.snapshot("aucs3.png",fmt="png")
 
 

@@ -29,6 +29,70 @@ exp1 <- function(filenames){
   	cat(sprintf("Loading mem curr (in bytes): %d\n",trace_load_curr))
   	cat(sprintf("Aggregate time (in sec.): %f\n",time_aggr_t))
   	cat(sprintf("Aggregate mem curr (in bytes): %d\n",trace_aggr_curr))
+
+  	return(net_aggr)
+}
+
+# Loads a network from file and gets degrees for all nodes.
+exp2 <- function(filenames){
+	# Load file. Track performance & memory consumption
+	# --------------------------
+	trace_load_curr <- mem_change({
+		time_load_s <- Sys.time()
+		net <- load_net(filenames)
+		time_load_e <- Sys.time()
+		time_load_t <- time_load_e-time_load_s
+	})
+	# --------------------------
+
+  	# Calculate degrees. Track performance & memory consumption
+	# --------------------------
+	trace_degs_curr <- mem_change({
+		time_degs_s <- Sys.time()
+		degs <- get_degree(net)
+		time_degs_e <- Sys.time()
+		time_degs_t <- time_degs_e-time_degs_s
+	})
+	# --------------------------
+	
+
+  	cat(sprintf("Loading time (in sec.): %f\n",time_load_t))
+  	cat(sprintf("Loading mem curr (in bytes): %d\n",trace_load_curr))
+  	cat(sprintf("Degree time (in sec.): %f\n",time_degs_t))
+  	cat(sprintf("Degree mem curr (in bytes): %d\n",trace_degs_curr))
+
+  	return(degs)
+}
+
+# Loads a network from file and runs InfoMap.
+exp3 <- function(filenames){
+	# Load file. Track performance & memory consumption
+	# --------------------------
+	trace_load_curr <- mem_change({
+		time_load_s <- Sys.time()
+		net <- load_net(filenames)
+		time_load_e <- Sys.time()
+		time_load_t <- time_load_e-time_load_s
+	})
+	# --------------------------
+
+  	# Run InfoMap. Track performance & memory consumption
+	# --------------------------
+	trace_cdet_curr <- mem_change({
+		time_cdet_s <- Sys.time()
+		comms <- run_infomap(net)
+		time_cdet_e <- Sys.time()
+		time_cdet_t <- time_cdet_e-time_cdet_s
+	})
+	# --------------------------
+	
+
+  	cat(sprintf("Loading time (in sec.): %f\n",time_load_t))
+  	cat(sprintf("Loading mem curr (in bytes): %d\n",trace_load_curr))
+  	cat(sprintf("InfoMap time (in sec.): %f\n",time_cdet_t))
+  	cat(sprintf("InfoMap mem curr (in bytes): %d\n",trace_cdet_curr))
+
+  	return(comms)
 }
 
 # More experiments go here
@@ -71,7 +135,8 @@ main <- function(){
 	#	2 -- Node/edge/layer files input
 	#	3 -- MuxViz input, node/edge/layer-files coded in a semicolon-separated 
 	#		config.file
-	#
+	#	4 -- Custom file for netmem. First line: max_node_id, max_layer_id. Rest is
+	#		normal multiplex edgelist file.
 
 	lib_util_path <- ""
 	lib_input_type <- 0
@@ -86,11 +151,10 @@ main <- function(){
 		lib_util_path <- "multinet-util.R"
 		lib_input_type <- 1
 	}
-	# mully import
-	else if (lib=="mully"){
-		lib_util_path <- "mully-util.R"
-		# TODO: fix
-		lib_input_type <- 0
+	# netmem import
+	else if (lib=="netmem"){
+		lib_util_path <- "netmem-util.R"
+		lib_input_type <- 4
 	}
 	# ... other libs ...
 	# Should not reach this statement
@@ -126,6 +190,9 @@ main <- function(){
 		else if (lib_input_type==3){
 			filenames<-c("../data/london-transport/london.config")
 		}
+		else if (lib_input_type==4){
+			filenames<-c("../data/london-transport/london_transport_netmem.edges")
+		}
 	}
 	# Load EUAir transport data (euair-transport)
 	else if (file=="euair"){
@@ -139,6 +206,9 @@ main <- function(){
 		else if (lib_input_type==3){
 			filenames<-c("../data/euair-transport/euair.config")
 		}
+		else if (lib_input_type==4){
+			filenames<-c("../data/euair-transport/EUAirTransportation_netmem.edges")
+		}
 	}
 	# Load CS@Aarhus data (cs-aarhus)
 	else if (file=="aucs"){
@@ -146,11 +216,15 @@ main <- function(){
 			filenames<-c("../data/cs-aarhus/aucs.mpx")
 		}
 		else if (lib_input_type==2){	
-			filenames<-c("../data/cs-aarhus/CS-Aarhus_nodes.txt","cs-aarhus/CS-Aarhus_multiplex.edges","cs-aarhus/CS-Aarhus_layers.txt")
+			filenames<-c("../data/cs-aarhus/CS-Aarhus_nodes.txt","../data/cs-aarhus/CS-Aarhus_multiplex.edges","../data/cs-aarhus/CS-Aarhus_layers.txt")
 		}
 		else if (lib_input_type==3){
 			filenames<-c("../data/cs-aarhus/aucs.config")
 		}
+		else if (lib_input_type==4){
+			filenames<-c("../data/cs-aarhus/CS-Aarhus_netmem.edges")
+		}
+
 	}
 	# Load FriendFeed-Twitter data (ff-tw)
 	else if (file=="fftw"){
@@ -163,10 +237,10 @@ main <- function(){
 		else if (lib_input_type==3){
 			filenames<-c("../data/ff-tw/fftw.config")
 		}
-	}
-	# Load citation data (journal-citation)
-	else if (file=="citation"){
-		filenames<-c("")
+		else if (lib_input_type==4){
+			filenames<-c("../data/ff-tw/fftw_netmem.edges")
+		}
+
 	}
 	# Load FriendFeed data (friendfeed)
 	else if (file=="ff"){
@@ -178,6 +252,9 @@ main <- function(){
 		}	
 		else if (lib_input_type==3){
 			filenames<-c("../data/friendfeed/friendfeed.config")
+		}
+		else if (lib_input_type==4){
+			filenames<-c("../data/friendfeed/friendfeed_netmem.edges")
 		}
 	}
 	# Should not reach here. Add more cases for datasets above.
@@ -194,17 +271,17 @@ main <- function(){
 	if (e_id==1){
 		exp1(filenames)
 	} 
-	# Experiment 2: Build net from files & calculate degree dist.
+	# Experiment 2: Load net from files & calculate degree dist.
 	else if (e_id==2){
-
+		exp2(filenames)
 	} 
 	# Experiment 3: Load net from file & run InfoMap
 	else if (e_id==3){
-
+		exp3(filenames)
 	}
 	# Experiment 4: Build net from files & visualize.
 	else if (e_id==4){
-
+		exp4(filenames)
 	}
 	#
 	# ... Other experiments here ...

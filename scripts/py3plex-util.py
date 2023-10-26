@@ -2,12 +2,13 @@
 # Library import
 import py3plex
 from py3plex.core import multinet
+from py3plex.algorithms.community_detection import community_wrapper as cw
 
 # Load network from file. Assuming multiplex edgelist input
 def load_net(filenames):
 	multilayer_network = multinet.multi_layer_network(network_type="multiplex").load_network(
     	filenames[1], # edges
-    	directed=True,
+    	directed=True, # assume false for benchmarks.
     	input_type="multiplex_edges"
     )
 	return multilayer_network

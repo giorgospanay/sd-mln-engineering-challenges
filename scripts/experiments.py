@@ -49,13 +49,77 @@ def exp1(filenames):
 	# Return aggregated network for debug.
 	return net_aggr
 
-# experiment 2: Build a network from files and calculate degree distributions
+# experiment 2: Load a network from files and calculate degree distributions
 def exp2(filenames):
-	return
+	# Load the file. Time performance, check memory consumption
+	tracemalloc.start()
+	time_load_s=time.time()
+	# --------------------------
+	net=module.load_net(filenames)
+	# --------------------------
+	time_load_e=time.time()
+	time_load_t=time_load_e-time_load_s
+	trace_load_curr, trace_load_peak=tracemalloc.get_traced_memory()
+	tracemalloc.stop()
+
+	# Sleep to clear traces?
+	#time.sleep(3)
+
+	# Calculate degrees. Time performance, check memory consumption
+	tracemalloc.start()
+	time_degs_s=time.time()
+	# --------------------------
+	degs=module.get_degree(net)
+	# --------------------------
+	time_degs_e=time.time()
+	time_degs_t=time_degs_e-time_degs_s
+	trace_degs_curr,trace_degs_peak=tracemalloc.get_traced_memory()
+	tracemalloc.stop()
+
+	# Print stats.
+	print("Loading time (in sec.): "+str(time_load_t))
+	print("Loading mem curr (in bytes): "+str(trace_load_curr))
+	#print("Loading mem peak: "+str(trace_load_peak))
+	print("Degree time (in sec.): "+str(time_degs_t))
+	print("Degree mem curr (in bytes): "+str(trace_degs_curr))
+	#print("Aggregate mem peak: "+str(trace_aggr_peak))
+	return degs
 
 # experiment 3: Load a network from file and run InfoMap
 def exp3(filenames):
-	return
+	# Load the file. Time performance, check memory consumption
+	tracemalloc.start()
+	time_load_s=time.time()
+	# --------------------------
+	net=module.load_net(filenames)
+	# --------------------------
+	time_load_e=time.time()
+	time_load_t=time_load_e-time_load_s
+	trace_load_curr, trace_load_peak=tracemalloc.get_traced_memory()
+	tracemalloc.stop()
+
+	# Sleep to clear traces?
+	#time.sleep(3)
+
+	# Run InfoMap. Time performance, check memory consumption
+	tracemalloc.start()
+	time_cdet_s=time.time()
+	# --------------------------
+	comms=module.run_infomap(net)
+	# --------------------------
+	time_cdet_e=time.time()
+	time_cdet_t=time_cdet_e-time_cdet_s
+	trace_cdet_curr,trace_cdet_peak=tracemalloc.get_traced_memory()
+	tracemalloc.stop()
+
+	# Print stats.
+	print("Loading time (in sec.): "+str(time_load_t))
+	print("Loading mem curr (in bytes): "+str(trace_load_curr))
+	#print("Loading mem peak: "+str(trace_load_peak))
+	print("InfoMap time (in sec.): "+str(time_cdet_t))
+	print("InfoMap mem curr (in bytes): "+str(trace_cdet_curr))
+	#print("Aggregate mem peak: "+str(trace_aggr_peak))
+	return comms
 
 # experiment 4: Build a network from files and visualize with different layouts
 def exp4(filenames):
@@ -102,7 +166,8 @@ def main():
 	#	2 -- Node/edge/layer files input
 	#	3 -- MuxViz input, node/edge/layer-files coded in a semicolon-separated 
 	#		config.file
-	#
+	#	4 -- Custom file for netmem. First line: max_node_id, max_layer_id. Rest is
+	#		normal multiplex edgelist file.
  	# Pymnet import
 	if lib=="pymnet":
 		spec=importlib.util.spec_from_file_location("pymnet_util","pymnet-util.py")
@@ -115,11 +180,6 @@ def main():
 	elif lib=="multinet":
 		spec=importlib.util.spec_from_file_location("multinet_util","multinet-util.py")
 		lib_input_type=1
-	# netmem import
-	elif lib=="netmem":
-		spec=importlib.util.spec_from_file_location("netmem_util","netmem-util.py")
-		# TODO: fix
-		lib_input_type=0 
 	# Should not reach here
 	else:
 		return
@@ -151,6 +211,8 @@ def main():
 			filenames=["../data/london-transport/london_transport_nodes.txt","../data/london-transport/london_transport_multiplex.edges","../data/london-transport/london_transport_layers.txt"]
 		elif lib_input_type==3:
 			filenames=["../data/london-transport/london.config"]
+		elif lib_input_type==4:
+			filenames=["../data/london-transport/london_transport_netmem.edges"]
 
 	# Load EUAir transport data (euair-transport)
 	elif file=="euair":
@@ -161,6 +223,9 @@ def main():
 			filenames=["../data/euair-transport/EUAirTransportation_nodes.txt","../data/euair-transport/EUAirTransportation_multiplex.edges","../data/euair-transport/EUAirTransportation_layers.txt"]
 		elif lib_input_type==3:
 			filenames=["../data/euair-transport/euair.config"]
+		elif lib_input_type==4:
+			filenames=["../data/euair-transport/EUAirTransportation_netmem.edges"]
+
 	# Load CS@Aarhus data (cs-aarhus)
 	elif file=="aucs":
 		if lib_input_type==1:
@@ -169,6 +234,8 @@ def main():
 			filenames=["../data/cs-aarhus/CS-Aarhus_nodes.txt","../data/cs-aarhus/CS-Aarhus_multiplex.edges","../data/cs-aarhus/CS-Aarhus_layers.txt"]
 		elif lib_input_type==3:
 			filenames=["../data/cs-aarhus/aucs.config"]
+		elif lib_input_type==4:
+			filenames=["../data/cs-aarhus/CS-Aarhus_netmem.edges"]
 	
 	# Load FriendFeed-Twitter data (ff-tw)
 	elif file=="fftw":
@@ -178,12 +245,8 @@ def main():
 			filenames=["../data/ff-tw/fftw_nodes.txt","../data/ff-tw/fftw_multiplex.edges","../data/ff-tw/fftw_layers.txt"]
 		elif lib_input_type==3:
 			filenames=["../data/ff-tw/fftw.config"]
-	
-	# Load citation data (journal-citation)
-	elif file=="citation":
-		filenames=[]
-		# filenames=""
-
+		elif lib_input_type==4:
+			filenames=["../data/ff-tw/fftw_netmem.edges"]
 	# Load FriendFeed data (friendfeed)
 	elif file=="ff":
 		if lib_input_type==1:
@@ -192,6 +255,9 @@ def main():
 			filenames=["../data/friendfeed/friendfeed_nodes.txt","../data/friendfeed/friendfeed_multiplex.edges","../data/friendfeed/friendfeed_layers.txt"]
 		elif lib_input_type==3:
 			filenames=["../data/friendfeed/friendfeed.config"]
+		elif lib_input_type==4:
+			filenames=["../data/friendfeed/friendfeed_netmem.edges"]
+
 	
 	# Should not reach here. Add more cases for datasets here.
 	else:
@@ -205,13 +271,13 @@ def main():
 	# Experiment 1: Load net from file & aggregate
 	if e_id==1:
 		exp1(filenames)
-	# Experiment 2: Build net from files & calculate degree distributions
+	# Experiment 2: Load net from file & calculate degrees
 	elif e_id==2:
 		exp2(filenames)
 	# Experiment 3: Load net from file & run InfoMap
 	elif e_id==3:
 		exp3(filenames)
-	# Experiment 4: Build net from files & visualize layouts.
+	# Experiment 4: Load net from files & visualize layouts.
 	elif e_id==4:
 		exp4(filenames)
 	#

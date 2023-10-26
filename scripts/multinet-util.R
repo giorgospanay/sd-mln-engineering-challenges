@@ -37,7 +37,7 @@ plot_network <- function(net){
 
 # Run InfoMap
 run_infomap <- function(net){
-	commstruct=infomap_ml(net)
+	commstruct=infomap_ml(net,directed=TRUE)
 	return(commstruct)
 }
 
@@ -47,6 +47,6 @@ main <- function(){
 	plot_network(net)
 }
 
-if(!interactive()){
-	main()
-}
+# if(!interactive()){
+# 	main()
+# }

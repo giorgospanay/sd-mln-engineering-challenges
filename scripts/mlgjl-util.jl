@@ -3,69 +3,76 @@
 # Imports
 using Graphs, SimpleWeightedGraphs, MultilayerGraphs
 
-
-# Create node:
-# Node("name")
-# Create MultilayerVertex List:
-# [MV(node,("$(node_name)",)) for node in nodes_list]
-
 # Load a network into memory
-function load_net(filenames)
+function load_net(filenames::Vector{String})
 	# Native reading not available in MLG.jl.
 	# Instead: construct adjacency matrices for each layer and interlayer.
 	# Now we are only dealing with multiplex networks, so no need for interlayers.
 
-	# # TODO: test & fix reading
- #    layers = Dict{Int, SimpleWeightedGraph}()
- #    edges = Dict{Int, Vector{Tuple{Int,Int,Float64}}}()
-
- #    # Open multiplex edgefile. No header.
- #    open(filenames[2],"r") do file
- #        for line in eachline(file)
- #            layer,node1,node2,weight=split(line)
- #            layer,node1,node2,weight=parse(Int,layer),parse(Int,node1),parse(Int,node2),parse(Float64,weight)
-
- #            if !haskey(layers, layer)
- #                layers[layer] = SimpleWeightedGraph()
- #                edges[layer] = []
- #            end
-
- #            add_edge!(layers[layer],node1,node2)
- #            push!(edges[layer],(node1,node2,weight))
- #        end
- #    end
-
- #    MultilayerDiGraph(layers,[])
-
- #    multilayer_graph = MultilayerGraph(layers, edges)
- #    return multilayer_graph
-
-
-
-    layers = Dict{Int, Layer}()
+    # Create empty MLG digraph and populate.
+    net=MultilayerGraph(Int64,Float64)
+    layers=Dict{Int,Layer}()
 
     # Open multiplex edgefile. No header.
     open(filenames[2],"r") do file
         for line in eachline(file)
+            # Parse line. Format: layer n_src n_dst weight
             layer,node1,node2,weight=split(line)
             layer,node1,node2,weight=parse(Int,layer),parse(Int,node1),parse(Int,node2),parse(Float64,weight)
 
+            # Construct native Node and MV items.
+            # Note: the package does not (at the time, I presume) offer a good 
+            # 	interface to retrieve nodes and edges from the layer, so this
+            # 	information should be kept locally. For the time being, however,
+            # 	add_vertex!() and add_edge!() fail if duplicate node is added.
+            n1,n2=Node("$node1"),Node("$node2")
+            mv1,mv2=MV(n1),MV(n2)
+            
+            # If first time discovering a layer id:
             if !haskey(layers, layer)
             	# Construct empty layer and fill later
-                layers[layer] = layer_simpledigraph(layer,[],[])
+                layers[layer] = layer_simpleweightedgraph(Symbol(layer),MultilayerVertex{nothing}[],MultilayerEdge{}[])
             end
 
-            add_edge!(layers[layer],node1,node2,weight=weight)
+            # Add vertices and edge to layer identified
+            fv1=add_vertex!(layers[layer],mv1)
+            fv2=add_vertex!(layers[layer],mv2)
+            fe1=add_edge!(layers[layer],mv1,mv2,weight)
+
+            # # DEBUG: add vertex checks
+            # if fv1
+            # 	println("Added mv1 #$node1 to layer #$layer")
+            # end
+            # if fv2
+            # 	println("Added mv2 #$node2 to layer #$layer")
+            # end
+            # if fe1
+            # 	println("Added edge $node1 -> $node2 to layer #$layer")
+            # end
+            
         end
     end
 
-    multilayer_graph=MultilayerDiGraph(layers,[])
-    return multilayer_graph
+    #
+    # --- MultilayerDiGraph crashes for EUAir. Apparently a known problem
+    # ---     to be sorted after PR merging in a dependency?
+    #
+    
+    # Add all the layers in MLG net
+    for l in collect(values(layers))
+    	add_layer!(net,l)
+    end
+
+    # --- Doing this instead: ---
+    # Add all layers in MLG net, manually define multiplex interlayers
+
+
+    return net
 end
 
 
-#
-function build_rem(filenames)
+# TODO:
+function build_rem(filenames::Vector{String})
 	return
 end
 
@@ -100,6 +107,6 @@ function main()
 	println(net)
 end
 
-# Run
-main()
+# # Run
+# main()
 

@@ -6,6 +6,7 @@ import os, glob
 import parse
 import pandas as pd
 import numpy as np
+import time
 from matplotlib import pyplot as plt
 
 ## Globals ##
@@ -105,6 +106,7 @@ def bar_plot(ax, data, colors=None, total_width=0.8, single_width=1, legend=True
 #     bar_plot(ax, data, total_width=.8, single_width=.9)
 #     plt.show()
 
+
 ## Execute experiments ##
 # Warning: writing to a log file (specifically, decoding the bytestring returned
 # 	from calling subprocess shell) assumes a utf-8 encoding. Should be ok in the vast 
@@ -127,11 +129,16 @@ def run_exp(e_id,pylibs,rlibs,jllibs,datasets):
 			# Generate command and open shell
 			runpy=cmdbase_py+str(e_id)+" "+py_lib+" "+ds
 			try:
-				res=subprocess.check_output(runpy,shell=True,stderr=subprocess.STDOUT)
+				time_exec_s=time.time()
+				res=subprocess.check_output(runpy,shell=True,timeout=720,stderr=subprocess.STDOUT)
+				time_exec_e=time.time()
+				time_exec_t=time_exec_e-time_exec_s
 				# Save output to logpath.
 				# File naming format: eid_ds(-size)_lib_lang.txt
 				with open(logwd+str(e_id)+"_"+ds+"_"+py_lib+"_py.txt","w") as wf:
 					wf.write(res.decode("utf-8"))
+					wf.write("\n")
+					wf.write("Execution time (in sec.): "+str(time_exec_t))
 					wf.close()
 			except subprocess.CalledProcessError as e:
 				# Save error to logpath.
@@ -142,17 +149,27 @@ def run_exp(e_id,pylibs,rlibs,jllibs,datasets):
 					if e.stderr!=None:
 						wf.write(e.stderr.decode("utf-8"))
 						wf.write("\n---------------------------\n")
+					wf.close()
+			except subprocess.TimeoutExpired as to:
+				# Save error to logpath.
+				with open(logwd+str(e_id)+"_"+ds+"_"+py_lib+"_py.txt","w") as wf:
+					wf.write("Timeout: 720 seconds\n")
 					wf.close()
 		# Run on all R libs
 		for r_lib in rlibs:
 			# Generate command and open shell
 			runr=cmdbase_r+str(e_id)+" "+r_lib+" "+ds
 			try:
-				res=subprocess.check_output(runr,shell=True,stderr=subprocess.STDOUT)
+				time_exec_s=time.time() 
+				res=subprocess.check_output(runr,shell=True,timeout=720,stderr=subprocess.STDOUT)
+				time_exec_e=time.time()
+				time_exec_t=time_exec_e-time_exec_s
 				# Save output to logpath.
 				# File naming format: eid_ds(-size)_lib_lang.txt
 				with open(logwd+str(e_id)+"_"+ds+"_"+r_lib+"_r.txt","w") as wf:
 					wf.write(res.decode("utf-8"))
+					wf.write("\n")
+					wf.write("Execution time (in sec.): "+str(time_exec_t))
 					wf.close()
 			except subprocess.CalledProcessError as e:
 				# Save error to logpath.
@@ -163,17 +180,27 @@ def run_exp(e_id,pylibs,rlibs,jllibs,datasets):
 					if e.stderr!=None:
 						wf.write(e.stderr.decode("utf-8"))
 						wf.write("\n---------------------------\n")
+					wf.close()
+			except subprocess.TimeoutExpired as to:
+				# Save error to logpath.
+				with open(logwd+str(e_id)+"_"+ds+"_"+r_lib+"_r.txt","w") as wf:
+					wf.write("Timeout: 720 seconds\n")
 					wf.close()
 		# Run on all Julia libs
 		for jl_lib in jllibs:
 			# Generate command and open shell
 			runjl=cmdbase_jl+str(e_id)+" "+jl_lib+" "+ds
 			try:
-				res=subprocess.check_output(runjl,shell=True,stderr=subprocess.STDOUT)
+				time_exec_s=time.time()
+				res=subprocess.check_output(runjl,shell=True,timeout=720,stderr=subprocess.STDOUT)
+				time_exec_e=time.time()
+				time_exec_t=time_exec_e-time_exec_s
 				# Save output to logpath.
 				# File naming format: eid_ds(-size)_lib_lang.txt
 				with open(logwd+str(e_id)+"_"+ds+"_"+jl_lib+"_jl.txt","w") as wf:
 					wf.write(res.decode("utf-8"))
+					wf.write("\n")
+					wf.write("Execution time (in sec.): "+str(time_exec_t))
 					wf.close()
 			except subprocess.CalledProcessError as e:
 				# Save error to logpath.
@@ -184,9 +211,15 @@ def run_exp(e_id,pylibs,rlibs,jllibs,datasets):
 					if e.stderr!=None:
 						wf.write(e.stderr.decode("utf-8"))
 						wf.write("\n---------------------------\n")
+					wf.close()
+			except subprocess.TimeoutExpired as to:
+				# Save error to logpath.
+				with open(logwd+str(e_id)+"_"+ds+"_"+jl_lib+"_jl.txt","w") as wf:
+					wf.write("Timeout: 720 seconds\n")
 					wf.close()		
 
 	return
+
 
 # Result parser
 def parse_exp1(datasets,library_colors):
@@ -286,18 +319,21 @@ def parse_exp1(datasets,library_colors):
 # chicken chow main
 def main():
 	global py_libs,r_libs,jl_libs,data_list
-	
-	# # Debug stuff
-	# cmd1="python3 experiments.py 1 pymnet aucs"
-	# cmd2="Rscript experiments.R 1 muxviz aucs"
-	# result1=subprocess.check_output(cmd1, shell=True, stderr=subprocess.STDOUT)
-	# print(result1)
-	# result2=subprocess.check_output(cmd2, shell=True, stderr=subprocess.STDOUT)
-	# print(result2)
 
-	# Call experiment function for debug
-	#run_exp(1,[],["multinet"],[],["ff"])
-	run_exp(1,["py3plex"],[],[],["aucs","london","euair","fftw","ff"])
+	# Call exp1: Loading + aggregation, real datasets
+	run_exp(1,["pymnet","py3plex"],["muxviz","multinet"],[],["aucs","london","euair","fftw","ff"])
+	# Call exp2: Loading + degree, real datasets
+	run_exp(2,["pymnet","py3plex"],["muxviz","multinet","netmem"],["mlgjl"],["aucs","london","euair","fftw","ff"])
+	# Call exp3: Loading + InfoMap, real datasets (small&medium)
+	#run_exp(3,["py3plex"],["multinet","muxviz"],[],["aucs","london","euair"])
+	# Call exp4: Loading + visualization, real datasets (small)
+
+	# Call exp5: Building network
+
+	# Call exp1: Loading + aggregation, synth data
+
+	# Call exp2: Loading + degree, synth data
+
 
 	# Call plot function for exp1
 	#parse_exp1(["aucs","london","euair"],["blue","red","green"])

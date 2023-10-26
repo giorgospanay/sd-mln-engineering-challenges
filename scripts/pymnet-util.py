@@ -52,14 +52,14 @@ def run_infomap(net):
 	# Not available in pymnet
 	return
 
-# Main plotting for poster visuals
-def main():
-	#net=load_net(["../data/florentine/Padgett-Florentine-Families_nodes.txt","../data/florentine/Padgett-Florentine-Families_multiplex.edges","../data/florentine/Padgett-Florentine-Families_layers.txt"])
-	net=load_net(["../data/london-transport/london_transport_nodes.txt","../data/london-transport/london_transport_multiplex.edges","../data/london-transport/london_transport_layers.txt"])
-	#net=load_net(["../data/cs-aarhus/CS-Aarhus_nodes.txt","../data/cs-aarhus/CS-Aarhus_multiplex.edges","../data/cs-aarhus/CS-Aarhus_layers.txt"])
-	plot_network(net)
+# # Main plotting for poster visuals
+# def main():
+# 	#net=load_net(["../data/florentine/Padgett-Florentine-Families_nodes.txt","../data/florentine/Padgett-Florentine-Families_multiplex.edges","../data/florentine/Padgett-Florentine-Families_layers.txt"])
+# 	net=load_net(["../data/london-transport/london_transport_nodes.txt","../data/london-transport/london_transport_multiplex.edges","../data/london-transport/london_transport_layers.txt"])
+# 	#net=load_net(["../data/cs-aarhus/CS-Aarhus_nodes.txt","../data/cs-aarhus/CS-Aarhus_multiplex.edges","../data/cs-aarhus/CS-Aarhus_layers.txt"])
+# 	plot_network(net)
 
-if __name__ == '__main__':
-	main()
+# if __name__ == '__main__':
+# 	main()
 
 
