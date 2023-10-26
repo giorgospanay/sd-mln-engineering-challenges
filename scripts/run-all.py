@@ -16,9 +16,9 @@ py_libs=["pymnet","multinet","py3plex","netmem"]
 # List of R libraries for experiments
 r_libs=["muxviz","multinet","mully"]
 # List of Julia libraries for experiments
-jl_libs=["mlg"]
+jl_libs=["mlgjl"]
 # List of all datasets
-data_list=["synth","aucs","london","euair","fftw","ff","citation"]
+data_list=["synth","aucs","london","euair","fftw","ff"]
 
 # Path to log exports
 log_path="../logs/"

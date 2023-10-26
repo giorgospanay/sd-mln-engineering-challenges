@@ -2,6 +2,7 @@
 
 # Imports
 library(netmem)
+library(igraph)
 
 # Load a network into memory
 load_net <- function(filenames){
@@ -94,9 +95,52 @@ run_infomap <- function(net){
 	return()
 }
 
+# Network generation. Params:
+# 	n - Number of vertices
+# 	l - Number of layers
+gen_network <- function(n,l){
+	# Calculate for n*l vertices.
+	e<-sqrt(n)
+	p<-e/choose(n*l,2)
+	# # Taking absurdly long time to generate network, plus unnecessary prints. 
+	# net<-ind_rand_matrix(n*l,l=e,digraph=FALSE)
+
+	# Instead: generate own adjacency matrices with igraph for each layer
+	sam<-matrix(0,nrow=n*l,ncol=n*l)
+	for (lid in 1:l){
+		# Generate ERG for each layer
+		er<-erdos.renyi.game(n,n*e,type="gnm",directed=FALSE)
+		nadj<-as_adj(er,sparse=FALSE)
+		# ...and add edges to each layer
+		for (i in 1:n){
+			for (j in 1:n){
+				if (isTRUE(nadj[i,j]==1)){
+					sam[(lid-1)*n+i,(lid-1)*n+j]<-1
+					sam[(lid-1)*n+j,(lid-1)*n+i]<-1
+				}
+			}
+		}
+	}
+	# Finally, create multiplex identity matrices for coupling edges
+	for(nid in 1:n){
+		for(lid in 1:l){
+			for (lid2 in 1:l){
+				sam[(lid-1)*n+nid,(lid2-1)*n+nid]<-1
+			}
+		}
+	}	
+	return(sam)
+}
+
+#
+# -----------------------------------------------------------------------------
+# 
+
+
 # Main function. 
 main <- function(){
-	
+	net<-gen_network(10,2)
+	print(dim(net))
 }
 
 if(!interactive()){

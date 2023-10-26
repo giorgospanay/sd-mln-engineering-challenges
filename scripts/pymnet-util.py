@@ -1,6 +1,7 @@
 # Pymnet module for paper benchmark code.
 # Library import
 import pymnet
+import math
 
 # Network loader. Functions used depend on library.
 # NOTE: change code here to load a file if using a new lib
@@ -51,6 +52,17 @@ def plot_network(net):
 def run_infomap(net):
 	# Not available in pymnet
 	return
+
+# Network generation. Params:
+# 	n - Number of vertices
+# 	l - Number of layers
+# Identify number of edges and probability for MLN-ER model G(n,l,p). 
+# In this case: e=sqrt(n), p=e/choose(n,2)
+def gen_network(n,l):
+	e=math.sqrt(n)
+	p=e/math.comb(n,2)
+	net=er_multilayer(n,l,p)
+	return net
 
 # # Main plotting for poster visuals
 # def main():

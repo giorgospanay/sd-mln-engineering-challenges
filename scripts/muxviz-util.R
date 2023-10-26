@@ -113,6 +113,20 @@ run_infomap <- function(){
 	return(commResult)
 }
 
+
+# Network generation. Params:
+#   n - Number of vertices
+#   l - Number of layers
+gen_network <- function(n,l){
+  e<-sqrt(n)
+  p<-e/choose(n,2)
+  # Make sample with ER-G(n,l,p)
+  net<-GetSampleMultiplex(l,n,p)
+  return(c(net,l,n))
+}
+
+# --------------------------------------------------------------------------------
+
 # Auxiliary for plotting
 sam_to_netlist <- function(net){
 	NodesTensor <- SupraAdjacencyToNodesTensor(

@@ -41,10 +41,33 @@ run_infomap <- function(net){
 	return(commstruct)
 }
 
+# Network generation. Params:
+# 	n - Number of vertices
+# 	l - Number of layers
+gen_network <- function(n,l){
+	e<-sqrt(n)
+	p<-e/choose(n,2)
+	# Generate multiplex networks of size n
+	#Set probability and dependency matrices for networks.
+	pr.external <- matrix(0,nrow=l)
+	pr.internal <- matrix(1,nrow=l)
+	dependency <- diag(l)
+	# Choose ER model for each layer.
+	models_mix <- c()
+	for (i in 1:l){
+		models_mix <- c(models_mix,evolution_er_ml(n))
+	}
+	# Generate network of n actors, n*e edges.
+	net<-grow_ml(n,n*e,models_mix,pr.internal,pr.external,dependency)
+	return(net)
+}
+
 # Main function. Used for poster viz
 main <- function(){
-	net <- ml_florentine()
-	plot_network(net)
+	#net <- ml_florentine()
+	#plot_network(net)
+	net<-gen_network(100,5)
+	print(net)
 }
 
 # if(!interactive()){

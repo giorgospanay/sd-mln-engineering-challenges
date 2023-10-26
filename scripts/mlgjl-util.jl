@@ -72,7 +72,7 @@ end
 
 
 # TODO:
-function build_rem(filenames::Vector{String})
+function build_rem(filenames)
 	return
 end
 
@@ -101,10 +101,37 @@ function run_infomap(net)
 	return
 end
 
+# Network generation. Params:
+#   n - Number of vertices
+#   l - Number of layers
+## TODO: if there is a fix, find it.
+function gen_network(n,l)
+    e=trunc(Int,sqrt(n))
+    # Construct nodes list 
+    nodes_list=[Node("$i") for i in 1:n]
+    # Create empty MLG digraph and populate.
+    layers=[]
+    for lid in 1:l
+        layer_j = Layer(
+            Symbol(lid),
+            nodes_list,
+            e,
+            SimpleGraph{Int64}(),
+            Float64
+        )
+        push!(layers,layer_j)
+    end
+
+    net=MultilayerGraph(layers,[])
+
+    return net
+end
+
 # Main function for debug
 function main()
-	net=load_net(["../data/london-transport/london_transport_nodes.txt","../data/london-transport/london_transport_multiplex.edges","../data/london-transport/london_transport_layers.txt"])
-	println(net)
+	#net=load_net(["../data/london-transport/london_transport_nodes.txt","../data/london-transport/london_transport_multiplex.edges","../data/london-transport/london_transport_layers.txt"])
+	net=gen_network(10,2)
+    println(net)
 end
 
 # # Run

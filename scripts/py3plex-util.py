@@ -2,7 +2,9 @@
 # Library import
 import py3plex
 from py3plex.core import multinet
+from py3plex.core import random_generators
 from py3plex.algorithms.community_detection import community_wrapper as cw
+import math
 
 # Load network from file. Assuming multiplex edgelist input
 def load_net(filenames):
@@ -45,5 +47,16 @@ def run_infomap(net):
 	#top_n = 5
 	#partition_counts = dict(Counter(partition.values()))
 	#top_n_communities = list(partition_counts.keys())[0:top_n]
-	
 	return partition
+
+# Network generation. Params:
+# 	n - Number of vertices
+# 	l - Number of layers
+# Identify number of edges and probability for MLN-ER model G(n,l,p). 
+# In this case: e=sqrt(n), p=e/choose(n,2)
+def gen_network(n,l):
+	e=math.sqrt(n)
+	p=e/math.comb(n,2)
+	net=random_generators.random_multilayer_ER(n,l,p,directed=False)
+	return net
+
