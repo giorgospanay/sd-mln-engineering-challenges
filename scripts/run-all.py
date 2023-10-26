@@ -330,7 +330,7 @@ def main():
 		dstr=""+str(n)+"-2"
 		run_exp(4,["pymnet","py3plex"],["muxviz","multinet"],[],[dstr])
 	# Run 2: Keep n=1000, iterate l={2,5,10,20,50,100,200,500,1000}
-	for l in [2,5,10,20,50,100,200,500,1000]:
+	for l in [5,10,20,50,100,200,500,1000]:
 		dstr="1000-"+str(l)
 		run_exp(4,["pymnet","py3plex"],["muxviz","multinet"],[],[dstr])	
 	# Call exp5: Generate + aggregate

@@ -61,7 +61,7 @@ def run_infomap(net):
 def gen_network(n,l):
 	e=math.sqrt(n)
 	p=e/math.comb(n,2)
-	net=er_multilayer(n,l,p)
+	net=pymnet.er_multilayer(n,l,p)
 	return net
 
 # # Main plotting for poster visuals
