@@ -2,9 +2,11 @@
 # Library import
 import py3plex
 from py3plex.core import multinet
-from py3plex.core import random_generators
 from py3plex.algorithms.community_detection import community_wrapper as cw
+from py3plex.core.multinet import itertools, multi_layer_network
 import math
+import networkx as nx
+import numpy as np
 
 # Load network from file. Assuming multiplex edgelist input
 def load_net(filenames):
@@ -57,6 +59,31 @@ def run_infomap(net):
 def gen_network(n,l):
 	e=math.sqrt(n)
 	p=e/math.comb(n,2)
-	net=random_generators.random_multilayer_ER(n,l,p,directed=False)
+	# # Buggy due to importing random (clashing with python base imports.)
+	# # 	See auxiliary function copied from source code.
+	# net=random_generators.random_multilayer_ER(n,l,p,directed=False)
+	net=random_multilayer_ER2(n,l,p,directed=False)
 	return net
 
+
+# 
+# ---------------------------------------------------------------------
+# Auxiliary function. Copied as is from py3plex source.
+def random_multilayer_ER2(n, l, p, directed=False):
+    """ random multilayer ER """
+
+    if directed:
+        G = nx.MultiDiGraph()
+    else:
+        G = nx.MultiGraph()
+
+    network = nx.fast_gnp_random_graph(n, p, seed=None, directed=directed)
+    layers = dict(zip(network.nodes(), np.random.randint(l, size=n)))
+    for edge in network.edges():
+        G.add_edge((edge[0], layers[edge[0]]), (edge[1], layers[edge[1]]),
+                   type="default")
+
+    # construct the ppx object
+    no = multi_layer_network(network_type="multilayer").load_network(
+        G, input_type="nx", directed=directed)
+    return no
