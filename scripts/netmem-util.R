@@ -139,10 +139,10 @@ gen_network <- function(n,l){
 
 # Main function. 
 main <- function(){
-	net<-gen_network(10,2)
-	print(dim(net))
+	#net<-gen_network(10,2)
+	#print(dim(net))
 }
 
-if(!interactive()){
-	main()
-}
+# if(!interactive()){
+# 	main()
+# }

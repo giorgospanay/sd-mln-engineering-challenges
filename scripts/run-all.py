@@ -320,7 +320,28 @@ def parse_exp1(datasets,library_colors):
 def main():
 	global py_libs,r_libs,jl_libs,data_list
 
+	#Call exp4: Generate + aggregate, synth networks
+	# Run 1: Keep l=2, iterate n={1000,2000,5000,10000,20000,50000,100000}
+	for n in [1000,2000,5000,10000,20000,50000,100000]:
+		dstr=""+str(n)+"-2"
+		run_exp(4,["pymnet","py3plex"],["muxviz","multinet"],[],[dstr])
+	# Run 2: Keep n=1000, iterate l={2,5,10,20,50,100,200,500,1000}
+	for l in [5,10,20,50,100,200,500,1000]:
+		dstr="1000-"+str(l)
+		run_exp(4,["pymnet","py3plex"],["muxviz","multinet"],[],[dstr])	
 
+	# Call exp5: Generate + calculate degrees, synth networks
+	# Run 1: Keep l=2, iterate n={1000,2000,5000,10000,20000,50000,100000}
+	for n in [1000,2000,5000,10000,20000,50000,100000]:
+		dstr=""+str(n)+"-2"
+		run_exp(5,["pymnet","py3plex"],["muxviz","multinet","netmem"],[],[dstr])
+	# Run 2: Keep n=1000, iterate l={2,5,10,20,50,100,200,500,1000}
+	for l in [5,10,20,50,100,200,500,1000]:
+		dstr="1000-"+str(l)
+		run_exp(5,["pymnet","py3plex"],["muxviz","multinet","netmem"],[],[dstr])
+
+	### ------------- RUN LATER -----------------
+	# 
 	# Call exp99: Visualization of networks. 
 	# Cases: simple multiplex (n=6,l=2), simple multilayer (n=6,l=3,d=1,interlayers),
 	# 	complex multilayer (n=6,l=4,d=2,interlayers)

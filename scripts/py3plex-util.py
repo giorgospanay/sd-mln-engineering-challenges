@@ -62,7 +62,7 @@ def gen_network(n,l):
 	# # Buggy due to importing random (clashing with python base imports.)
 	# # 	See auxiliary function copied from source code.
 	# net=random_generators.random_multilayer_ER(n,l,p,directed=False)
-	net=random_multilayer_ER2(n,l,p,directed=False)
+	net=random_multiplex_ER2(n,l,p,directed=False)
 	return net
 
 
@@ -77,7 +77,7 @@ def random_multilayer_ER2(n, l, p, directed=False):
     else:
         G = nx.MultiGraph()
 
-    network = nx.fast_gnp_random_graph(n, p, seed=None, directed=directed)
+    network = nx.fast_gnp_random_graph(n, p, directed=directed)
     layers = dict(zip(network.nodes(), np.random.randint(l, size=n)))
     for edge in network.edges():
         G.add_edge((edge[0], layers[edge[0]]), (edge[1], layers[edge[1]]),
@@ -85,5 +85,23 @@ def random_multilayer_ER2(n, l, p, directed=False):
 
     # construct the ppx object
     no = multi_layer_network(network_type="multilayer").load_network(
+        G, input_type="nx", directed=directed)
+    return no
+
+def random_multiplex_ER2(n,l,p,directed=False):
+    """ random multilayer ER """
+
+    if directed:
+        G = nx.MultiDiGraph()
+    else:
+        G = nx.MultiGraph()
+
+    for lx in range(l):
+        network = nx.fast_gnp_random_graph(n, p, seed=None, directed=directed)
+        for edge in network.edges():
+            G.add_edge((edge[0], lx), (edge[1], lx), type="default")
+
+    # construct the ppx object
+    no = multi_layer_network(network_type="multiplex").load_network(
         G, input_type="nx", directed=directed)
     return no
