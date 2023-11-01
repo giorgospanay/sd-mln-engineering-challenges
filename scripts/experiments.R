@@ -7,9 +7,9 @@ exp1 <- function(filenames){
 	# Load file. Track performance & memory consumption
 	# --------------------------
 	trace_load_curr <- mem_change({
-		time_load_s <- Sys.time()
+		time_load_s <- proc.time()
 		net <- load_net(filenames)
-		time_load_e <- Sys.time()
+		time_load_e <- proc.time()
 		time_load_t <- time_load_e-time_load_s
 	})
 	# --------------------------
@@ -17,17 +17,17 @@ exp1 <- function(filenames){
   	# Aggregate net. Track performance & memory consumption
 	# --------------------------
 	trace_aggr_curr <- mem_change({
-		time_aggr_s <- Sys.time()
+		time_aggr_s <- proc.time()
 		net_aggr <- aggregate(net)
-		time_aggr_e <- Sys.time()
+		time_aggr_e <- proc.time()
 		time_aggr_t <- time_aggr_e-time_aggr_s
 	})
 	# --------------------------
 	
 
-  	cat(sprintf("Loading time (in sec.): %f\n",time_load_t))
+  	cat(sprintf("Loading time (in sec.): %f\n",time_load_t[[3]]))
   	cat(sprintf("Loading mem curr (in bytes): %d\n",trace_load_curr))
-  	cat(sprintf("Aggregate time (in sec.): %f\n",time_aggr_t))
+  	cat(sprintf("Aggregate time (in sec.): %f\n",time_aggr_t[[3]]))
   	cat(sprintf("Aggregate mem curr (in bytes): %d\n",trace_aggr_curr))
 
   	return(net_aggr)
@@ -38,9 +38,9 @@ exp2 <- function(filenames){
 	# Load file. Track performance & memory consumption
 	# --------------------------
 	trace_load_curr <- mem_change({
-		time_load_s <- Sys.time()
+		time_load_s <- proc.time()
 		net <- load_net(filenames)
-		time_load_e <- Sys.time()
+		time_load_e <- proc.time()
 		time_load_t <- time_load_e-time_load_s
 	})
 	# --------------------------
@@ -48,17 +48,17 @@ exp2 <- function(filenames){
   	# Calculate degrees. Track performance & memory consumption
 	# --------------------------
 	trace_degs_curr <- mem_change({
-		time_degs_s <- Sys.time()
+		time_degs_s <- proc.time()
 		degs <- get_degree(net)
-		time_degs_e <- Sys.time()
+		time_degs_e <- proc.time()
 		time_degs_t <- time_degs_e-time_degs_s
 	})
 	# --------------------------
 	
 
-  	cat(sprintf("Loading time (in sec.): %f\n",time_load_t))
+  	cat(sprintf("Loading time (in sec.): %f\n",time_load_t[[3]]))
   	cat(sprintf("Loading mem curr (in bytes): %d\n",trace_load_curr))
-  	cat(sprintf("Degree time (in sec.): %f\n",time_degs_t))
+  	cat(sprintf("Degree time (in sec.): %f\n",time_degs_t[[3]]))
   	cat(sprintf("Degree mem curr (in bytes): %d\n",trace_degs_curr))
 
   	return(degs)
@@ -69,9 +69,9 @@ exp3 <- function(filenames){
 	# Load file. Track performance & memory consumption
 	# --------------------------
 	trace_load_curr <- mem_change({
-		time_load_s <- Sys.time()
+		time_load_s <- proc.time()
 		net <- load_net(filenames)
-		time_load_e <- Sys.time()
+		time_load_e <- proc.time()
 		time_load_t <- time_load_e-time_load_s
 	})
 	# --------------------------
@@ -79,17 +79,17 @@ exp3 <- function(filenames){
   	# Run InfoMap. Track performance & memory consumption
 	# --------------------------
 	trace_cdet_curr <- mem_change({
-		time_cdet_s <- Sys.time()
+		time_cdet_s <- proc.time()
 		comms <- run_infomap(net)
-		time_cdet_e <- Sys.time()
+		time_cdet_e <- proc.time()
 		time_cdet_t <- time_cdet_e-time_cdet_s
 	})
 	# --------------------------
 	
 
-  	cat(sprintf("Loading time (in sec.): %f\n",time_load_t))
+  	cat(sprintf("Loading time (in sec.): %f\n",time_load_t[[3]]))
   	cat(sprintf("Loading mem curr (in bytes): %d\n",trace_load_curr))
-  	cat(sprintf("InfoMap time (in sec.): %f\n",time_cdet_t))
+  	cat(sprintf("InfoMap time (in sec.): %f\n",time_cdet_t[[3]]))
   	cat(sprintf("InfoMap mem curr (in bytes): %d\n",trace_cdet_curr))
 
   	return(comms)
@@ -101,9 +101,9 @@ exp4 <- function(n,l){
 	# Generate net. Track performance & memory consumption
 	# --------------------------
 	trace_gens_curr <- mem_change({
-		time_gens_s <- Sys.time()
+		time_gens_s <- proc.time()
 		net <- gen_network(n,l)
-		time_gens_e <- Sys.time()
+		time_gens_e <- proc.time()
 		time_gens_t <- time_gens_e-time_gens_s
 	})
 	# --------------------------
@@ -111,17 +111,17 @@ exp4 <- function(n,l){
   	# Aggregate net. Track performance & memory consumption
 	# --------------------------
 	trace_aggr_curr <- mem_change({
-		time_aggr_s <- Sys.time()
+		time_aggr_s <- proc.time()
 		net_aggr <- aggregate(net)
-		time_aggr_e <- Sys.time()
+		time_aggr_e <- proc.time()
 		time_aggr_t <- time_aggr_e-time_aggr_s
 	})
 	# --------------------------
 	
 
-  	cat(sprintf("Generate time (in sec.): %f\n",time_gens_t))
+  	cat(sprintf("Generate time (in sec.): %f\n",time_gens_t[[3]]))
   	cat(sprintf("Generate mem curr (in bytes): %d\n",trace_gens_curr))
-  	cat(sprintf("Aggregate time (in sec.): %f\n",time_aggr_t))
+  	cat(sprintf("Aggregate time (in sec.): %f\n",time_aggr_t[[3]]))
   	cat(sprintf("Aggregate mem curr (in bytes): %d\n",trace_aggr_curr))
 
   	return(net_aggr)
@@ -132,9 +132,9 @@ exp5 <- function(n,l){
 	#  Generate net. Track performance & memory consumption
 	# --------------------------
 	trace_gens_curr <- mem_change({
-		time_gens_s <- Sys.time()
+		time_gens_s <- proc.time()
 		net <- gen_network(n,l)
-		time_gens_e <- Sys.time()
+		time_gens_e <- proc.time()
 		time_gens_t <- time_gens_e-time_gens_s
 	})
 	# --------------------------
@@ -142,17 +142,17 @@ exp5 <- function(n,l){
   	# Calculate degrees. Track performance & memory consumption
 	# --------------------------
 	trace_degs_curr <- mem_change({
-		time_degs_s <- Sys.time()
+		time_degs_s <- proc.time()
 		degs <- get_degree(net)
-		time_degs_e <- Sys.time()
+		time_degs_e <- proc.time()
 		time_degs_t <- time_degs_e-time_degs_s
 	})
 	# --------------------------
 	
 
-  	ccat(sprintf("Generate time (in sec.): %f\n",time_gens_t))
+  	cat(sprintf("Generate time (in sec.): %f\n",time_gens_t[[3]]))
   	cat(sprintf("Generate mem curr (in bytes): %d\n",trace_gens_curr))
-  	cat(sprintf("Degree time (in sec.): %f\n",time_degs_t))
+  	cat(sprintf("Degree time (in sec.): %f\n",time_degs_t[[3]]))
   	cat(sprintf("Degree mem curr (in bytes): %d\n",trace_degs_curr))
 
   	return(degs)

@@ -320,39 +320,56 @@ def parse_exp1(datasets,library_colors):
 def main():
 	global py_libs,r_libs,jl_libs,data_list
 
+
+	# Call exp99: Visualization of networks. 
+	# Cases: simple multiplex (n=6,l=2), simple multilayer (n=6,l=3,d=1,interlayers),
+	# 	complex multilayer (n=6,l=4,d=2,interlayers)
+	for dstr in ["smp-mpx","smp-mln","cpx-mln"]:
+		run_exp(99,["pymnet","py3plex"],["muxviz","multinet"],[],[dstr])
+
+	# # Call exp5: Generate + calculate degrees, synth networks
+	# # Run 1: Keep l=2, iterate n={1000,2000,5000,10000,20000,50000,100000}
+	# for n in [1000,2000,5000,10000,20000,50000,100000]:
+	# 	dstr=""+str(n)+"-2"
+	# 	run_exp(5,[],["muxviz","multinet","netmem"],[],[dstr])
+	# # Run 2: Keep n=1000, iterate l={2,5,10,20,50,100,200,500,1000}
+	# for l in [5,10,20,50,100,200,500,1000]:
+	# 	dstr="1000-"+str(l)
+	# 	run_exp(5,[],["muxviz","multinet","netmem"],[],[dstr])
 	
 	# Call exp3: Loading + InfoMap, real datasets (small&medium)
 	#run_exp(3,["py3plex"],["multinet","muxviz"],[],["aucs","london","euair"])
 	
-	# Call exp4: Generate + aggregate
-	# Run 1: Keep l=2, iterate n={1000,2000,5000,10000,20000,50000,100000}
-	for n in [1000,2000,5000,10000,20000,50000,100000]:
-		dstr=""+str(n)+"-2"
-		run_exp(4,["pymnet","py3plex"],["muxviz","multinet"],[],[dstr])
-	# Run 2: Keep n=1000, iterate l={2,5,10,20,50,100,200,500,1000}
-	for l in [5,10,20,50,100,200,500,1000]:
-		dstr="1000-"+str(l)
-		run_exp(4,["pymnet","py3plex"],["muxviz","multinet"],[],[dstr])	
-	# Call exp5: Generate + aggregate
-	# Run 1: Keep l=2, iterate n={1000,2000,5000,10000,20000,50000,100000}
-	for n in [1000,2000,5000,10000,20000,50000,100000]:
-		dstr=""+str(n)+"-2"
-		run_exp(5,["pymnet","py3plex"],["muxviz","multinet","netmem"],[],[dstr])
-	# Run 2: Keep n=1000, iterate l={2,5,10,20,50,100,200,500,1000}
-	for l in [2,5,10,20,50,100,200,500,1000]:
-		dstr="1000-"+str(l)
-		run_exp(5,["pymnet","py3plex"],["muxviz","multinet","netmem"],[],[dstr])
+	### --------- OLD CALLS -----------
+	#
+	# # Call exp1: Loading + aggregation, real datasets
+	# run_exp(1,["pymnet","py3plex"],["muxviz","multinet"],[],["aucs","london","euair","fftw","ff"])
+	
+	# # Call exp2: Loading + degree, real datasets
+	# run_exp(2,["pymnet","py3plex"],["muxviz","multinet","netmem"],["mlgjl"],["aucs","london","euair","fftw","ff"])
+	
+	# # Call exp4: Generate + aggregate, synth networks
+	# # Run 1: Keep l=2, iterate n={1000,2000,5000,10000,20000,50000,100000}
+	# for n in [1000,2000,5000,10000,20000,50000,100000]:
+	# 	dstr=""+str(n)+"-2"
+	# 	run_exp(4,["pymnet","py3plex"],["muxviz","multinet"],[],[dstr])
+	# # Run 2: Keep n=1000, iterate l={2,5,10,20,50,100,200,500,1000}
+	# for l in [5,10,20,50,100,200,500,1000]:
+	# 	dstr="1000-"+str(l)
+	# 	run_exp(4,["pymnet","py3plex"],["muxviz","multinet"],[],[dstr])	
+
+	# # Call exp5: Generate + calculate degrees, synth networks
+	# # Run 1: Keep l=2, iterate n={1000,2000,5000,10000,20000,50000,100000}
+	# for n in [1000,2000,5000,10000,20000,50000,100000]:
+	# 	dstr=""+str(n)+"-2"
+	# 	run_exp(5,["pymnet","py3plex"],["muxviz","multinet","netmem"],[],[dstr])
+	# # Run 2: Keep n=1000, iterate l={2,5,10,20,50,100,200,500,1000}
+	# for l in [5,10,20,50,100,200,500,1000]:
+	# 	dstr="1000-"+str(l)
+	# 	run_exp(5,["pymnet","py3plex"],["muxviz","multinet","netmem"],[],[dstr])
 
 
-	# Call exp1: Loading + aggregation, real datasets
-	run_exp(1,["pymnet","py3plex"],["muxviz","multinet"],[],["aucs","london","euair","fftw","ff"])
-	# Call exp2: Loading + degree, real datasets
-	run_exp(2,["pymnet","py3plex"],["muxviz","multinet","netmem"],["mlgjl"],["aucs","london","euair","fftw","ff"])
-
-
-	# Call exp1: Loading + aggregation, synth data
-
-	# Call exp2: Loading + degree, synth data
+	
 
 
 	# Call plot function for exp1
