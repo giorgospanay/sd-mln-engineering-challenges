@@ -24,20 +24,20 @@ def parse_exp1(out_file):
    			aggr_time=0.0
    			aggr_mem=0
    			for ln in f.readlines():
-   				if header_found==0 and not("Exp1:" in ln):
+   				# Found timed out experiment, parse filename instead
+   				if "Timeout" in ln:
+   					parsed=parse.parse(log_path+"exp1/1_{}_{}_{}.txt",filename)
+   					lib_name=parsed[1]
+   					data_name=parsed[0]
+   					# Programming language should be on parsed[2] if necessary
+   					break
+   				elif header_found==0 and not("Exp1:" in ln):
    					continue
    				elif "Exp1:" in ln:
    					header_found=1
    					parsed=parse.parse("Exp1: lib={}, file={}",ln.strip())
    					lib_name=parsed[0]
    					data_name=parsed[1]
-   				# Found timed out experiment, parse filename instead
-   				elif "Timeout" in ln:
-   					parsed=parse.parse(log_path+"exp1/1_{}_{}_{}.txt",filename)
-   					lib_name=parsed[1]
-   					data_name=parsed[0]
-   					# Programming language should be on parsed[2] if necessary
-   					break
    				# Should reach here after done with header
    				# Line 1: loading time
    				if "Loading time" in ln:
@@ -89,20 +89,20 @@ def parse_exp2(out_file):
    			degr_time=0.0
    			degr_mem=0
    			for ln in f.readlines():
-   				if header_found==0 and not("Exp2:" in ln):
+   				# Found timed out experiment, parse filename instead
+   				if "Timeout" in ln:
+   					parsed=parse.parse(log_path+"exp2/2_{}_{}_{}.txt",filename)
+   					lib_name=parsed[1]
+   					data_name=parsed[0]
+   					# Programming language should be on parsed[2] if necessary
+   					break
+   				elif header_found==0 and not("Exp2:" in ln):
    					continue
    				elif "Exp2:" in ln:
    					header_found=1
    					parsed=parse.parse("Exp2: lib={}, file={}",ln.strip())
    					lib_name=parsed[0]
    					data_name=parsed[1]
-   				# Found timed out experiment, parse filename instead
-   				elif "Timeout" in ln:
-   					parsed=parse.parse(log_path+"exp2/2_{}_{}_{}.txt",filename)
-   					lib_name=parsed[1]
-   					data_name=parsed[0]
-   					# Programming language should be on parsed[2] if necessary
-   					break
    				# Should reach here after done with header
    				# Line 1: loading time
    				if "Loading time" in ln:
@@ -144,9 +144,9 @@ def parse_exp3(out_file):
 
 
 # Result parser Exp4
-def parse_exp4(out_file):
+def parse_exp4(out1,out2):
 	global log_path
-	df=pd.DataFrame(columns=["dataset","library","genr_time","genr_mem","aggr_time","aggr_mem"])
+	df=pd.DataFrame(columns=["node_size","layer_size","library","genr_time","genr_mem","aggr_time","aggr_mem"])
 	# Open all logfiles in path
 	for filename in glob.glob(log_path+"exp4/4_*.txt"):
 		with open(filename,'r') as f: 
@@ -154,25 +154,27 @@ def parse_exp4(out_file):
    			header_found=0
    			lib_name=""
    			data_name=""
+   			node_size=0
+   			layer_size=0
    			genr_time=0.0
    			genr_mem=0
    			aggr_time=0.0
    			aggr_mem=0
    			for ln in f.readlines():
-   				if header_found==0 and not("Exp4:" in ln):
+   				# Found timed out experiment, parse filename instead
+   				if "Timeout" in ln:
+   					parsed=parse.parse(log_path+"exp4/4_{}_{}_{}.txt",filename)
+   					lib_name=parsed[1]
+   					data_name=parsed[0]
+   					# Programming language should be on parsed[2] if necessary
+   					break
+   				elif header_found==0 and not("Exp4:" in ln):
    					continue
    				elif "Exp4:" in ln:
    					header_found=1
    					parsed=parse.parse("Exp4: lib={}, file={}",ln.strip())
    					lib_name=parsed[0]
    					data_name=parsed[1]
-   				# Found timed out experiment, parse filename instead
-   				elif "Timeout" in ln:
-   					parsed=parse.parse(log_path+"exp4/4_{}_{}_{}.txt",filename)
-   					lib_name=parsed[1]
-   					data_name=parsed[0]
-   					# Programming language should be on parsed[2] if necessary
-   					break
    				# Should reach here after done with header
    				# Line 1: generation time
    				if "Generate time" in ln:
@@ -194,24 +196,39 @@ def parse_exp4(out_file):
    					parsed=parse.parse("Aggregate mem curr (in bytes): {}",ln.strip())
    					if not parsed is None:
    						aggr_mem=parsed[0]
+   			
+   			# Split tokens
+   			toks=data_name.split("-")
+   			node_size=int(toks[0])
+   			layer_size=int(toks[1])
+
    			# Done with lines- add into dataframe
-   			df.loc[len(df)]={"dataset":data_name,"library":lib_name,"genr_time":float(genr_time),"genr_mem":int(genr_mem),"aggr_time":float(aggr_time),"aggr_mem":int(aggr_mem)}
+   			df.loc[len(df)]={"node_size":node_size,"layer_size":layer_size,"library":lib_name,"genr_time":float(genr_time),"genr_mem":int(genr_mem),"aggr_time":float(aggr_time),"aggr_mem":int(aggr_mem)}
 
    	# Done with all files. Aggregate total times. Visualize. 
 	df["total_time"]=df.apply(lambda r: r.genr_time+r.aggr_time, axis=1)
 	df.dropna()
 
-	# Sort by dataset and library
-	df=df.sort_values(["dataset","library"])
+	# Split into two dataframes for experiments
+	# df1: Layers=2, Nodes=[1000,100000], Edges=sqrt(Nodes)
+	# df2: Nodes=1000, Layers=[2,1000], Edges=sqrt(Nodes)
+	df1=df[df["layer_size"]==2]
+	df2=df[df["node_size"]==1000]
 
-	# Write dataframe to csv file
-	df.to_csv(out_file,sep=" ",index=False)
+	# Sort by node size and library
+	df1=df1.sort_values(["node_size","library"])
+	# Sort by layer size and library
+	df2=df2.sort_values(["layer_size","library"])
+
+	# Write dataframes to csv files
+	df1.to_csv(out1,sep=" ",index=False)
+	df2.to_csv(out2,sep=" ",index=False)
 	return
 
 # Result parser, Exp 5
-def parse_exp5(out_file):
+def parse_exp5(out1,out2):
 	global log_path
-	df=pd.DataFrame(columns=["dataset","library","genr_time","genr_mem","degr_time","degr_mem"])
+	df=pd.DataFrame(columns=["node_size","layer_size","library","genr_time","genr_mem","degr_time","degr_mem"])
 	# Open all logfiles in path
 	for filename in glob.glob(log_path+"exp5/5_*.txt"):
 		with open(filename,'r') as f: 
@@ -219,25 +236,28 @@ def parse_exp5(out_file):
    			header_found=0
    			lib_name=""
    			data_name=""
+   			layer_size=0
+   			node_size=0
    			genr_time=0.0
    			genr_mem=0
    			degr_time=0.0
    			degr_mem=0
    			for ln in f.readlines():
-   				if header_found==0 and not("Exp5:" in ln):
+   				# Found timed out experiment, parse filename instead
+   				if "Timeout" in ln:
+   					parsed=parse.parse(log_path+"exp5/5_{}_{}_{}.txt",filename)
+   					lib_name=parsed[1]
+   					data_name=parsed[0]
+   					# Programming language should be on parsed[2] if necessary
+   					break
+   				elif header_found==0 and not("Exp5:" in ln):
    					continue
    				elif "Exp5:" in ln:
    					header_found=1
    					parsed=parse.parse("Exp5: lib={}, file={}",ln.strip())
    					lib_name=parsed[0]
    					data_name=parsed[1]
-   				# Found timed out experiment, parse filename instead
-   				elif "Timeout" in ln:
-   					parsed=parse.parse(log_path+"exp5/5_{}_{}_{}.txt",filename)
-   					lib_name=parsed[1]
-   					data_name=parsed[0]
-   					# Programming language should be on parsed[2] if necessary
-   					break
+   				
    				# Should reach here after done with header
    				# Line 1: generation time
    				if "Generate time" in ln:
@@ -259,34 +279,50 @@ def parse_exp5(out_file):
    					parsed=parse.parse("Degree mem curr (in bytes): {}",ln.strip())
    					if not parsed is None:
    						degr_mem=parsed[0]
+   			
+   			# Split tokens
+   			toks=data_name.split("-")
+   			node_size=int(toks[0])
+   			layer_size=int(toks[1])
+
    			# Done with lines- add into dataframe
-   			df.loc[len(df)]={"dataset":data_name,"library":lib_name,"genr_time":float(genr_time),"genr_mem":int(genr_mem),"degr_time":float(degr_time),"degr_mem":int(degr_mem)}
+   			df.loc[len(df)]={"node_size":node_size,"layer_size":layer_size,"library":lib_name,"genr_time":float(genr_time),"genr_mem":int(genr_mem),"degr_time":float(degr_time),"degr_mem":int(degr_mem)}
 
    	# Done with all files. Aggregate total times. Visualize. 
 	df["total_time"]=df.apply(lambda r: r.genr_time+r.degr_time, axis=1)
 	df.dropna()
 
-	# Sort by dataset and library
-	df=df.sort_values(["dataset","library"])
 
-	# Write dataframe to csv file
-	df.to_csv(out_file,sep=" ",index=False)
+	# Split into two dataframes for experiments
+	# df1: Layers=2, Nodes=[1000,100000], Edges=sqrt(Nodes)
+	# df2: Nodes=1000, Layers=[2,1000], Edges=sqrt(Nodes)
+	df1=df[df["layer_size"]==2]
+	df2=df[df["node_size"]==1000]
+
+	# Sort by node size and library
+	df1=df1.sort_values(["node_size","library"])
+	# Sort by layer size and library
+	df2=df2.sort_values(["layer_size","library"])
+
+	# Write dataframes to csv files
+	df1.to_csv(out1,sep=" ",index=False)
+	df2.to_csv(out2,sep=" ",index=False)
 	return
 
 
 # Portland, Main(e)
 def main():
-	# Parse exp1 file
-	parse_exp1("../logs/exp1.txt")
+	# # Parse exp1 file
+	# parse_exp1("../logs/exp1.txt")
 
-	# Parse exp2 file
-	parse_exp2("../logs/exp2.txt")
+	# # Parse exp2 file
+	# parse_exp2("../logs/exp2.txt")
 
 	# Parse exp4 file
-	parse_exp4("../logs/exp4.txt")
+	parse_exp4("../logs/exp4a.txt","../logs/exp4b.txt")
 
 	# Parse exp5 file
-	parse_exp5("../logs/exp5.txt")
+	parse_exp5("../logs/exp5a.txt","../logs/exp5b.txt")
 
 	return
 
