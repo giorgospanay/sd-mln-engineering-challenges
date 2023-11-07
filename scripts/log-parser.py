@@ -215,14 +215,35 @@ def parse_exp4(out1,out2):
 	df1=df[df["layer_size"]==2]
 	df2=df[df["node_size"]==1000]
 
-	# Sort by node size and library
+	# Sort by node size and library. Only extract times
 	df1=df1.sort_values(["node_size","library"])
-	# Sort by layer size and library
+	df1=df1[["node_size","library","genr_time","aggr_time"]]
+	# Sort by layer size and library. Only keep times
 	df2=df2.sort_values(["layer_size","library"])
+	df2t=df2[["layer_size","library","genr_time","aggr_time"]]
+
+	# Convert library values to single cols
+	ncols1={}
+    # Group the DataFrame by 'lib' column and iterate over groups
+	for group, data in df1.groupby("library"):
+    	# Extract columns, and store them in new columns
+		ncols1[f"{group}_genr"]=data["genr_time"].tolist()
+		ncols1[f"{group}_aggr"]=data["aggr_time"].tolist()
+	plot_df1=pd.DataFrame(ncols1)
+	plot_df1["node_size"]=df1["node_size"].unique()
+    
+	ncols2={}
+    # Group the DataFrame by 'lib' column and iterate over groups
+	for group, data in df2.groupby("library"):
+    	# Extract columns, and store them in new columns
+		ncols2[f"{group}_genr"]=data["genr_time"].tolist()
+		ncols2[f"{group}_aggr"]=data["aggr_time"].tolist()
+	plot_df2=pd.DataFrame(ncols2)
+	plot_df2["layer_size"]=df2["layer_size"].unique()
 
 	# Write dataframes to csv files
-	df1.to_csv(out1,sep=" ",index=False)
-	df2.to_csv(out2,sep=" ",index=False)
+	plot_df1.to_csv(out1,sep=" ",index=False)
+	plot_df2.to_csv(out2,sep=" ",index=False)
 	return
 
 # Result parser, Exp 5
@@ -292,21 +313,41 @@ def parse_exp5(out1,out2):
 	df["total_time"]=df.apply(lambda r: r.genr_time+r.degr_time, axis=1)
 	df.dropna()
 
-
 	# Split into two dataframes for experiments
 	# df1: Layers=2, Nodes=[1000,100000], Edges=sqrt(Nodes)
 	# df2: Nodes=1000, Layers=[2,1000], Edges=sqrt(Nodes)
 	df1=df[df["layer_size"]==2]
 	df2=df[df["node_size"]==1000]
 
-	# Sort by node size and library
+	# Sort by node size and library. Only extract times
 	df1=df1.sort_values(["node_size","library"])
-	# Sort by layer size and library
+	df1=df1[["node_size","library","genr_time","degr_time"]]
+	# Sort by layer size and library. Only keep times
 	df2=df2.sort_values(["layer_size","library"])
+	df2t=df2[["layer_size","library","genr_time","degr_time"]]
+
+	# Convert library values to single cols
+	ncols1={}
+    # Group the DataFrame by 'lib' column and iterate over groups
+	for group, data in df1.groupby("library"):
+    	# Extract columns, and store them in new columns
+		ncols1[f"{group}_genr"]=data["genr_time"].tolist()
+		ncols1[f"{group}_degr"]=data["degr_time"].tolist()
+	plot_df1=pd.DataFrame(ncols1)
+	plot_df1["node_size"]=df1["node_size"].unique()
+    
+	ncols2={}
+	# Group the DataFrame by 'lib' column and iterate over groups
+	for group, data in df2.groupby("library"):
+    	# Extract columns, and store them in new columns
+		ncols2[f"{group}_genr"]=data["genr_time"].tolist()
+		ncols2[f"{group}_degr"]=data["degr_time"].tolist()
+	plot_df2=pd.DataFrame(ncols2)
+	plot_df2["layer_size"]=df2["layer_size"].unique()
 
 	# Write dataframes to csv files
-	df1.to_csv(out1,sep=" ",index=False)
-	df2.to_csv(out2,sep=" ",index=False)
+	plot_df1.to_csv(out1,sep=" ",index=False)
+	plot_df2.to_csv(out2,sep=" ",index=False)
 	return
 
 
@@ -319,10 +360,10 @@ def main():
 	# parse_exp2("../logs/exp2.txt")
 
 	# Parse exp4 file
-	parse_exp4("../logs/exp4a.txt","../logs/exp4b.txt")
+	parse_exp4("../logs/plot_exp4a.txt","../logs/plot_exp4b.txt")
 
 	# Parse exp5 file
-	parse_exp5("../logs/exp5a.txt","../logs/exp5b.txt")
+	parse_exp5("../logs/plot_exp5a.txt","../logs/plot_exp5b.txt")
 
 	return
 
