@@ -12,7 +12,7 @@ def gen_save_network(n,g,l,file):
 	e=0
 	# For sqrt(n*l):
 	if g=="s":
-		e=math.sqrt(n)
+		e=n*math.sqrt(n)
 	elif g==0:
 		return # Should not reach here
 	# For linear growth:
@@ -53,18 +53,35 @@ def write_edge_files_light(net,outputfiles,columnSeparator="\t",rowSeparator="\n
 #	from the format-convert.py script.
 def main():
 	global data_path
-	# Generate network for increasing number of nodes. l=2,g="s"
-	for n in [1000,2000,5000,10000,20000,50000,100000]:
-		name=data_path+str(n)+"-s-2"
-		gen_save_network(n,"s",2,name)
-	# Generate network for different edge rates. n=1000,l=2
-	for g in [4,40,400]:
-		name=data_path+"1000-"+str(g)+"-2"
-		gen_save_network(1000,g,2,name)
-	# Generate network for increasing number of layers. n=1000,g="s"
-	for l in [5,10,20,50,100,200,500,1000]:
-		name=data_path+"1000-s-"+str(l)
-		gen_save_network(1000,"s",l,name)
+
+	# for n in [1000,2000,5000,10000,20000,50000,100000,200000,500000,1000000]:
+	# 	for g in ["s"]:
+	# 		name=data_path+str(n)+"-"+str(g)+"-2"
+	# 		gen_save_network(n,g,2,name)
+
+	# for n in [10000000,20000000,50000000,100000000]:
+	# 	for g in [4]:
+	# 		name=data_path+str(n)+"-"+str(g)+"-2"
+	# 		gen_save_network(n,g,2,name)
+
+	for l in [5,10,20,50,100,200,500,1000,2000,5000,10000]:
+		for g in [4,"s"]:
+			name=data_path+"1000-"+str(g)+"-"+str(l)
+			gen_save_network(1000,g,l,name)
+
+
+	# # Generate network for increasing number of nodes. l=2,g="s"
+	# for n in [1000,2000,5000,10000,20000,50000,100000,200000,500000,1000000,2000000,5000000,10000000]:
+	# 	name=data_path+str(n)+"-s-2"
+	# 	gen_save_network(n,"s",2,name)
+	# # Generate network for different edge rates. n=1000,l=2
+	# for g in [4,40,400]:
+	# 	name=data_path+"1000-"+str(g)+"-2"
+	# 	gen_save_network(1000,g,2,name)
+	# # Generate network for increasing number of layers. n=1000,g="s"
+	# for l in [5,10,20,50,100,200,500,1000]:
+	# 	name=data_path+"1000-s-"+str(l)
+	# 	gen_save_network(1000,"s",l,name)
 
 	 
 if __name__=="__main__":
