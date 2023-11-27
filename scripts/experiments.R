@@ -5,30 +5,40 @@ library(pryr)
 # Time performance. Also, track memory consumption -- to be done manually??
 exp1 <- function(filenames){
 	# Load file. Track performance & memory consumption
+	# # --------------------------
+	# trace_load_curr <- mem_change({
+	# 	time_load_s <- proc.time()
+	# 	net <- load_net(filenames)
+	# 	time_load_e <- proc.time()
+	# 	time_load_t <- time_load_e-time_load_s
+	# })
+	# # --------------------------
 	# --------------------------
-	trace_load_curr <- mem_change({
-		time_load_s <- proc.time()
-		net <- load_net(filenames)
-		time_load_e <- proc.time()
-		time_load_t <- time_load_e-time_load_s
-	})
+	time_load_s <- proc.time()
+	net <- load_net(filenames)
+	time_load_e <- proc.time()
+	time_load_t <- time_load_e-time_load_s
 	# --------------------------
 
   	# Aggregate net. Track performance & memory consumption
+	# # --------------------------
+	# trace_aggr_curr <- mem_change({
+	# 	time_aggr_s <- proc.time()
+	# 	net_aggr <- aggregate(net)
+	# 	time_aggr_e <- proc.time()
+	# 	time_aggr_t <- time_aggr_e-time_aggr_s
+	# })
+	# # --------------------------
 	# --------------------------
-	trace_aggr_curr <- mem_change({
-		time_aggr_s <- proc.time()
-		net_aggr <- aggregate(net)
-		time_aggr_e <- proc.time()
-		time_aggr_t <- time_aggr_e-time_aggr_s
-	})
-	# --------------------------
-	
+	time_aggr_s <- proc.time()
+	net_aggr <- aggregate(net)
+	time_aggr_e <- proc.time()
+	time_aggr_t <- time_aggr_e-time_aggr_s
 
   	cat(sprintf("Loading time (in sec.): %f\n",time_load_t[[3]]))
-  	cat(sprintf("Loading mem curr (in bytes): %d\n",trace_load_curr))
+  	#cat(sprintf("Loading mem curr (in bytes): %d\n",trace_load_curr))
   	cat(sprintf("Aggregate time (in sec.): %f\n",time_aggr_t[[3]]))
-  	cat(sprintf("Aggregate mem curr (in bytes): %d\n",trace_aggr_curr))
+  	#cat(sprintf("Aggregate mem curr (in bytes): %d\n",trace_aggr_curr))
 
   	return(net_aggr)
 }
@@ -36,30 +46,38 @@ exp1 <- function(filenames){
 # Loads a network from file and gets degrees for all nodes.
 exp2 <- function(filenames){
 	# Load file. Track performance & memory consumption
-	# --------------------------
-	trace_load_curr <- mem_change({
-		time_load_s <- proc.time()
-		net <- load_net(filenames)
-		time_load_e <- proc.time()
-		time_load_t <- time_load_e-time_load_s
-	})
-	# --------------------------
+	# # --------------------------
+	# trace_load_curr <- mem_change({
+	# 	time_load_s <- proc.time()
+	# 	net <- load_net(filenames)
+	# 	time_load_e <- proc.time()
+	# 	time_load_t <- time_load_e-time_load_s
+	# })
+	# # --------------------------
+	time_load_s <- proc.time()
+	net <- load_net(filenames)
+	time_load_e <- proc.time()
+	time_load_t <- time_load_e-time_load_s
 
   	# Calculate degrees. Track performance & memory consumption
-	# --------------------------
-	trace_degs_curr <- mem_change({
-		time_degs_s <- proc.time()
-		degs <- get_degree(net)
-		time_degs_e <- proc.time()
-		time_degs_t <- time_degs_e-time_degs_s
-	})
-	# --------------------------
+	# # --------------------------
+	# trace_degs_curr <- mem_change({
+	# 	time_degs_s <- proc.time()
+	# 	degs <- get_degree(net)
+	# 	time_degs_e <- proc.time()
+	# 	time_degs_t <- time_degs_e-time_degs_s
+	# })
+	# # --------------------------
 	
+	time_degs_s <- proc.time()
+	degs <- get_degree(net)
+	time_degs_e <- proc.time()
+	time_degs_t <- time_degs_e-time_degs_s
 
   	cat(sprintf("Loading time (in sec.): %f\n",time_load_t[[3]]))
-  	cat(sprintf("Loading mem curr (in bytes): %d\n",trace_load_curr))
+  	#cat(sprintf("Loading mem curr (in bytes): %d\n",trace_load_curr))
   	cat(sprintf("Degree time (in sec.): %f\n",time_degs_t[[3]]))
-  	cat(sprintf("Degree mem curr (in bytes): %d\n",trace_degs_curr))
+  	#cat(sprintf("Degree mem curr (in bytes): %d\n",trace_degs_curr))
 
   	return(degs)
 }
@@ -67,30 +85,37 @@ exp2 <- function(filenames){
 # Loads a network from file and runs InfoMap.
 exp3 <- function(filenames){
 	# Load file. Track performance & memory consumption
-	# --------------------------
-	trace_load_curr <- mem_change({
-		time_load_s <- proc.time()
-		net <- load_net(filenames)
-		time_load_e <- proc.time()
-		time_load_t <- time_load_e-time_load_s
-	})
-	# --------------------------
+	# # --------------------------
+	# trace_load_curr <- mem_change({
+	# 	time_load_s <- proc.time()
+	# 	net <- load_net(filenames)
+	# 	time_load_e <- proc.time()
+	# 	time_load_t <- time_load_e-time_load_s
+	# })
+	# # --------------------------
+	time_load_s <- proc.time()
+	net <- load_net(filenames)
+	time_load_e <- proc.time()
+	time_load_t <- time_load_e-time_load_s
 
   	# Run InfoMap. Track performance & memory consumption
-	# --------------------------
-	trace_cdet_curr <- mem_change({
-		time_cdet_s <- proc.time()
-		comms <- run_infomap(net)
-		time_cdet_e <- proc.time()
-		time_cdet_t <- time_cdet_e-time_cdet_s
-	})
-	# --------------------------
-	
+	# # --------------------------
+	# trace_cdet_curr <- mem_change({
+	# 	time_cdet_s <- proc.time()
+	# 	comms <- run_infomap(net)
+	# 	time_cdet_e <- proc.time()
+	# 	time_cdet_t <- time_cdet_e-time_cdet_s
+	# })
+	# # --------------------------
+	time_cdet_s <- proc.time()
+	comms <- run_infomap(net)
+	time_cdet_e <- proc.time()
+	time_cdet_t <- time_cdet_e-time_cdet_s
 
   	cat(sprintf("Loading time (in sec.): %f\n",time_load_t[[3]]))
-  	cat(sprintf("Loading mem curr (in bytes): %d\n",trace_load_curr))
+  	#cat(sprintf("Loading mem curr (in bytes): %d\n",trace_load_curr))
   	cat(sprintf("InfoMap time (in sec.): %f\n",time_cdet_t[[3]]))
-  	cat(sprintf("InfoMap mem curr (in bytes): %d\n",trace_cdet_curr))
+  	#cat(sprintf("InfoMap mem curr (in bytes): %d\n",trace_cdet_curr))
 
   	return(comms)
 }
@@ -99,30 +124,37 @@ exp3 <- function(filenames){
 # Time performance. Also, track memory consumption -- to be done manually??
 exp4 <- function(n,l){
 	# Generate net. Track performance & memory consumption
-	# --------------------------
-	trace_gens_curr <- mem_change({
-		time_gens_s <- proc.time()
-		net <- gen_network(n,l)
-		time_gens_e <- proc.time()
-		time_gens_t <- time_gens_e-time_gens_s
-	})
-	# --------------------------
+	# # --------------------------
+	# trace_gens_curr <- mem_change({
+	# 	time_gens_s <- proc.time()
+	# 	net <- gen_network(n,l)
+	# 	time_gens_e <- proc.time()
+	# 	time_gens_t <- time_gens_e-time_gens_s
+	# })
+	# # --------------------------
+	time_gens_s <- proc.time()
+	net <- gen_network(n,l)
+	time_gens_e <- proc.time()
+	time_gens_t <- time_gens_e-time_gens_s
 
   	# Aggregate net. Track performance & memory consumption
-	# --------------------------
-	trace_aggr_curr <- mem_change({
-		time_aggr_s <- proc.time()
-		net_aggr <- aggregate(net)
-		time_aggr_e <- proc.time()
-		time_aggr_t <- time_aggr_e-time_aggr_s
-	})
-	# --------------------------
-	
+	# # --------------------------
+	# trace_aggr_curr <- mem_change({
+	# 	time_aggr_s <- proc.time()
+	# 	net_aggr <- aggregate(net)
+	# 	time_aggr_e <- proc.time()
+	# 	time_aggr_t <- time_aggr_e-time_aggr_s
+	# })
+	# # --------------------------
+	time_aggr_s <- proc.time()
+	net_aggr <- aggregate(net)
+	time_aggr_e <- proc.time()
+	time_aggr_t <- time_aggr_e-time_aggr_s
 
   	cat(sprintf("Generate time (in sec.): %f\n",time_gens_t[[3]]))
-  	cat(sprintf("Generate mem curr (in bytes): %d\n",trace_gens_curr))
+  	#cat(sprintf("Generate mem curr (in bytes): %d\n",trace_gens_curr))
   	cat(sprintf("Aggregate time (in sec.): %f\n",time_aggr_t[[3]]))
-  	cat(sprintf("Aggregate mem curr (in bytes): %d\n",trace_aggr_curr))
+  	#cat(sprintf("Aggregate mem curr (in bytes): %d\n",trace_aggr_curr))
 
   	return(net_aggr)
 }
@@ -130,30 +162,37 @@ exp4 <- function(n,l){
 # Generates a multiplex network and gets degrees for all nodes.
 exp5 <- function(n,l){
 	#  Generate net. Track performance & memory consumption
-	# --------------------------
-	trace_gens_curr <- mem_change({
-		time_gens_s <- proc.time()
-		net <- gen_network(n,l)
-		time_gens_e <- proc.time()
-		time_gens_t <- time_gens_e-time_gens_s
-	})
-	# --------------------------
+	# # --------------------------
+	# trace_gens_curr <- mem_change({
+	# 	time_gens_s <- proc.time()
+	# 	net <- gen_network(n,l)
+	# 	time_gens_e <- proc.time()
+	# 	time_gens_t <- time_gens_e-time_gens_s
+	# })
+	# # --------------------------
+	time_gens_s <- proc.time()
+	net <- gen_network(n,l)
+	time_gens_e <- proc.time()
+	time_gens_t <- time_gens_e-time_gens_s
 
   	# Calculate degrees. Track performance & memory consumption
-	# --------------------------
-	trace_degs_curr <- mem_change({
-		time_degs_s <- proc.time()
-		degs <- get_degree(net)
-		time_degs_e <- proc.time()
-		time_degs_t <- time_degs_e-time_degs_s
-	})
-	# --------------------------
-	
+	# # --------------------------
+	# trace_degs_curr <- mem_change({
+	# 	time_degs_s <- proc.time()
+	# 	degs <- get_degree(net)
+	# 	time_degs_e <- proc.time()
+	# 	time_degs_t <- time_degs_e-time_degs_s
+	# })
+	# # --------------------------
+	time_degs_s <- proc.time()
+	degs <- get_degree(net)
+	time_degs_e <- proc.time()
+	time_degs_t <- time_degs_e-time_degs_s
 
   	cat(sprintf("Generate time (in sec.): %f\n",time_gens_t[[3]]))
-  	cat(sprintf("Generate mem curr (in bytes): %d\n",trace_gens_curr))
+  	#cat(sprintf("Generate mem curr (in bytes): %d\n",trace_gens_curr))
   	cat(sprintf("Degree time (in sec.): %f\n",time_degs_t[[3]]))
-  	cat(sprintf("Degree mem curr (in bytes): %d\n",trace_degs_curr))
+  	#cat(sprintf("Degree mem curr (in bytes): %d\n",trace_degs_curr))
 
   	return(degs)
 }
@@ -232,8 +271,8 @@ main <- function(){
 	if(!exists("aggregate", mode="function")) source(lib_util_path)
 	# Add more here.
 
-
-	if (e_id<4){
+	# For file reading experiments:
+	if (e_id<=3){
 		### DATASET IMPORTS ###
 		#
 		# Note: filenames should be in a format that the load/build... functions
@@ -328,11 +367,15 @@ main <- function(){
 			stop("Dataset not found. See available arguments")
 		}
 	}
-	# For generation experiments: retrieve tokens n-l
-	else{
+	# For generation experiments (4-5): retrieve tokens n-l
+	else if (e_id==4 || e_id==5){
 		toks<-strsplit(file,"-")
 		n<-strtoi(toks[[1]][1])
 		l<-strtoi(toks[[1]][2])
+	}
+	# For synth experiments (6+): retrieve tokens n-e-l
+	else if (e_id>=6){
+
 	}
 
 
@@ -359,6 +402,14 @@ main <- function(){
 	# Experiment 5: Generate networks & calculate degrees
 	else if (e_id==5){
 		exp5(n,l)
+	}
+	# Experiment 6: Load net from synth & aggregate
+	else if (e_id==6){
+		exp6(n,e,l)
+	}
+	# Experiment 7: Load net from synth & calculate degree
+	else if (e_id==7){
+		exp7(n,e,l)
 	}
 	#
 	# ... Other experiments here ...

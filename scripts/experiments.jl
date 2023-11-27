@@ -222,14 +222,28 @@ function main()
     #   Expensive, but open to hearing other solutions. Plus it does not affect the experiments.
     # 
     println("Exp$e_id: lib=$lib, file=$file")
+    # Experiment 1: Load net from file and aggregate
     if e_id == 1
         exp1(filenames)
+    # Experiment 2: Load net from file and calculate degree
     elseif e_id == 2
         exp2(filenames)
+    # Experiment 3: Load net from file and run InfoMap
     elseif e_id==3
         exp3(filenames)
+    # Experiment 4: Generate network and aggregate
     elseif e_id==4
-        exp4(filenames)
+        exp4(n,l)
+    # Experiment 5: Generate network and calculate degree
+    elseif e_id==5
+        exp5(n,l)
+    # Experiment 6: Load net from synth and aggregate
+    elseif e_id==6
+        exp6(n,e,l)
+    # Experiment 7: Load net from synth and calculate degree
+    elseif e_id==7
+        exp7(n,e,l)
+
     #
     # ...Add other experiments here...
     #

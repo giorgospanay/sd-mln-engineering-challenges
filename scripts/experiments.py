@@ -14,36 +14,36 @@ module=None
 # experiment 1: Load a network and aggregate
 def exp1(filenames):
 	# Load the file. Time performance, check memory consumption
-	tracemalloc.start()
+	#tracemalloc.start()
 	time_load_s=time.time()
 	# --------------------------
 	net=module.load_net(filenames)
 	# --------------------------
 	time_load_e=time.time()
 	time_load_t=time_load_e-time_load_s
-	trace_load_curr, trace_load_peak=tracemalloc.get_traced_memory()
-	tracemalloc.stop()
+	#trace_load_curr, trace_load_peak=tracemalloc.get_traced_memory()
+	#tracemalloc.stop()
 
 	# Sleep to clear traces?
 	#time.sleep(3)
 
 	# Aggregate the network. Time performance, check memory consumption
-	tracemalloc.start()
+	#tracemalloc.start()
 	time_aggr_s=time.time()
 	# --------------------------
 	net_aggr=module.aggregate(net)
 	# --------------------------
 	time_aggr_e=time.time()
 	time_aggr_t=time_aggr_e-time_aggr_s
-	trace_aggr_curr,trace_aggr_peak=tracemalloc.get_traced_memory()
+	#trace_aggr_curr,trace_aggr_peak=tracemalloc.get_traced_memory()
 	tracemalloc.stop()
 
 	# Print stats.
 	print("Loading time (in sec.): "+str(time_load_t))
-	print("Loading mem curr (in bytes): "+str(trace_load_curr))
+	#print("Loading mem curr (in bytes): "+str(trace_load_curr))
 	#print("Loading mem peak: "+str(trace_load_peak))
 	print("Aggregate time (in sec.): "+str(time_aggr_t))
-	print("Aggregate mem curr (in bytes): "+str(trace_aggr_curr))
+	#print("Aggregate mem curr (in bytes): "+str(trace_aggr_curr))
 	#print("Aggregate mem peak: "+str(trace_aggr_peak))
 
 	# Return aggregated network for debug.
@@ -52,112 +52,109 @@ def exp1(filenames):
 # experiment 2: Load a network from files and calculate degree distributions
 def exp2(filenames):
 	# Load the file. Time performance, check memory consumption
-	tracemalloc.start()
+	#tracemalloc.start()
 	time_load_s=time.time()
 	# --------------------------
 	net=module.load_net(filenames)
 	# --------------------------
 	time_load_e=time.time()
 	time_load_t=time_load_e-time_load_s
-	trace_load_curr, trace_load_peak=tracemalloc.get_traced_memory()
-	tracemalloc.stop()
+	#trace_load_curr, trace_load_peak=tracemalloc.get_traced_memory()
+	#tracemalloc.stop()
 
 	# Sleep to clear traces?
 	#time.sleep(3)
 
 	# Calculate degrees. Time performance, check memory consumption
-	tracemalloc.start()
+	#tracemalloc.start()
 	time_degs_s=time.time()
 	# --------------------------
 	degs=module.get_degree(net)
 	# --------------------------
 	time_degs_e=time.time()
 	time_degs_t=time_degs_e-time_degs_s
-	trace_degs_curr,trace_degs_peak=tracemalloc.get_traced_memory()
+	#trace_degs_curr,trace_degs_peak=tracemalloc.get_traced_memory()
 	tracemalloc.stop()
 
 	# Print stats.
 	print("Loading time (in sec.): "+str(time_load_t))
-	print("Loading mem curr (in bytes): "+str(trace_load_curr))
+	#print("Loading mem curr (in bytes): "+str(trace_load_curr))
 	#print("Loading mem peak: "+str(trace_load_peak))
 	print("Degree time (in sec.): "+str(time_degs_t))
-	print("Degree mem curr (in bytes): "+str(trace_degs_curr))
+	#print("Degree mem curr (in bytes): "+str(trace_degs_curr))
 	#print("Aggregate mem peak: "+str(trace_aggr_peak))
 	return degs
 
 # experiment 3: Load a network from file and run InfoMap
 def exp3(filenames):
 	# Load the file. Time performance, check memory consumption
-	tracemalloc.start()
+	#tracemalloc.start()
 	time_load_s=time.time()
 	# --------------------------
 	net=module.load_net(filenames)
 	# --------------------------
 	time_load_e=time.time()
 	time_load_t=time_load_e-time_load_s
-	trace_load_curr, trace_load_peak=tracemalloc.get_traced_memory()
-	tracemalloc.stop()
+	#trace_load_curr, trace_load_peak=tracemalloc.get_traced_memory()
+	#tracemalloc.stop()
 
 	# Sleep to clear traces?
 	#time.sleep(3)
 
 	# Run InfoMap. Time performance, check memory consumption
-	tracemalloc.start()
+	#tracemalloc.start()
 	time_cdet_s=time.time()
 	# --------------------------
 	comms=module.run_infomap(net)
 	# --------------------------
 	time_cdet_e=time.time()
 	time_cdet_t=time_cdet_e-time_cdet_s
-	trace_cdet_curr,trace_cdet_peak=tracemalloc.get_traced_memory()
-	tracemalloc.stop()
+	#trace_cdet_curr,trace_cdet_peak=tracemalloc.get_traced_memory()
+	#tracemalloc.stop()
 
 	# Print stats.
 	print("Loading time (in sec.): "+str(time_load_t))
-	print("Loading mem curr (in bytes): "+str(trace_load_curr))
+	#print("Loading mem curr (in bytes): "+str(trace_load_curr))
 	#print("Loading mem peak: "+str(trace_load_peak))
 	print("InfoMap time (in sec.): "+str(time_cdet_t))
-	print("InfoMap mem curr (in bytes): "+str(trace_cdet_curr))
+	#print("InfoMap mem curr (in bytes): "+str(trace_cdet_curr))
 	#print("Aggregate mem peak: "+str(trace_aggr_peak))
 	return comms
 
-# experiment 99: Build a network from files and visualize with different layouts
-def exp99(filenames):
-	return
 
 # experiment 4: Randomly generate network and aggregate
 def exp4(n,l):
 	# Generate network. Time performance, check memory consumption
-	tracemalloc.start()
+	#tracemalloc.start()
 	time_gens_s=time.time()
 	# --------------------------
 	net=module.gen_network(n,l)
 	# --------------------------
 	time_gens_e=time.time()
 	time_gens_t=time_gens_e-time_gens_s
-	trace_gens_curr, trace_gens_peak=tracemalloc.get_traced_memory()
-	tracemalloc.stop()
+	#trace_gens_curr, trace_gens_peak=tracemalloc.get_traced_memory()
+	#tracemalloc.stop()
 
 	# Sleep to clear traces?
 	#time.sleep(3)
 
 	# Aggregate the network. Time performance, check memory consumption
-	tracemalloc.start()
+	#tracemalloc.start()
 	time_aggr_s=time.time()
 	# --------------------------
 	net_aggr=module.aggregate(net)
 	# --------------------------
 	time_aggr_e=time.time()
 	time_aggr_t=time_aggr_e-time_aggr_s
-	trace_aggr_curr,trace_aggr_peak=tracemalloc.get_traced_memory()
-	tracemalloc.stop()
+	#trace_aggr_curr,trace_aggr_peak=tracemalloc.get_traced_memory()
+	#tracemalloc.stop()
 
 	# Print stats.
 	print("Generate time (in sec.): "+str(time_gens_t))
-	print("Generate mem curr (in bytes): "+str(trace_gens_curr))
+	#print("Generate mem curr (in bytes): "+str(trace_gens_curr))
 	#print("Loading mem peak: "+str(trace_load_peak))
 	print("Aggregate time (in sec.): "+str(time_aggr_t))
-	print("Aggregate mem curr (in bytes): "+str(trace_aggr_curr))
+	#print("Aggregate mem curr (in bytes): "+str(trace_aggr_curr))
 	#print("Aggregate mem peak: "+str(trace_aggr_peak))
 
 	# Return aggregated network for debug.
@@ -166,36 +163,36 @@ def exp4(n,l):
 # experiment 5: Randomly generate network and calculate degrees
 def exp5(n,l):
 	# Generate network. Time performance, check memory consumption
-	tracemalloc.start()
+	#tracemalloc.start()
 	time_gens_s=time.time()
 	# --------------------------
 	net=module.gen_network(n,l)
 	# --------------------------
 	time_gens_e=time.time()
 	time_gens_t=time_gens_e-time_gens_s
-	trace_gens_curr, trace_gens_peak=tracemalloc.get_traced_memory()
-	tracemalloc.stop()
+	#trace_gens_curr, trace_gens_peak=tracemalloc.get_traced_memory()
+	#tracemalloc.stop()
 
 	# Sleep to clear traces?
 	#time.sleep(3)
 
 	# Calculate degrees. Time performance, check memory consumption
-	tracemalloc.start()
+	#tracemalloc.start()
 	time_degs_s=time.time()
 	# --------------------------
 	degs=module.get_degree(net)
 	# --------------------------
 	time_degs_e=time.time()
 	time_degs_t=time_degs_e-time_degs_s
-	trace_degs_curr,trace_degs_peak=tracemalloc.get_traced_memory()
-	tracemalloc.stop()
+	#trace_degs_curr,trace_degs_peak=tracemalloc.get_traced_memory()
+	#tracemalloc.stop()
 
 	# Print stats.
 	print("Generate time (in sec.): "+str(time_gens_t))
-	print("Generate mem curr (in bytes): "+str(trace_gens_curr))
+	#print("Generate mem curr (in bytes): "+str(trace_gens_curr))
 	#print("Loading mem peak: "+str(trace_load_peak))
 	print("Degree time (in sec.): "+str(time_degs_t))
-	print("Degree mem curr (in bytes): "+str(trace_degs_curr))
+	#print("Degree mem curr (in bytes): "+str(trace_degs_curr))
 	#print("Aggregate mem peak: "+str(trace_aggr_peak))
 	return degs
 
@@ -264,7 +261,7 @@ def main():
 	spec.loader.exec_module(module)
 
 	# Loading experiments:
-	if (e_id<4):
+	if (e_id<=3):
 		### DATASET IMPORTS ###
 		#
 		# Note: filenames should be in a format that the load/build... functions
@@ -341,11 +338,15 @@ def main():
 		else:
 			return
 	# For generation experiments 4 & 5: dimensions coded as n-l instead of dataset
-	else:
+	elif e_id==4 or e_id==5:
 		toks=file.split("-")
 		n=int(toks[0])
 		l=int(toks[1])
 	
+	# For synth experiments 6+: get tokens n-e-l
+	elif e_id>6:
+		return #TODO
+
 
 	### EXPERIMENTS ###
 
@@ -363,9 +364,15 @@ def main():
 	# Experiment 4: Generate net & aggregate
 	elif e_id==4:
 		exp4(n,l)
-	# Experiment 4: Generate net & calculate degrees
+	# Experiment 5: Generate net & calculate degrees
 	elif e_id==5:
 		exp5(n,l)
+	# Experiment 6: Load net from synth & aggregate
+	elif e_id==6:
+		exp6(n,e,l)
+	# Experiment 7; Load net from synth & calculate degrees
+	elif e_id==7:
+		exp7(n,e,l)
 	#
 	# ... Other experiments here ...
 	#
