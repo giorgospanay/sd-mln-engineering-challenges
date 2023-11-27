@@ -208,9 +208,7 @@ def exp5(n,l):
 #		lib  -- The Python library to use. Options now: {pymnet, multinet, 
 #			netmem, py3plex} 
 #		file -- The dataset to use. Options for now: {synth, london, euair, 
-#			aucs, fftw, citation, ff}
-#		size -- Only applicable for synth; the size (in nodes) of the dataset. 
-#			Options for now: {100,200,500,1000,2000,5000,10000,20000,50000}
+#			aucs, fftw, citation, ff}. Alternatively: code for synth/generated net.
 def main():
 	global data_path, spec, module
 	filenames=[]
@@ -261,24 +259,15 @@ def main():
 	spec.loader.exec_module(module)
 
 	# Loading experiments:
-	if (e_id<=3):
+	if e_id<=3 or e_id>=6:
 		### DATASET IMPORTS ###
 		#
 		# Note: filenames should be in a format that the load/build... functions
 		#		can process. Define new code for lib_input_type if necessary.
 		#
 
-		# Load synthetic multilayer network data. Expect second argument N (size)
-		# NOTE: if necessary, edit filepaths/input format for library
-		if file=="synth":
-			n=int(sys.argv[4])
-			if n==0:
-				sys.exit("No size argument given for synthetic data. Available options: {100,200,500,1000,2000,5000,10000,20000,50000}")
-
-			# 
-
 		# Load London transport data (london-transport).
-		elif file=="london":
+		if file=="london":
 			if lib_input_type==1:
 				filenames=["../data/london-transport/london.mpx"]
 				# filenames=["../data/london-transport/london-full.mpx"]
@@ -333,19 +322,24 @@ def main():
 			elif lib_input_type==4:
 				filenames=["../data/friendfeed/friendfeed_netmem.edges"]
 
-		
-		# Should not reach here. Add more cases for datasets here.
+		# Otherwise: synthetic data, coded as "n-e-l[+library extension]"
 		else:
-			return
+			if lib_input_type==1:
+				filenames=["../data/synth/"+file+".mpx"]
+			elif lib_input_type==2:
+				filenames=["../data/synth/"+file+"_nodes.txt","../data/synth/"+file+"_multiplex.edges","../data/synth/"+file+"_layers.txt"]
+			elif lib_input_type==3:
+				filenames=["../data/synth/"+file+".config"]
+			elif lib_input_type==4:
+				filenames=["../data/synth/"+file+"_netmem.edges"]
+			
+		
 	# For generation experiments 4 & 5: dimensions coded as n-l instead of dataset
 	elif e_id==4 or e_id==5:
 		toks=file.split("-")
 		n=int(toks[0])
 		l=int(toks[1])
 	
-	# For synth experiments 6+: get tokens n-e-l
-	elif e_id>6:
-		return #TODO
 
 
 	### EXPERIMENTS ###

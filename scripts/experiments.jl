@@ -140,18 +140,8 @@ function main()
     #       can process. Define new code for lib_input_type if necessary.
     #
     filenames = []
-
-    # Load synthetic multilayer network data. Expect second argument N (size)
-    # NOTE: if necessary, edit filepaths/input format for library
-    if file=="synth"
-        n=parse(Int,ARGS[4])
-        if n==0
-            println("No size argument given for synthetic data. Available options: {100,200,500,1000,2000,5000,10000,20000,50000}")
-            return
-        end 
-
     # Load London transport data (london-transport).
-    elseif file=="london"
+    if file=="london"
         if lib_input_type==1
             filenames=["../data/london-transport/london.mpx"]
             # filenames=["../data/london-transport/london-full.mpx"]
@@ -208,10 +198,16 @@ function main()
             filenames=["../data/friendfeed/friendfeed_netmem.edges"]
         end
     
-    # Should not reach here. Add more cases for datasets here.
+    # Else: assume synthetic, coded as n-e-l[+library extension]
     else
-        println("Dataset not found. See available arguments.")
-        return
+        if lib_input_type==1
+            filenames=["../data/synth/"*file*".mpx"]
+        elseif lib_input_type==2
+            filenames=["../data/synth/"*file*"_nodes.txt","../data/synth/"*file*"_multiplex.edges","../data/synth/"*file*"_layers.txt"]
+        elseif lib_input_type==3
+            filenames=["../data/synth/"*file*".config"]
+        elseif lib_input_type==4
+            filenames=["../data/synth/"*file*"_netmem.edges"]
     end
 
     #### TODO: add code to run generation experiments

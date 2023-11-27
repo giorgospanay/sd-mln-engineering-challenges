@@ -197,6 +197,46 @@ exp5 <- function(n,l){
   	return(degs)
 }
 
+
+# Loads a generated multiplex network and gets degrees for all nodes.
+exp7 <- function(n,e,l){
+	# Load file. Track performance & memory consumption
+	# # --------------------------
+	# trace_load_curr <- mem_change({
+	# 	time_load_s <- proc.time()
+	# 	net <- load_net(filenames)
+	# 	time_load_e <- proc.time()
+	# 	time_load_t <- time_load_e-time_load_s
+	# })
+	# # --------------------------
+	# --------------------------
+	time_load_s <- proc.time()
+	net <- load_net(filenames)
+	time_load_e <- proc.time()
+	time_load_t <- time_load_e-time_load_s
+
+  	# Calculate degrees. Track performance & memory consumption
+	# # --------------------------
+	# trace_degs_curr <- mem_change({
+	# 	time_degs_s <- proc.time()
+	# 	degs <- get_degree(net)
+	# 	time_degs_e <- proc.time()
+	# 	time_degs_t <- time_degs_e-time_degs_s
+	# })
+	# # --------------------------
+	time_degs_s <- proc.time()
+	degs <- get_degree(net)
+	time_degs_e <- proc.time()
+	time_degs_t <- time_degs_e-time_degs_s
+
+  	cat(sprintf("Loading time (in sec.): %f\n",time_load_t[[3]]))
+  	#cat(sprintf("Loading mem curr (in bytes): %d\n",trace_load_curr))
+  	cat(sprintf("Degree time (in sec.): %f\n",time_degs_t[[3]]))
+  	#cat(sprintf("Degree mem curr (in bytes): %d\n",trace_degs_curr))
+
+  	return(degs)
+}
+
 # More experiments go here
 
 # Chicken chow main. Set up so that the same main util template can be used
@@ -209,9 +249,8 @@ exp5 <- function(n,l){
 #		e_id -- The experiment id to run. See details on function comments & paper.
 #		lib  -- The Python library to use. Options now: {muxviz, multinet, mully} 
 #		file -- The dataset to use. Options for now: {synth, london, euair, 
-#			aucs, fftw, citation, ff}
-#		size -- Only applicable for synth; the size (in nodes) of the dataset. 
-#			Options for now: {100,200,500,1000,2000,5000,10000,20000,50000}
+#			aucs, fftw, citation, ff}. Alternatively: code for synth/generated net.
+#	
 main <- function(){
 	# Get arguments from command line. Only trailing arguments
 	args <- commandArgs(trailingOnly=TRUE)
@@ -224,6 +263,8 @@ main <- function(){
 	file <- args[3]
 	n<-0
 	l<-0
+	e_g<-0
+	e<-""
 
 	### LIBRARY MODULE IMPORTS ###
 
@@ -272,19 +313,14 @@ main <- function(){
 	# Add more here.
 
 	# For file reading experiments:
-	if (e_id<=3){
+	if (e_id<=3 || e_id>=6){
 		### DATASET IMPORTS ###
 		#
 		# Note: filenames should be in a format that the load/build... functions
 		#		can process. Define new code for lib_input_type if necessary.
 		#
-
-		# Load synthetic multilayer network data. Expect second argument N (size)
-		if (file=="synth"){
-			filenames<-c("")
-		}
 		# Load London transport data (london-transport)
-		else if (file=="london"){
+		if (file=="london"){
 			if (lib_input_type==1){
 				filenames<-c("../data/london-transport/london.mpx")
 				# filenames<-c("../data/london-transport/london-full.mpx")
@@ -362,9 +398,20 @@ main <- function(){
 				filenames<-c("../data/friendfeed/friendfeed_netmem.edges")
 			}
 		}
-		# Should not reach here. Add more cases for datasets above.
+		# Otherwise: synthetic data, coded as "n-e-l[+library extension]"
 		else{
-			stop("Dataset not found. See available arguments")
+			if (lib_input_type==1){
+				filenames<-c(cat("../data/synth/",file,".mpx",sep=""))
+			}
+			else if (lib_input_type==2){
+				filenames<-c(cat("../data/synth/",file,"_nodes.txt",sep=""),cat("../data/synth/",file,"_multiplex.edges",sep=""),cat("../data/synth/",file,"_layers.txt",sep=""))
+			}	
+			else if (lib_input_type==3){
+				filenames<-c(cat("../data/synth/",file,".config",sep=""))
+			}
+			else if (lib_input_type==4){
+				filenames<-c(cat("../data/synth/",file,"_netmem.edges",sep=""))
+			}
 		}
 	}
 	# For generation experiments (4-5): retrieve tokens n-l
@@ -373,10 +420,8 @@ main <- function(){
 		n<-strtoi(toks[[1]][1])
 		l<-strtoi(toks[[1]][2])
 	}
-	# For synth experiments (6+): retrieve tokens n-e-l
-	else if (e_id>=6){
 
-	}
+
 
 
 	### EXPERIMENTS ###
