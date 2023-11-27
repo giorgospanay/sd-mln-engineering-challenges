@@ -1,4 +1,5 @@
 ### File for format converters between libraries. Use if necessary ###
+import os, glob
 
 # Convert multiplex edgelist file to netmem custom multiplex edgelist file.
 # Expected format: first line-- max_node_id, max_layer_id. rest of file-- as is.
@@ -325,7 +326,7 @@ def multinet_simple_to_multiplex_edge(read_file,write_nodes,write_edges,write_la
 	wf_layer.write("layerID layerLabel\n") # Header
 	for layer_k in layer_dict.keys():
 		# Format layerID layerLabel
-		layer_str=str(layer_dict[layer_k])+" "+layer_k+"\n"
+		layer_str=str(layer_dict[layer_k])+" "+layer_k
 		wf_layer.write(layer_str)
 	wf_layer.write("\n")
 
@@ -336,30 +337,53 @@ def multinet_simple_to_multiplex_edge(read_file,write_nodes,write_edges,write_la
 	wf_layer.close()
 
 
+# Write config file for MuxViz.
+def write_muxviz_config(filename_nodes,filename_edges,filename_layers,write_config):
+	wf=open(write_config,"w")
+	wf.write(""+filename_edges+";"+filename_layers+";"+filename_nodes+"\n")
+	wf.close()
+
 def main():
 
-	multiplex_edge_to_netmem_multiplex(
-		"../data/london-transport/london_transport_multiplex.edges",
-		"../data/london-transport/london_transport_netmem.edges"
-	)
-	multiplex_edge_to_netmem_multiplex(
-		"../data/euair-transport/EUAirTransportation_multiplex.edges",
-		"../data/euair-transport/EUAirTransportation_netmem.edges"
-	)
-	multiplex_edge_to_netmem_multiplex(
-		"../data/cs-aarhus/CS-Aarhus_multiplex.edges",
-		"../data/cs-aarhus/CS-Aarhus_netmem.edges"
-	)
-	multiplex_edge_to_netmem_multiplex(
-		"../data/friendfeed/friendfeed_multiplex.edges",
-		"../data/friendfeed/friendfeed_netmem.edges"
-	)
-	multiplex_edge_to_netmem_multiplex(
-		"../data/ff-tw/fftw_multiplex.edges",
-		"../data/ff-tw/fftw_netmem.edges"
-	)
+	# Synth conversion to all formats. Open all files in synth path
+	for filename in glob.glob("../data/synth/*.edges"):
+		# Extract base of filename
+		filename_base=(filename.split(".edges"))[0]
 
-	
+		# First, convert to multinet simple
+		filename_mpx=filename_base+".mpx"
+		multiplex_edge_to_multinet_simple(
+			filename,
+			filename_mpx
+		)
+
+		filename_nodes=filename_base+"_nodes.txt"
+		filename_layers=filename_base+"_layers.txt"
+		filename_edges=filename_base+"_multiplex.edges"
+		# Then convert to multiplex triple
+		multinet_simple_to_multiplex_edge(
+			filename_mpx,
+			filename_nodes,
+			filename_edges,
+			filename_layers
+		)
+
+		filename_config=filename_base+".config"
+		# ...and generate MuxViz config file
+		write_muxviz_config(
+			filename_nodes,
+			filename_edges,
+			filename_layers,
+			filename_config
+		)
+
+		filename_netmem=filename_base+"_netmem.edges"
+		# And convert to netmem multiplex simple
+		multiplex_edge_to_netmem_multiplex(
+			filename,
+			filename_netmem
+		)
+
 
 	## OLD CONVERSIONS
 	#
@@ -428,6 +452,26 @@ def main():
 	# multiplex_edge_to_multilayer_edge(
 	# 	"../data/florentine/Padgett-Florentine-Families_multiplex.edges",
 	# 	"../data/florentine/Padgett-Florentine-Families_multilayer.edges"
+	# )
+	# multiplex_edge_to_netmem_multiplex(
+	# 	"../data/london-transport/london_transport_multiplex.edges",
+	# 	"../data/london-transport/london_transport_netmem.edges"
+	# )
+	# multiplex_edge_to_netmem_multiplex(
+	# 	"../data/euair-transport/EUAirTransportation_multiplex.edges",
+	# 	"../data/euair-transport/EUAirTransportation_netmem.edges"
+	# )
+	# multiplex_edge_to_netmem_multiplex(
+	# 	"../data/cs-aarhus/CS-Aarhus_multiplex.edges",
+	# 	"../data/cs-aarhus/CS-Aarhus_netmem.edges"
+	# )
+	# multiplex_edge_to_netmem_multiplex(
+	# 	"../data/friendfeed/friendfeed_multiplex.edges",
+	# 	"../data/friendfeed/friendfeed_netmem.edges"
+	# )
+	# multiplex_edge_to_netmem_multiplex(
+	# 	"../data/ff-tw/fftw_multiplex.edges",
+	# 	"../data/ff-tw/fftw_netmem.edges"
 	# )
 	
 
