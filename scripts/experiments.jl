@@ -75,7 +75,7 @@ end
 
 # Generate network and get degrees
 function exp5(n,l)
-    ime_gens_s = Dates.value(now())
+    time_gens_s = Dates.value(now())
     net = gen_network(n,l)
     time_gens_e = Dates.value(now())
     time_gens_t = time_gens_e - time_gens_s
@@ -88,6 +88,18 @@ function exp5(n,l)
     println("Generate time (in sec.): ", values(time_gens_t)/1000.0)
     println("Degree time (in sec.): ", values(time_degs_t)/1000.0)
     return degs
+end
+
+# Load generated multiplex network and aggregate layers
+function exp6(filenames)
+    # Behaviour identical to exp1. Different id for logging purposes
+    return exp1(filenames)
+end
+
+# Load generated multiplex network and calculate degree
+function exp7(filenames)
+    # Behaviour identical to exp2. Different id for logging purposes
+    return exp2(filenames)
 end
 
 # Load network from file and visualize
@@ -203,11 +215,12 @@ function main()
         if lib_input_type==1
             filenames=["../data/synth/"*file*".mpx"]
         elseif lib_input_type==2
-            filenames=["../data/synth/"*file*"_nodes.txt","../data/synth/"*file*"_multiplex.edges","../data/synth/"*file*"_layers.txt"]
+            filenames=["../data/synth/"*file*"_nodes.txt","../data/synth/"*file*".edges","../data/synth/"*file*"_layers.txt"]
         elseif lib_input_type==3
             filenames=["../data/synth/"*file*".config"]
         elseif lib_input_type==4
             filenames=["../data/synth/"*file*"_netmem.edges"]
+        end
     end
 
     #### TODO: add code to run generation experiments
@@ -235,10 +248,10 @@ function main()
         exp5(n,l)
     # Experiment 6: Load net from synth and aggregate
     elseif e_id==6
-        exp6(n,e,l)
+        exp6(filenames)
     # Experiment 7: Load net from synth and calculate degree
     elseif e_id==7
-        exp7(n,e,l)
+        exp7(filenames)
 
     #
     # ...Add other experiments here...

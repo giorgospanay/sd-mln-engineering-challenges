@@ -33,8 +33,12 @@ load_net <- function(filenames){
 	df_config <- utils::read.table(filenames[[1]],sep=";",header=F)
 	colnames(df_config) <- c("layers.file","layer.label.file","layout.file")
 	# Reading extended edge list. Also add columns for the later conversion
-	df_edges <- utils::read.table(as.character(df_config$layers.file),header=F)
+	df_edges <- utils::read.table(as.character(df_config$layers.file),
+    header=F,
+    skipNul=T,
+    sep=" ")
 	colnames(df_edges) <- c("node.from","layer.from","node.to","layer.to","weight")
+
 	# Also reading node layout and layer label frames (matching original API call, see
 	# 	comments above). This is also to find # of nodes & layers for conversion to SAM
 	df_layers <- utils::read.table(as.character(df_config$layer.label.file),header=T)
@@ -43,7 +47,7 @@ load_net <- function(filenames){
 	n <- nrow(df_nodes)
 	# Convert dataframe to SupraAdjacencyMatrix
 	net_sam <- BuildSupraAdjacencyMatrixFromExtendedEdgelist(
-		df_edges,					# dataframe
+		df_edges,				# dataframe
 		l,							# number of layers
 		n,							# number of nodes
 		F 							# is directed? (Setting to F for benchmark.)

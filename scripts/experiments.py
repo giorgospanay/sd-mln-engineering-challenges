@@ -196,6 +196,15 @@ def exp5(n,l):
 	#print("Aggregate mem peak: "+str(trace_aggr_peak))
 	return degs
 
+# experiment 6: Load generated multiplex network from file and aggregate layers
+def exp6(filenames):
+	# Behaviour identical to exp1. Different id for logging
+	return exp1(filenames)
+
+# experiment 7: Load generated multiplex network from file and calculate degrees
+def exp7(filenames):
+	# Behaviour identical to exp2. Different id for logging
+	return exp2(filenames)
 
 # Chicken chow main. Set up so that the same main util template can be used
 #   on all experiments; most of the changes need to be done on the load_net(), 
@@ -327,7 +336,7 @@ def main():
 			if lib_input_type==1:
 				filenames=["../data/synth/"+file+".mpx"]
 			elif lib_input_type==2:
-				filenames=["../data/synth/"+file+"_nodes.txt","../data/synth/"+file+"_multiplex.edges","../data/synth/"+file+"_layers.txt"]
+				filenames=["../data/synth/"+file+"_nodes.txt","../data/synth/"+file+".edges","../data/synth/"+file+"_layers.txt"]
 			elif lib_input_type==3:
 				filenames=["../data/synth/"+file+".config"]
 			elif lib_input_type==4:
@@ -339,7 +348,6 @@ def main():
 		toks=file.split("-")
 		n=int(toks[0])
 		l=int(toks[1])
-	
 
 
 	### EXPERIMENTS ###
@@ -363,10 +371,10 @@ def main():
 		exp5(n,l)
 	# Experiment 6: Load net from synth & aggregate
 	elif e_id==6:
-		exp6(n,e,l)
+		exp6(filenames)
 	# Experiment 7; Load net from synth & calculate degrees
 	elif e_id==7:
-		exp7(n,e,l)
+		exp7(filenames)
 	#
 	# ... Other experiments here ...
 	#

@@ -13,7 +13,6 @@ def load_net(filenames):
 	net=pymnet.netio.read_edge_files(edge_file,layerinput=layer_file,nodeinput=node_file,couplings="none")
 	return net
 
-
 #
 # 
 def build_rem(filenames):

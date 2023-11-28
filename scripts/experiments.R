@@ -197,44 +197,17 @@ exp5 <- function(n,l){
   	return(degs)
 }
 
+# Loads a generated multiplex network and aggregates the layers.
+exp6 <- function(filenames){
+	# Behaviour identical to exp1. Different experiment id for logging purposes.
+	return (exp1(filenames))
+}
+
 
 # Loads a generated multiplex network and gets degrees for all nodes.
-exp7 <- function(n,e,l){
-	# Load file. Track performance & memory consumption
-	# # --------------------------
-	# trace_load_curr <- mem_change({
-	# 	time_load_s <- proc.time()
-	# 	net <- load_net(filenames)
-	# 	time_load_e <- proc.time()
-	# 	time_load_t <- time_load_e-time_load_s
-	# })
-	# # --------------------------
-	# --------------------------
-	time_load_s <- proc.time()
-	net <- load_net(filenames)
-	time_load_e <- proc.time()
-	time_load_t <- time_load_e-time_load_s
-
-  	# Calculate degrees. Track performance & memory consumption
-	# # --------------------------
-	# trace_degs_curr <- mem_change({
-	# 	time_degs_s <- proc.time()
-	# 	degs <- get_degree(net)
-	# 	time_degs_e <- proc.time()
-	# 	time_degs_t <- time_degs_e-time_degs_s
-	# })
-	# # --------------------------
-	time_degs_s <- proc.time()
-	degs <- get_degree(net)
-	time_degs_e <- proc.time()
-	time_degs_t <- time_degs_e-time_degs_s
-
-  	cat(sprintf("Loading time (in sec.): %f\n",time_load_t[[3]]))
-  	#cat(sprintf("Loading mem curr (in bytes): %d\n",trace_load_curr))
-  	cat(sprintf("Degree time (in sec.): %f\n",time_degs_t[[3]]))
-  	#cat(sprintf("Degree mem curr (in bytes): %d\n",trace_degs_curr))
-
-  	return(degs)
+exp7 <- function(filenames){
+	# Behaviour identical to exp2. Different experiment id for logging purposes.
+	return (exp2(filenames))
 }
 
 # More experiments go here
@@ -401,16 +374,16 @@ main <- function(){
 		# Otherwise: synthetic data, coded as "n-e-l[+library extension]"
 		else{
 			if (lib_input_type==1){
-				filenames<-c(cat("../data/synth/",file,".mpx",sep=""))
+				filenames<-c(paste("../data/synth/",file,".mpx",sep=""))
 			}
 			else if (lib_input_type==2){
-				filenames<-c(cat("../data/synth/",file,"_nodes.txt",sep=""),cat("../data/synth/",file,"_multiplex.edges",sep=""),cat("../data/synth/",file,"_layers.txt",sep=""))
+				filenames<-c(paste("../data/synth/",file,"_nodes.txt",sep=""),paste("../data/synth/",file,".edges",sep=""),paste("../data/synth/",file,"_layers.txt",sep=""))
 			}	
 			else if (lib_input_type==3){
-				filenames<-c(cat("../data/synth/",file,".config",sep=""))
+				filenames<-c(paste("../data/synth/",file,".config",sep=""))
 			}
 			else if (lib_input_type==4){
-				filenames<-c(cat("../data/synth/",file,"_netmem.edges",sep=""))
+				filenames<-c(paste("../data/synth/",file,"_netmem.edges",sep=""))
 			}
 		}
 	}
@@ -420,8 +393,6 @@ main <- function(){
 		n<-strtoi(toks[[1]][1])
 		l<-strtoi(toks[[1]][2])
 	}
-
-
 
 
 	### EXPERIMENTS ###
@@ -450,11 +421,11 @@ main <- function(){
 	}
 	# Experiment 6: Load net from synth & aggregate
 	else if (e_id==6){
-		exp6(n,e,l)
+		exp6(filenames)
 	}
 	# Experiment 7: Load net from synth & calculate degree
 	else if (e_id==7){
-		exp7(n,e,l)
+		exp7(filenames)
 	}
 	#
 	# ... Other experiments here ...

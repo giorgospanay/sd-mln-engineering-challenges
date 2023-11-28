@@ -31,7 +31,7 @@ def gen_save_network(n,g,l,file):
 
 # Light version of write_edge_files, edited from pymnet source code. 
 # 	Change to a single file for all layers.
-def write_edge_files_light(net,outputfiles,columnSeparator="\t",rowSeparator="\n",weights=True,numericNodes=False):
+def write_edge_files_light(net,outputfiles,columnSeparator=" ",rowSeparator="\n",weights=True,numericNodes=False):
 	if numericNodes:
 		nodetonumber={}
 		for i,node in enumerate(net):

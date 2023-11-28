@@ -145,11 +145,32 @@ def run_exp(e_id,pylibs,rlibs,jllibs,datasets):
 def main():
 	global py_libs,r_libs,jl_libs,data_list
 
-	# Call exp1: Loading + aggregation, real datasets
-	run_exp(1,["pymnet","py3plex"],["muxviz","multinet"],[],["aucs","london","euair","fftw","ff"])
+
+	# Call exp7: Loading synth + degree
+
+	# Run 1: Keep l=2, e=4, iterate n={1000-10M}
+	for n in [1000,2000,5000,10000,20000,50000,100000,200000,500000,1000000,2000000,5000000,10000000]:
+		dstr=""+str(n)+"-4-2"
+		run_exp(7,["pymnet","py3plex"],["muxviz","multinet","netmem"],["mlgjl"],[dstr])
+	# Run 2: Keep l=2, e="s", iterate n={1000-100K}
+	for n in [1000,2000,5000,10000,20000,50000,100000]:
+		dstr=""+str(n)+"-s-2"
+		run_exp(7,["pymnet","py3plex"],["muxviz","multinet","netmem"],["mlgjl"],[dstr])
+	# Run 3: Keep n=1000, e=4, iterate l={2-10K}
+	for l in [5,10,20,50,100,200,500,1000,2000,5000,10000]:
+		dstr="1000-4-"+str(l)
+		run_exp(7,["pymnet","py3plex"],["muxviz","multinet","netmem"],["mlgjl"],[dstr])
+	# Run 4: Keep n=1000, e=s, iterate l={2-10K}
+	for l in [5,10,20,50,100,200,500,1000,2000,5000,10000]:
+		dstr="1000-s-"+str(l)
+		run_exp(7,["pymnet","py3plex"],["muxviz","multinet","netmem"],["mlgjl"],[dstr])
+
+
+	# # Call exp1: Loading + aggregation, real datasets
+	# run_exp(1,["pymnet","py3plex"],["muxviz","multinet"],[],["aucs","london","euair","fftw","ff"])
 	
-	# Call exp2: Loading + degree, real datasets
-	run_exp(2,["pymnet","py3plex"],["muxviz","multinet","netmem"],["mlgjl"],["aucs","london","euair","fftw","ff"])
+	# # Call exp2: Loading + degree, real datasets
+	# run_exp(2,["pymnet","py3plex"],["muxviz","multinet","netmem"],["mlgjl"],["aucs","london","euair","fftw","ff"])
 	
 
 	# #Call exp4: Generate + aggregate, synth networks

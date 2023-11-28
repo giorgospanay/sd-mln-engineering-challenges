@@ -1,6 +1,17 @@
 ### File for format converters between libraries. Use if necessary ###
 import os, glob
 
+# Converts all tabs in a file to spaces. Yay.
+def tabs_to_spaces(read_file,write_file):
+	wf=open(write_file,"w")
+	with open(read_file,"r") as rf:
+		lines=rf.readlines()
+		for line in lines:
+			tokens=line.split("\t")
+			w_str=" ".join(tokens)
+			wf.write(w_str+"\n")
+	wf.close()
+
 # Convert multiplex edgelist file to netmem custom multiplex edgelist file.
 # Expected format: first line-- max_node_id, max_layer_id. rest of file-- as is.
 def multiplex_edge_to_netmem_multiplex(read_file,write_file):
@@ -336,6 +347,17 @@ def multinet_simple_to_multiplex_edge(read_file,write_nodes,write_edges,write_la
 	wf_edge.close()
 	wf_layer.close()
 
+# Quick fix for MuxViz, set node indices starting with 1.
+def rewrite_multiplex_plus_one(file):
+	rf=open(file,"r")
+	lines=rf.readlines()
+	rf.close()
+	wf=open(file,"w")
+	for ln in lines:
+		tokens=ln.split(" ")
+		w_str=""+str(1+int(tokens[0]))+" "+tokens[1]+" "+str(1+int(tokens[2]))+" "+tokens[3]+" "+tokens[4]
+		wf.write(w_str)
+	wf.close()
 
 # Write config file for MuxViz.
 def write_muxviz_config(filename_nodes,filename_edges,filename_layers,write_config):
@@ -345,44 +367,53 @@ def write_muxviz_config(filename_nodes,filename_edges,filename_layers,write_conf
 
 def main():
 
-	# Synth conversion to all formats. Open all files in synth path
-	for filename in glob.glob("../data/synth/*.edges"):
-		# Extract base of filename
-		filename_base=(filename.split(".edges"))[0]
+	for filename in glob.glob("../data/synth/*_multiplex.edges"):
+		# Fix filename +1s
+		rewrite_multiplex_plus_one(filename)
+		
 
-		# First, convert to multinet simple
-		filename_mpx=filename_base+".mpx"
-		multiplex_edge_to_multinet_simple(
-			filename,
-			filename_mpx
-		)
+	# # Synth conversion to all formats. Open all files in synth path
+	# for filename in glob.glob("../data/synth/*.edges"):
+	# 	# Extract base of filename
+	# 	filename_base=(filename.split(".edges"))[0]
 
-		filename_nodes=filename_base+"_nodes.txt"
-		filename_layers=filename_base+"_layers.txt"
-		filename_edges=filename_base+"_multiplex.edges"
-		# Then convert to multiplex triple
-		multinet_simple_to_multiplex_edge(
-			filename_mpx,
-			filename_nodes,
-			filename_edges,
-			filename_layers
-		)
+	# 	# First, convert to multinet simple
+	# 	filename_mpx=filename_base+".mpx"
+	# 	multiplex_edge_to_multinet_simple(
+	# 		filename,
+	# 		filename_mpx
+	# 	)
 
-		filename_config=filename_base+".config"
-		# ...and generate MuxViz config file
-		write_muxviz_config(
-			filename_nodes,
-			filename_edges,
-			filename_layers,
-			filename_config
-		)
+	# 	filename_nodes=filename_base+"_nodes.txt"
+	# 	filename_layers=filename_base+"_layers.txt"
+	# 	filename_edges=filename_base+"_multiplex.edges"
+	# 	# Then convert to multiplex triple
+	# 	multinet_simple_to_multiplex_edge(
+	# 		filename_mpx,
+	# 		filename_nodes,
+	# 		filename_edges,
+	# 		filename_layers
+	# 	)
+	# 	multiplex_edge_to_multilayer_edge(
+	# 		filename,
+	# 		filename_edges
+	# 	)
 
-		filename_netmem=filename_base+"_netmem.edges"
-		# And convert to netmem multiplex simple
-		multiplex_edge_to_netmem_multiplex(
-			filename,
-			filename_netmem
-		)
+	# 	filename_config=filename_base+".config"
+	# 	# ...and generate MuxViz config file
+	# 	write_muxviz_config(
+	# 		filename_nodes,
+	# 		filename_edges,
+	# 		filename_layers,
+	# 		filename_config
+	# 	)
+
+	# 	filename_netmem=filename_base+"_netmem.edges"
+	# 	# And convert to netmem multiplex simple
+	# 	multiplex_edge_to_netmem_multiplex(
+	# 		filename,
+	# 		filename_netmem
+	# 	)
 
 
 	## OLD CONVERSIONS
