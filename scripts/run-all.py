@@ -160,8 +160,8 @@ def main():
 	for l in [5,10,20,50,100,200,500,1000,2000,5000,10000]:
 		dstr="1000-4-"+str(l)
 		run_exp(7,["pymnet","py3plex"],["muxviz","multinet","netmem"],["mlgjl"],[dstr])
-	# Run 4: Keep n=1000, e=s, iterate l={2-10K}
-	for l in [5,10,20,50,100,200,500,1000,2000,5000,10000]:
+	# Run 4a: Keep n=1000, e=s, iterate l={2-10K}
+	for l in [5,10,20,50,100,200]:
 		dstr="1000-s-"+str(l)
 		run_exp(7,["pymnet","py3plex"],["muxviz","multinet","netmem"],["mlgjl"],[dstr])
 
