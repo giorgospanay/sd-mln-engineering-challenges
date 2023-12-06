@@ -25,7 +25,7 @@ def parse_exp1(out1,out2):
 			aggr_mem=0
 			for ln in f.readlines():
 				# Found timed out experiment, parse filename instead
-				if "Timeout" in ln:
+				if "Timeout" in ln or "Killed" in ln:
 					parsed=parse.parse(log_path+"exp1/1_{}_{}_{}.txt",filename)
 					lib_name=parsed[1]
 					data_name=parsed[0]
@@ -116,7 +116,7 @@ def parse_exp2(out1,out2):
 			degr_mem=0
 			for ln in f.readlines():
 				# Found timed out experiment, parse filename instead
-				if "Timeout" in ln:
+				if "Timeout" in ln or "Killed" in ln:
 					parsed=parse.parse(log_path+"exp2/2_{}_{}_{}.txt",filename)
 					lib_name=parsed[1]
 					data_name=parsed[0]
@@ -213,7 +213,7 @@ def parse_exp4(out1,out2):
 			aggr_mem=0
 			for ln in f.readlines():
 				# Found timed out experiment, parse filename instead
-				if "Timeout" in ln:
+				if "Timeout" in ln or "Killed" in ln:
 					parsed=parse.parse(log_path+"exp4/4_{}_{}_{}.txt",filename)
 					lib_name=parsed[1]
 					data_name=parsed[0]
@@ -316,7 +316,7 @@ def parse_exp5(out1,out2):
 			degr_mem=0
 			for ln in f.readlines():
 				# Found timed out experiment, parse filename instead
-				if "Timeout" in ln:
+				if "Timeout" in ln or "Killed" in ln:
 					parsed=parse.parse(log_path+"exp5/5_{}_{}_{}.txt",filename)
 					lib_name=parsed[1]
 					data_name=parsed[0]
@@ -421,7 +421,7 @@ def parse_exp6(out1,out2,out3,out4):
 			aggr_mem=0
 			for ln in f.readlines():
 				# Found timed out experiment, parse filename instead
-				if "Timeout" in ln:
+				if "Timeout" in ln or "Killed" in ln:
 					parsed=parse.parse(log_path+"exp6/6_{}_{}_{}.txt",filename)
 					lib_name=parsed[1]
 					data_name=parsed[0]
@@ -560,7 +560,7 @@ def parse_exp7(out1,out2,out3,out4):
 			degr_mem=0
 			for ln in f.readlines():
 				# Found timed out experiment, parse filename instead
-				if "Timeout" in ln:
+				if "Timeout" in ln or "Killed" in ln:
 					parsed=parse.parse(log_path+"exp7/7_{}_{}_{}.txt",filename)
 					lib_name=parsed[1]
 					data_name=parsed[0]
@@ -579,12 +579,12 @@ def parse_exp7(out1,out2,out3,out4):
 				if "Loading time" in ln:
 					parsed=parse.parse("Loading time (in sec.): {}",ln.strip())
 					if not parsed is None:
-						aggr_time=parsed[0]
+						load_time=parsed[0]
 				# Line 2: loading memory
 				if "Loading mem" in ln:
 					parsed=parse.parse("Loading mem curr (in bytes): {}",ln.strip())
 					if not parsed is None:
-						aggr_mem=parsed[0]
+						load_mem=parsed[0]
 				# Line 3: aggregation time
 				if "Degree time" in ln:
 					parsed=parse.parse("Degree time (in sec.): {}",ln.strip())
@@ -683,17 +683,20 @@ def parse_exp7(out1,out2,out3,out4):
 
 # Portland, Main(e)
 def main():
-	# # Parse exp1 file
-	# parse_exp1("../logs/plot_exp1a.txt","../logs/plot_exp1b.txt")
+	# Parse exp1 file
+	parse_exp1("../logs/plot_exp1a.txt","../logs/plot_exp1b.txt")
 
-	# # Parse exp2 file
-	# parse_exp2("../logs/plot_exp2a.txt","../logs/plot_exp2b.txt")
+	# Parse exp2 file
+	parse_exp2("../logs/plot_exp2a.txt","../logs/plot_exp2b.txt")
 
 	# # Parse exp4 file
 	# parse_exp4("../logs/plot_exp4a.txt","../logs/plot_exp4b.txt")
 
-	# # Parse exp5 file
-	# parse_exp5("../logs/plot_exp5a.txt","../logs/plot_exp5b.txt")
+	# Parse exp5 file
+	parse_exp5("../logs/plot_exp5a.txt","../logs/plot_exp5b.txt")
+
+	# Parse exp6 file
+	parse_exp6("../logs/plot_exp6a.txt","../logs/plot_exp6b.txt", "../logs/plot_exp6c.txt", "../logs/plot_exp6d.txt")
 
 	# Parse exp7 file
 	parse_exp7("../logs/plot_exp7a.txt","../logs/plot_exp7b.txt", "../logs/plot_exp7c.txt", "../logs/plot_exp7d.txt")

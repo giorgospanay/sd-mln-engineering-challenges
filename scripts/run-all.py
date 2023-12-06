@@ -146,13 +146,18 @@ def main():
 	global py_libs,r_libs,jl_libs,data_list
 
 	# All server calls
-	print("Experiment 1 running: Loading real datasets + aggregation")
-	# Call exp1: Loading + aggregation, real datasets
-	run_exp(1,["pymnet","py3plex"],["muxviz","multinet"],[],["aucs","london","euair","fftw","ff"])
+	# print("Experiment 1 running: Loading real datasets + aggregation")
+	# # Call exp1: Loading + aggregation, real datasets
+	# run_exp(1,["pymnet","py3plex"],["muxviz","multinet"],[],["aucs","london","euair","fftw","ff"])
+	
+	# print("Experiment 2 running: Loading real datasets + degree")
+	# # Call exp2: Loading + degree, real datasets
+	# run_exp(2,["pymnet","py3plex"],["muxviz","multinet","netmem"],["mlgjl"],["aucs","london","euair","fftw","ff"])
+	
 	print("Experiment 2 running: Loading real datasets + degree")
 	# Call exp2: Loading + degree, real datasets
-	run_exp(2,["pymnet","py3plex"],["muxviz","multinet","netmem"],["mlgjl"],["aucs","london","euair","fftw","ff"])
-	
+	run_exp(2,["pymnet","py3plex"],["muxviz","multinet","netmem"],["mlgjl"],["fftw","ff"])
+
 	# #Call exp4: Generate + aggregate, synth networks
 	# # Run 1: Keep l=2, iterate n={1000,2000,5000,10000,20000,50000,100000}
 	# for n in [1000,2000,5000,10000,20000,50000,100000]:
