@@ -5,7 +5,7 @@ This repository contains the scripts necessary to replicate the experiments in t
 ## Requirements
 Current versions of Python3, R and Julia are needed to execute the entire range of scripts. The original libraries covered by the paper are: multinet (https://github.com/uuinfolab/r_multinet), MultilayerGraphs.jl (https://github.com/JuliaGraphs/MultilayerGraphs.jl/tree/main), MuxViz (https://github.com/manlius/muxViz), netmem (https://github.com/anespinosa/netmem), Pymnet (https://github.com/bolozna/Multilayer-networks-library) and Py3plex (https://github.com/SkBlaz/py3plex). For library-specific installation instructions, please refer to the respective documentation. 
 
-In addition to these, there are a number of required packages for Python used by the scripts for importing modules, tracking execution time, processing log files and plotting the results. These can be install by executing `pip parse subprocess pandas numpy matplotlib importlib` in your terminal.
+In addition to these, there are a number of required packages for Python used by the scripts for importing modules, tracking execution time, processing log files and plotting the results. These can be install by executing `pip install parse subprocess pandas numpy matplotlib importlib` in your terminal.
 
 ## How to run
 To execute the scripts as in their original form, three directories are needed: 
