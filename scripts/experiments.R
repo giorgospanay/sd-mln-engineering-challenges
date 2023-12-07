@@ -1,5 +1,5 @@
 # Other imports
-library(pryr)
+#library(pryr)
 
 # Loads a network from file and aggregates it into a monoplex.
 # Time performance. Also, track memory consumption -- to be done manually??

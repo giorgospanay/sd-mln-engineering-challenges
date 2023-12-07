@@ -2,7 +2,7 @@ import sys
 import importlib.util
 # Imports for timing and memory trace
 import time
-import tracemalloc
+#import tracemalloc
 
 # Global variables for module importers. See main(.). 
 spec=None
@@ -36,7 +36,7 @@ def exp1(filenames):
 	time_aggr_e=time.time()
 	time_aggr_t=time_aggr_e-time_aggr_s
 	#trace_aggr_curr,trace_aggr_peak=tracemalloc.get_traced_memory()
-	tracemalloc.stop()
+	#tracemalloc.stop()
 
 	# Print stats.
 	print("Loading time (in sec.): "+str(time_load_t))
@@ -74,7 +74,7 @@ def exp2(filenames):
 	time_degs_e=time.time()
 	time_degs_t=time_degs_e-time_degs_s
 	#trace_degs_curr,trace_degs_peak=tracemalloc.get_traced_memory()
-	tracemalloc.stop()
+	#tracemalloc.stop()
 
 	# Print stats.
 	print("Loading time (in sec.): "+str(time_load_t))
