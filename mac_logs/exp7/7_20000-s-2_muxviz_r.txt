@@ -1,7 +1,0 @@
-Exp7: lib=muxviz, file=20000-s-2
-WARNING: The input data is directed but isDirected=FALSE, I am symmetrizing by average.
-Loading time (in sec.): 4.833000
-Degree time (in sec.): 4.531000
--------------------------------
-
-Execution time (in sec.): 10.02452278137207

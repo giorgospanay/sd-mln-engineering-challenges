@@ -1,6 +1,0 @@
-Exp2: lib=pymnet, file=london
-Loading time (in sec.): 0.06067395210266113
-Degree time (in sec.): 0.006902933120727539
--------------------------------
-
-Execution time (in sec.): 1.0527665615081787

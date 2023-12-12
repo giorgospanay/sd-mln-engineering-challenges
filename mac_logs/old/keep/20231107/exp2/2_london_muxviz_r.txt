@@ -1,9 +1,0 @@
-Exp2: lib=muxviz, file=london
-WARNING: The input data is directed but isDirected=FALSE, I am symmetrizing by average.
-Loading time (in sec.): 0.388000
-Loading mem curr (in bytes): 81010520
-Degree time (in sec.): 0.018000
-Degree mem curr (in bytes): 329416
--------------------------------
-
-Execution time (in sec.): 1.2097280025482178

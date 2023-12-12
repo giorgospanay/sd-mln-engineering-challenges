@@ -1,8 +1,0 @@
-Exp4: lib=muxviz, file=100000-2
-Error in stats::runif(n * m) : invalid arguments
-Calls: main ... lapply -> FUN -> rand -> <Anonymous> -> <Anonymous>
-In addition: Warning message:
-In n * m : NAs produced by integer overflow
-Execution halted
-
----------------------------

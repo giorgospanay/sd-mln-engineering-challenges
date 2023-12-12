@@ -1,6 +1,0 @@
-Exp5: lib=pymnet, file=1000-100
-Generate time (in sec.): 495.77898645401
-Degree time (in sec.): 0.15317821502685547
--------------------------------
-
-Execution time (in sec.): 500.04343271255493

@@ -1,9 +1,0 @@
-Exp5: lib=py3plex, file=2000-2
--------------------- 
- Checking multiplex edges.. 
- --------------------
-Generate time (in sec.): 0.0054090023040771484
-Degree time (in sec.): 0.00020122528076171875
--------------------------------
-
-Execution time (in sec.): 1.4890809059143066

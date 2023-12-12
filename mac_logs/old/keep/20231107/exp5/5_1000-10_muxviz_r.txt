@@ -1,8 +1,0 @@
-Exp5: lib=muxviz, file=1000-10
-Generate time (in sec.): 1.159000
-Generate mem curr (in bytes): 82672168
-Degree time (in sec.): 0.038000
-Degree mem curr (in bytes): 207704
--------------------------------
-
-Execution time (in sec.): 1.9915051460266113

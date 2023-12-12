@@ -1,6 +1,0 @@
-Exp2: lib=mlgjl, file=aucs
-Loading time (in sec.): 5.087
-Degree time (in sec.): 0.001
--------------------------------
-
-Execution time (in sec.): 15.512350797653198

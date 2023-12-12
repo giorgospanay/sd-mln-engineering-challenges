@@ -1,9 +1,0 @@
-Exp2: lib=py3plex, file=euair
--------------------- 
- Checking multiplex edges.. 
- --------------------
-Loading time (in sec.): 2.1519622802734375
-Degree time (in sec.): 0.13276243209838867
--------------------------------
-
-Execution time (in sec.): 4.223161935806274

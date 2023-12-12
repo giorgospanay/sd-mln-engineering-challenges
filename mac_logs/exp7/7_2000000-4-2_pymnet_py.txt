@@ -1,6 +1,0 @@
-Exp7: lib=pymnet, file=2000000-4-2
-Loading time (in sec.): 161.9726312160492
-Degree time (in sec.): 10.690738916397095
--------------------------------
-
-Execution time (in sec.): 181.5993196964264

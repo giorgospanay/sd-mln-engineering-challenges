@@ -1,8 +1,0 @@
-Exp2: lib=pymnet, file=euair
-Loading time (in sec.): 0.06509113311767578
-Loading mem curr (in bytes): 1177103
-Degree time (in sec.): 0.07590699195861816
-Degree mem curr (in bytes): 9792
--------------------------------
-
-Execution time (in sec.): 1.5103569030761719

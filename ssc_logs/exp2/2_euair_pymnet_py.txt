@@ -1,6 +1,0 @@
-Exp2: lib=pymnet, file=euair
-Loading time (in sec.): 0.04471087455749512
-Degree time (in sec.): 0.04619884490966797
--------------------------------
-
-Execution time (in sec.): 1.100330114364624

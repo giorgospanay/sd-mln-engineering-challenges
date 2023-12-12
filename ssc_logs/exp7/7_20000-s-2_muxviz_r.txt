@@ -1,9 +1,0 @@
-This build of rgl does not include OpenGL functions.  Use
- rglwidget() to display results, e.g. via options(rgl.printRglwidget = TRUE).
-Exp7: lib=muxviz, file=20000-s-2
-WARNING: The input data is directed but isDirected=FALSE, I am symmetrizing by average.
-Loading time (in sec.): 25.336000
-Degree time (in sec.): 41.441000
--------------------------------
-
-Execution time (in sec.): 69.35644936561584

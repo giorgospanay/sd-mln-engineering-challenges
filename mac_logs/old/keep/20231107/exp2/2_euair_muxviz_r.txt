@@ -1,9 +1,0 @@
-Exp2: lib=muxviz, file=euair
-WARNING: The input data is directed but isDirected=FALSE, I am symmetrizing by average.
-Loading time (in sec.): 0.390000
-Loading mem curr (in bytes): 81128176
-Degree time (in sec.): 0.048000
-Degree mem curr (in bytes): 330064
--------------------------------
-
-Execution time (in sec.): 1.2298178672790527

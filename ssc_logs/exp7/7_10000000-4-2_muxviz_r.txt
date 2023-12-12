@@ -1,9 +1,0 @@
-This build of rgl does not include OpenGL functions.  Use
- rglwidget() to display results, e.g. via options(rgl.printRglwidget = TRUE).
-Exp7: lib=muxviz, file=10000000-4-2
-Error in Matrix::sparseMatrix(i = edges$from, j = edges$to, x = edges$weight,  : 
-  all(dims >= dims.min) is not TRUE
-Calls: main ... BuildSupraAdjacencyMatrixFromExtendedEdgelist -> <Anonymous> -> stopifnot
-Execution halted
-
----------------------------

@@ -1,6 +1,0 @@
-Exp2: lib=mlgjl, file=euair
-Loading time (in sec.): 160.287
-Degree time (in sec.): 0.064
--------------------------------
-
-Execution time (in sec.): 172.6377351284027

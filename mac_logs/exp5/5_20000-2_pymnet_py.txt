@@ -1,8 +1,0 @@
-Exp5: lib=pymnet, file=20000-2
-Generate time (in sec.): 194.8830029964447
-Generate mem curr (in bytes): 416468
-Degree time (in sec.): 0.003918886184692383
-Degree mem curr (in bytes): 2433
--------------------------------
-
-Execution time (in sec.): 196.3413951396942

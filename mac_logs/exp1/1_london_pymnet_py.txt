@@ -1,8 +1,0 @@
-Exp1: lib=pymnet, file=london
-Loading time (in sec.): 0.020226001739501953
-Loading mem curr (in bytes): 204152
-Aggregate time (in sec.): 0.012785911560058594
-Aggregate mem curr (in bytes): 246218
--------------------------------
-
-Execution time (in sec.): 1.4416906833648682
