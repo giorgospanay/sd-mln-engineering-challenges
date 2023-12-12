@@ -18,7 +18,7 @@ The plots featured in the paper are obtained by executing `python3 scripts/run-a
 + Layer aggregation: Exp1 + Exp6
 + Degree computation: Exp2 + Exp7
 + Network generation: Exp5
-This runs all experiments for the libraries by creating a new subprocess in the terminal, and executing the appropriate `experiments.(extension)` file, which in turn imports the respective `(lib-code)-util.(extension)` file where library-specific instructions to run that operator are found. By termination of the experiment, logfiles are created in the appropriate folder, which can then be processed with `python3 scripts/log-parse.py`and plotted using `python3 scripts/aux-plot.py`.
+This runs all experiments for the libraries by creating a new subprocess in the terminal, and executing the appropriate `experiments.(extension)` file, which in turn imports the respective `(lib-code)-util.(extension)` file where library-specific instructions to run that operator are found. By termination of the experiment, logfiles are created in the appropriate folder.
 
 The list of experiment codes is as follows:
 * Exp1: loading real datasets + layer aggregation
