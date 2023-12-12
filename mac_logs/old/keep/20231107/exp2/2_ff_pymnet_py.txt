@@ -1,0 +1,8 @@
+Exp2: lib=pymnet, file=ff
+Loading time (in sec.): 599.8592028617859
+Loading mem curr (in bytes): 4843282559
+Degree time (in sec.): 8.377804040908813
+Degree mem curr (in bytes): 246352
+-------------------------------
+
+Execution time (in sec.): 622.4389853477478

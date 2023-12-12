@@ -1,0 +1,7 @@
+This build of rgl does not include OpenGL functions.  Use
+ rglwidget() to display results, e.g. via options(rgl.printRglwidget = TRUE).
+Exp6: lib=muxviz, file=5000000-4-2
+WARNING: The input data is directed but isDirected=FALSE, I am symmetrizing by average.
+Killed
+
+---------------------------

@@ -1,0 +1,6 @@
+Exp2: lib=pymnet, file=aucs
+Loading time (in sec.): 0.023566722869873047
+Degree time (in sec.): 0.001386404037475586
+-------------------------------
+
+Execution time (in sec.): 3.884199857711792

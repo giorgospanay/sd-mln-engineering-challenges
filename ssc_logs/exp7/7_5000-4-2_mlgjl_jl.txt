@@ -1,0 +1,6 @@
+Exp7: lib=mlgjl, file=5000-4-2
+Loading time (in sec.): 200.518
+Degree time (in sec.): 0.153
+-------------------------------
+
+Execution time (in sec.): 216.5808470249176

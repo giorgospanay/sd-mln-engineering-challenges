@@ -1,0 +1,8 @@
+Exp4: lib=pymnet, file=2000-2
+Generate time (in sec.): 1.9460711479187012
+Generate mem curr (in bytes): 134296
+Aggregate time (in sec.): 0.004355907440185547
+Aggregate mem curr (in bytes): 174100
+-------------------------------
+
+Execution time (in sec.): 3.4452579021453857

@@ -1,0 +1,20 @@
+
+Attaching package: ‘igraph’
+
+The following object is masked from ‘package:pryr’:
+
+    compose
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+Exp2: lib=netmem, file=ff
+Error: cannot allocate vector of size 17464.2 Gb
+Execution halted
+
+---------------------------

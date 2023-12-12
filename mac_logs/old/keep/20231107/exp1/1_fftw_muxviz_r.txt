@@ -1,0 +1,9 @@
+Exp1: lib=muxviz, file=fftw
+WARNING: The input data is directed but isDirected=FALSE, I am symmetrizing by average.
+Loading time (in sec.): 11.749000
+Loading mem curr (in bytes): 411594472
+Aggregate time (in sec.): 7.378000
+Aggregate mem curr (in bytes): 92121792
+-------------------------------
+
+Execution time (in sec.): 20.135358095169067

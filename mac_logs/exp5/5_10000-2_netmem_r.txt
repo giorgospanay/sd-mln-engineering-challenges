@@ -1,0 +1,23 @@
+
+Attaching package: ‘igraph’
+
+The following object is masked from ‘package:pryr’:
+
+    compose
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+Exp5: lib=netmem, file=10000-2
+Generate time (in sec.): 73.749000
+Error in sprintf("Generate mem curr (in bytes): %d\n", trace_gens_curr) : 
+  invalid format '%d'; use format %f, %e, %g or %a for numeric objects
+Calls: main -> exp5 -> cat -> sprintf
+Execution halted
+
+---------------------------

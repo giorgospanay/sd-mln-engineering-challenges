@@ -1,0 +1,8 @@
+Exp1: lib=pymnet, file=fftw
+Loading time (in sec.): 291.4145529270172
+Loading mem curr (in bytes): 3500352715
+Aggregate time (in sec.): 284.4205722808838
+Aggregate mem curr (in bytes): 2230629314
+-------------------------------
+
+Execution time (in sec.): 583.5113430023193

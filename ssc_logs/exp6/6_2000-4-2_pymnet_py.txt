@@ -1,0 +1,6 @@
+Exp6: lib=pymnet, file=2000-4-2
+Loading time (in sec.): 0.2122640609741211
+Aggregate time (in sec.): 0.22074270248413086
+-------------------------------
+
+Execution time (in sec.): 1.6023364067077637

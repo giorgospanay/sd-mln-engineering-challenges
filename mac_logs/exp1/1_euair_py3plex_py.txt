@@ -1,0 +1,11 @@
+Exp1: lib=py3plex, file=euair
+-------------------- 
+ Checking multiplex edges.. 
+ --------------------
+Loading time (in sec.): 2.2169768810272217
+Loading mem curr (in bytes): 367216525
+Aggregate time (in sec.): 0.21474814414978027
+Aggregate mem curr (in bytes): 1633168
+-------------------------------
+
+Execution time (in sec.): 4.705783128738403

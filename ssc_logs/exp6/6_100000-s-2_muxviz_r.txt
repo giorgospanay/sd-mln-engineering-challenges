@@ -1,0 +1,6 @@
+This build of rgl does not include OpenGL functions.  Use
+ rglwidget() to display results, e.g. via options(rgl.printRglwidget = TRUE).
+Exp6: lib=muxviz, file=100000-s-2
+Killed
+
+---------------------------

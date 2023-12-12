@@ -1,0 +1,9 @@
+This build of rgl does not include OpenGL functions.  Use
+ rglwidget() to display results, e.g. via options(rgl.printRglwidget = TRUE).
+Exp1: lib=muxviz, file=euair
+WARNING: The input data is directed but isDirected=FALSE, I am symmetrizing by average.
+Loading time (in sec.): 0.664000
+Aggregate time (in sec.): 0.105000
+-------------------------------
+
+Execution time (in sec.): 1.5966105461120605

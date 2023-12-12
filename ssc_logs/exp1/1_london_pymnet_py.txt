@@ -1,0 +1,6 @@
+Exp1: lib=pymnet, file=london
+Loading time (in sec.): 0.01689600944519043
+Aggregate time (in sec.): 0.012792348861694336
+-------------------------------
+
+Execution time (in sec.): 1.0120859146118164

@@ -1,0 +1,9 @@
+Exp1: lib=muxviz, file=aucs
+WARNING: The input data is directed but isDirected=FALSE, I am symmetrizing by average.
+Loading time (in sec.): 0.478000
+Loading mem curr (in bytes): 81011672
+Aggregate time (in sec.): 0.098000
+Aggregate mem curr (in bytes): 2824768
+-------------------------------
+
+Execution time (in sec.): 3.951753854751587

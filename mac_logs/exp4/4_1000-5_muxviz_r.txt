@@ -1,0 +1,8 @@
+Exp4: lib=muxviz, file=1000-5
+Generate time (in sec.): 0.850000
+Generate mem curr (in bytes): 81808688
+Aggregate time (in sec.): 0.042000
+Aggregate mem curr (in bytes): 2904160
+-------------------------------
+
+Execution time (in sec.): 1.798680067062378

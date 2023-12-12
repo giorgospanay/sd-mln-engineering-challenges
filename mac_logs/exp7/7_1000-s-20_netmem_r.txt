@@ -1,0 +1,24 @@
+
+Attaching package: ‘igraph’
+
+The following object is masked from ‘package:pryr’:
+
+    compose
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+Exp7: lib=netmem, file=1000-s-20
+Loading time (in sec.): 380.636000
+Degree time (in sec.): 12.747000
+-------------------------------
+Warning message:
+In for (i in seq_len(n)) { :
+  closing unused connection 3 (../data/synth/1000-s-20_netmem.edges)
+
+Execution time (in sec.): 394.26444578170776

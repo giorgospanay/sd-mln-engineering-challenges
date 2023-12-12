@@ -1,0 +1,10 @@
+This build of rgl does not include OpenGL functions.  Use
+ rglwidget() to display results, e.g. via options(rgl.printRglwidget = TRUE).
+Exp5: lib=muxviz, file=1000000-2
+Error in stats::runif(n * m) : invalid arguments
+Calls: main ... lapply -> FUN -> rand -> <Anonymous> -> is -> <Anonymous>
+In addition: Warning message:
+In n * m : NAs produced by integer overflow
+Execution halted
+
+---------------------------

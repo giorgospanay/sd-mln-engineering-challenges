@@ -1,0 +1,9 @@
+Exp7: lib=muxviz, file=5000000-4-2
+WARNING: The input data is directed but isDirected=FALSE, I am symmetrizing by average.
+Error in if (any(i < 0L)) { : missing value where TRUE/FALSE needed
+Calls: main ... binarizeMatrix -> [<- -> [<- -> [<- -> [<- -> int2i
+In addition: Warning message:
+In int2i(as.integer(i), n) : NAs introduced by coercion to integer range
+Execution halted
+
+---------------------------

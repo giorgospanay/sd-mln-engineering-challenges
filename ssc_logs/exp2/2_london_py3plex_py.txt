@@ -1,0 +1,9 @@
+Exp2: lib=py3plex, file=london
+-------------------- 
+ Checking multiplex edges.. 
+ --------------------
+Loading time (in sec.): 0.008394956588745117
+Degree time (in sec.): 0.001287698745727539
+-------------------------------
+
+Execution time (in sec.): 1.337533950805664

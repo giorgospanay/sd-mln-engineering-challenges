@@ -1,0 +1,9 @@
+Exp2: lib=py3plex, file=fftw
+-------------------- 
+ Checking multiplex edges.. 
+ --------------------
+Loading time (in sec.): 104.66016149520874
+Degree time (in sec.): 5.394379377365112
+-------------------------------
+
+Execution time (in sec.): 132.39325213432312

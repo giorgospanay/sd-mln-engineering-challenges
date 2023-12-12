@@ -1,0 +1,8 @@
+Exp4: lib=muxviz, file=1000-500
+Generate time (in sec.): 53.547000
+Error in sprintf("Generate mem curr (in bytes): %d\n", trace_gens_curr) : 
+  invalid format '%d'; use format %f, %e, %g or %a for numeric objects
+Calls: main -> exp4 -> cat -> sprintf
+Execution halted
+
+---------------------------

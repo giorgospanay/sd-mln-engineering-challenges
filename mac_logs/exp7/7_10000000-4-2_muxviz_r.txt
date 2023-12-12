@@ -1,0 +1,7 @@
+Exp7: lib=muxviz, file=10000000-4-2
+Error in Matrix::sparseMatrix(i = edges$from, j = edges$to, x = edges$weight,  : 
+  'dims' must contain all (i,j) pairs
+Calls: main ... BuildSupraAdjacencyMatrixFromExtendedEdgelist -> <Anonymous>
+Execution halted
+
+---------------------------

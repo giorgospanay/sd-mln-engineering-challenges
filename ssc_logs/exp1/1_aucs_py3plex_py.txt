@@ -1,0 +1,9 @@
+Exp1: lib=py3plex, file=aucs
+-------------------- 
+ Checking multiplex edges.. 
+ --------------------
+Loading time (in sec.): 0.0066263675689697266
+Aggregate time (in sec.): 0.004489898681640625
+-------------------------------
+
+Execution time (in sec.): 1.3776040077209473

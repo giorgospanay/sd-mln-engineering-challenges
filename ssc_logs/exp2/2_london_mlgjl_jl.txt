@@ -1,0 +1,6 @@
+Exp2: lib=mlgjl, file=london
+Loading time (in sec.): 6.419
+Degree time (in sec.): 0.001
+-------------------------------
+
+Execution time (in sec.): 18.92430853843689

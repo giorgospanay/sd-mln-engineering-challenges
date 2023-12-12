@@ -1,0 +1,23 @@
+
+Attaching package: ‘igraph’
+
+The following object is masked from ‘package:pryr’:
+
+    compose
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+Loading required package: Rcpp
+Loading required package: RColorBrewer
+Exp7: lib=multinet, file=1000-4-50
+Loading time (in sec.): 1.418000
+Degree time (in sec.): 0.115000
+-------------------------------
+
+Execution time (in sec.): 1.9323310852050781

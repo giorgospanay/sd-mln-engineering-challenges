@@ -1,0 +1,11 @@
+Exp1: lib=py3plex, file=ff
+-------------------- 
+ Checking multiplex edges.. 
+ --------------------
+Loading time (in sec.): 251.22084212303162
+Loading mem curr (in bytes): 19063237781
+Aggregate time (in sec.): 360.06572794914246
+Aggregate mem curr (in bytes): 7052599792
+-------------------------------
+
+Execution time (in sec.): 707.9092891216278

@@ -1,0 +1,6 @@
+Exp2: lib=pymnet, file=ff
+Loading time (in sec.): 1072.1498534679413
+Degree time (in sec.): 4.9116551876068115
+-------------------------------
+
+Execution time (in sec.): 1088.5044178962708

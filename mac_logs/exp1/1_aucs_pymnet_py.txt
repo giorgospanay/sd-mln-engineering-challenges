@@ -1,0 +1,8 @@
+Exp1: lib=pymnet, file=aucs
+Loading time (in sec.): 0.017904996871948242
+Loading mem curr (in bytes): 165100
+Aggregate time (in sec.): 0.010109901428222656
+Aggregate mem curr (in bytes): 93030
+-------------------------------
+
+Execution time (in sec.): 5.207130670547485

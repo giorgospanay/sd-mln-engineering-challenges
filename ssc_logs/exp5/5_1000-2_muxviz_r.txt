@@ -1,0 +1,8 @@
+This build of rgl does not include OpenGL functions.  Use
+ rglwidget() to display results, e.g. via options(rgl.printRglwidget = TRUE).
+Exp5: lib=muxviz, file=1000-2
+Generate time (in sec.): 1.660000
+Degree time (in sec.): 0.042000
+-------------------------------
+
+Execution time (in sec.): 3.1010560989379883
