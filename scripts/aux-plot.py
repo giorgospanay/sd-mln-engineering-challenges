@@ -108,8 +108,8 @@ def plot_exp2(file_a,file_b):
         style=['+--','o--','2--','.:','x:','d-.']
         #title="Degree calculation time, large datasets"
     )
-    ax3.legend(["multinet","MuxViz","netmem","Pymnet","Py3plex","MLG.jl"])
-    ax3.set_ylabel("Degree computation time (sec.)")
+    ax4.legend(["multinet","MuxViz","netmem","Pymnet","Py3plex","MLG.jl"])
+    ax4.set_ylabel("Degree computation time (sec.)")
     plt.savefig("../logs/plots/exp2b_degr_real-large_small.png",transparent=True,dpi=300,format="png")
     plt.show()
 
