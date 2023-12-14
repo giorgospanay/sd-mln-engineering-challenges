@@ -478,10 +478,10 @@ def main():
 
     # Run for experiment 7
     plot_exp7(
-        "../logs/plot_exp7a.txt",
-        "../logs/plot_exp7b.txt",
-        "../logs/plot_exp7c.txt",
-        "../logs/plot_exp7d.txt"
+        "../logs/plot_exp7a_comp.txt",
+        "../logs/plot_exp7b_comp.txt",
+        "../logs/plot_exp7c_comp.txt",
+        "../logs/plot_exp7d_comp.txt"
     )
     
 

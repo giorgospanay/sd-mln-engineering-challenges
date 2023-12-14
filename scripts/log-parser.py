@@ -672,6 +672,7 @@ def parse_exp7(out1,out2,out3,out4):
 	plot_df4=pd.DataFrame(ncols4)
 	plot_df4["layer_size"]=df4["layer_size"].unique()
 
+
 	# Write dataframes to csv files
 	plot_df1.to_csv(out1,sep=" ",index=False)
 	plot_df2.to_csv(out2,sep=" ",index=False)
@@ -679,27 +680,111 @@ def parse_exp7(out1,out2,out3,out4):
 	plot_df4.to_csv(out4,sep=" ",index=False)
 	return
 
+# Open logfiles from exp6 and compare network loading times for all experiments. 
+# 	Only output the smallest in the logfile (assuming no timeout/OOM error, 
+# 	which would be 0). This is done for plotting purposes, as the network loading 
+#	time is generated from Exp7 final plots.
+def compare_load(in6a,in6b,in6c,in6d,in7a,in7b,in7c,in7d,out1,out2,out3,out4):
+	# Read files
+	df61=pd.read_csv(in6a,sep=" ",header=0)
+	df62=pd.read_csv(in6b,sep=" ",header=0)
+	df63=pd.read_csv(in6c,sep=" ",header=0)
+	df64=pd.read_csv(in6d,sep=" ",header=0)
+	df71=pd.read_csv(in7a,sep=" ",header=0)
+	df72=pd.read_csv(in7b,sep=" ",header=0)
+	df73=pd.read_csv(in7c,sep=" ",header=0)
+	df74=pd.read_csv(in7d,sep=" ",header=0)
+
+	# Fix 7_1 (n++,e=4,l=2)
+	print(df71)
+
+	mask = (df71["multinet_load"] > df61["multinet_load"]) & (df61["multinet_load"]!=0) | (df71["multinet_load"]==0)
+	df71.loc[mask,"multinet_load"] = df61.loc[mask,"multinet_load"]
+	#df71["multinet_load"]=df71.apply(lambda x:df71.loc[x.name,"multinet_load"] if mask[x.name] else x["multinet_load"], axis=1)
+	
+	print(mask)
+	print(df61["multinet_load"])
+	print(df71["multinet_load"])
+	print(df71)
+
+	mask = (df71["muxviz_load"] > df61["muxviz_load"]) & (df61["muxviz_load"]!=0) | (df71["muxviz_load"]==0)
+	df71.loc[mask,"muxviz_load"] = df61.loc[mask,"muxviz_load"]
+
+	print(mask)
+	print(df61["muxviz_load"])
+	print(df71["muxviz_load"])
+	print(df71)
+
+	#df71["muxviz_load"]=df71.apply(lambda x:df71.loc[x.name,"muxviz_load"] if mask[x.name] else x["multinet_load"], axis=1)
+	mask = (df71["pymnet_load"] > df61["pymnet_load"]) & (df61["pymnet_load"]!=0) | (df71["pymnet_load"]==0)
+	df71.loc[mask,"pymnet_load"] = df61.loc[mask,"pymnet_load"]
+	#df71["multinet_load"]=df71.apply(lambda x:df71.loc[x.name,"multinet_load"] if mask[x.name] else x["muxviz_load"], axis=1)
+	mask = (df71["py3plex_load"] > df61["py3plex_load"]) & (df61["py3plex_load"]!=0) | (df71["py3plex_load"]==0)
+	df71.loc[mask,"py3plex_load"] = df61.loc[mask,"py3plex_load"]
+	#df71["multinet_load"]=df71.apply(lambda x:df71.loc[x.name,"multinet_load"] if mask[x.name] else x["multinet_load"], axis=1)
+
+	# Fix 7_2 (n++,e=s,l=2)
+	mask = (df72["multinet_load"] > df62["multinet_load"]) & (df62["multinet_load"]!=0) | (df72["multinet_load"]==0)
+	df72.loc[mask,"multinet_load"] = df62.loc[mask,"multinet_load"]
+	mask = (df72["muxviz_load"] > df62["muxviz_load"]) & (df62["muxviz_load"]!=0) | (df72["muxviz_load"]==0)
+	df72.loc[mask,"muxviz_load"] = df62.loc[mask,"muxviz_load"]
+	mask = (df72["pymnet_load"] > df62["pymnet_load"]) & (df62["pymnet_load"]!=0) | (df72["pymnet_load"]==0)
+	df72.loc[mask,"pymnet_load"] = df62.loc[mask,"pymnet_load"]
+	mask = (df72["py3plex_load"] > df62["py3plex_load"]) & (df62["py3plex_load"]!=0) | (df72["py3plex_load"]==0)
+	df72.loc[mask,"py3plex_load"] = df62.loc[mask,"py3plex_load"]
+
+	# Fix 7_3 (n=1000,e=4,l++)
+	mask = (df73["multinet_load"] > df63["multinet_load"]) & (df63["multinet_load"]!=0) | (df73["multinet_load"]==0)
+	df73.loc[mask,"multinet_load"] = df63.loc[mask,"multinet_load"]
+	mask = (df73["muxviz_load"] > df63["muxviz_load"]) & (df63["muxviz_load"]!=0) | (df73["muxviz_load"]==0)
+	df73.loc[mask,"muxviz_load"] = df63.loc[mask,"muxviz_load"]
+	mask = (df73["pymnet_load"] > df63["pymnet_load"]) & (df63["pymnet_load"]!=0) | (df73["pymnet_load"]==0)
+	df73.loc[mask,"pymnet_load"] = df63.loc[mask,"pymnet_load"]
+	mask = (df73["py3plex_load"] > df63["py3plex_load"]) & (df63["py3plex_load"]!=0) | (df73["py3plex_load"]==0)
+	df73.loc[mask,"py3plex_load"] = df63.loc[mask,"py3plex_load"]
+
+	# Fix 7_4 (n=1000,e=s,l++)
+	mask = (df74["multinet_load"] > df64["multinet_load"]) & (df64["multinet_load"]!=0) | (df74["multinet_load"]==0)
+	df74.loc[mask,"multinet_load"] = df64.loc[mask,"multinet_load"]
+	mask = (df74["muxviz_load"] > df64["muxviz_load"]) & (df64["muxviz_load"]!=0) | (df74["muxviz_load"]==0)
+	df74.loc[mask,"muxviz_load"] = df64.loc[mask,"muxviz_load"]
+	mask = (df74["pymnet_load"] > df64["pymnet_load"]) & (df64["pymnet_load"]!=0) | (df74["pymnet_load"]==0)
+	df74.loc[mask,"pymnet_load"] = df64.loc[mask,"pymnet_load"]
+	mask = (df74["py3plex_load"] > df64["py3plex_load"]) & (df64["py3plex_load"]!=0) | (df74["py3plex_load"]==0)
+	df74.loc[mask,"py3plex_load"] = df64.loc[mask,"py3plex_load"]
+
+
+	# Write dataframes to csv files
+	df71.to_csv(out1,sep=" ",index=False)
+	df72.to_csv(out2,sep=" ",index=False)
+	df73.to_csv(out3,sep=" ",index=False)
+	df74.to_csv(out4,sep=" ",index=False)
 
 
 # Portland, Main(e)
 def main():
-	# Parse exp1 file
-	parse_exp1("../logs/plot_exp1a.txt","../logs/plot_exp1b.txt")
+	# # Parse exp1 file
+	# parse_exp1("../logs/plot_exp1a.txt","../logs/plot_exp1b.txt")
 
-	# Parse exp2 file
-	parse_exp2("../logs/plot_exp2a.txt","../logs/plot_exp2b.txt")
+	# # Parse exp2 file
+	# parse_exp2("../logs/plot_exp2a.txt","../logs/plot_exp2b.txt")
 
-	# # Parse exp4 file
-	# parse_exp4("../logs/plot_exp4a.txt","../logs/plot_exp4b.txt")
+	# # # Parse exp4 file
+	# # parse_exp4("../logs/plot_exp4a.txt","../logs/plot_exp4b.txt")
 
-	# Parse exp5 file
-	parse_exp5("../logs/plot_exp5a.txt","../logs/plot_exp5b.txt")
+	# # Parse exp5 file
+	# parse_exp5("../logs/plot_exp5a.txt","../logs/plot_exp5b.txt")
 
-	# Parse exp6 file
-	parse_exp6("../logs/plot_exp6a.txt","../logs/plot_exp6b.txt", "../logs/plot_exp6c.txt", "../logs/plot_exp6d.txt")
+	# # Parse exp6 file
+	# parse_exp6("../logs/plot_exp6a.txt","../logs/plot_exp6b.txt", "../logs/plot_exp6c.txt", "../logs/plot_exp6d.txt")
 
-	# Parse exp7 file
-	parse_exp7("../logs/plot_exp7a.txt","../logs/plot_exp7b.txt", "../logs/plot_exp7c.txt", "../logs/plot_exp7d.txt")
+	# # Parse exp7 file
+	# parse_exp7("../logs/plot_exp7a.txt","../logs/plot_exp7b.txt", "../logs/plot_exp7c.txt", "../logs/plot_exp7d.txt")
+
+	# Fix exp7 files for plotting: 
+	compare_load("../logs/plot_exp6a.txt","../logs/plot_exp6b.txt", "../logs/plot_exp6c.txt", "../logs/plot_exp6d.txt",
+				"../logs/plot_exp7a.txt","../logs/plot_exp7b.txt", "../logs/plot_exp7c.txt", "../logs/plot_exp7d.txt",
+				"../logs/plot_exp7a_comp.txt","../logs/plot_exp7b_comp.txt", "../logs/plot_exp7c_comp.txt", "../logs/plot_exp7d_comp.txt")
 
 	return
 
