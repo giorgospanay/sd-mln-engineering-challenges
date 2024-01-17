@@ -254,17 +254,27 @@ def exp8(filenames,s):
 	# Graph evolution steps (=S)
 	for i in range(s):
 		# Delete random edge
-		n1_idx = random.randrange(0, len(edges))
-		n1 = list(edges.keys())[n1_idx]
+		rep_flag=0
+		n1_idx=-1
+		n1=-1
+
+		# Repeat random n1 if no edges on n1
+		while rep_flag==0:
+			n1_idx = random.randrange(0, len(edges))
+			n1 = list(edges.keys())[n1_idx]
+			
+			if len(edges[n1])!=0:
+				rep_flag=1
+		
 		n2_idx = random.randrange(0, len(edges[n1]))
 		n2 = list(edges[n1].keys())[n2_idx]
 		l_idx = random.randrange(0, len(edges[n1][n2]))
 		l = list(edges[n1][n2].keys())[l_idx]
-		edges[n1][n2].pop(l, -1)
+		edges[n1][n2].pop(l)
 		if len(edges[n1][n2]) == 0:
-			edges[n1].pop(n2, -1)
+			edges[n1].pop(n2)
 		if len(edges[n1]) == 0:
-			edges.pop(n1, -1)
+			edges.pop(n1)
 
 		time_remv_s=time.time()
 		# --- MODULE ADD CALL START ---
@@ -482,7 +492,7 @@ def main():
 		exp7(filenames)
 	# Experiment 8: Load net from empty & rebuild random
 	elif e_id==8:
-		exp8(filenames,10000)
+		exp8(filenames,100000)
 	#
 	# ... Other experiments here ...
 	#

@@ -46,9 +46,6 @@ load_net <- function(filenames){
 	df_nodes <- utils::read.table(as.character(df_config$layout.file),header=T)
 	n <- nrow(df_nodes)
 
-  print("done reading 1")
-  print(l)
-
 	# Convert dataframe to SupraAdjacencyMatrix
 	net_sam <- BuildSupraAdjacencyMatrixFromExtendedEdgelist(
 		df_edges,				# dataframe

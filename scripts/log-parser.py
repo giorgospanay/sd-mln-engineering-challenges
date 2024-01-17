@@ -680,6 +680,81 @@ def parse_exp7(out1,out2,out3,out4):
 	plot_df4.to_csv(out4,sep=" ",index=False)
 	return
 
+# Result parser, Exp 8
+def parse_exp8(out1):
+	global log_path
+	df=pd.DataFrame(columns=["multinet","muxviz","pymnet","py3plex"])
+	multinet_list=list()
+	muxviz_list=list()
+	pymnet_list=list()
+	py3plex_list=list()
+
+
+	# Open all logfiles in path
+	for filename in glob.glob(log_path+"exp8/8_*.txt"):
+		with open(filename,'r') as f: 
+			# Find line starting with Exp1:
+			header_found=0
+			lib_name=""
+			data_name=""
+			line_counter=0
+			
+
+			for ln in f.readlines():
+				# Found timed out experiment, parse filename instead
+				if "Timeout" in ln or "Killed" in ln:
+					parsed=parse.parse(log_path+"exp8/8_{}_{}_{}.txt",filename)
+					lib_name=parsed[1]
+					data_name=parsed[0]
+					# Programming language should be on parsed[2] if necessary
+					break
+				elif header_found==0 and not("Exp8:" in ln):
+					continue
+				elif "Exp8:" in ln:
+					header_found=1
+					parsed=parse.parse("Exp8: lib={}, file={}",ln.strip())
+					lib_name=parsed[0]
+					data_name=parsed[1]
+				
+				# Find first line where parsing is all numerical
+				try:
+					num=float(ln)
+				# Bad catching of exceptions, but does the job.
+				except ValueError:
+					continue
+
+				# When first num value (0.0) is found, continue and catch every 
+				#   10000th value
+				if line_counter==0 or line_counter==1 or line_counter%10000!=1:
+					line_counter+=1
+					continue
+				line_counter+=1
+
+				# Should reach here after done with header, every 100k lines.
+				# Read line with time and add to list
+				parsed=parse.parse("{}",ln.strip())
+				if not parsed is None:
+					if lib_name=="multinet":
+						multinet_list.append(parsed[0])
+					elif lib_name=="muxviz":
+						muxviz_list.append(parsed[0])
+					elif lib_name=="pymnet":
+						pymnet_list.append(parsed[0])
+					elif lib_name=="py3plex":
+						py3plex_list.append(parsed[0])
+
+	
+	# Done with lines- add into dataframe
+	for i in range(len(multinet_list)):
+		df.loc[len(df)]={"multinet":multinet_list[i],"muxviz":muxviz_list[i],"pymnet":pymnet_list[i],"py3plex":py3plex_list[i]}			
+
+   	# Done with all files. Aggregate total times. Visualize. 
+	df.dropna()
+	# Save to file
+	df.to_csv(out1,sep=" ",index=False)
+	return
+
+
 # Open logfiles from exp6 and compare network loading times for all experiments. 
 # 	Only output the smallest in the logfile (assuming no timeout/OOM error, 
 # 	which would be 0). This is done for plotting purposes, as the network loading 
@@ -761,30 +836,35 @@ def compare_load(in6a,in6b,in6c,in6d,in7a,in7b,in7c,in7d,out1,out2,out3,out4):
 	df74.to_csv(out4,sep=" ",index=False)
 
 
+
+
 # Portland, Main(e)
 def main():
-	# Parse exp1 file
-	parse_exp1("../logs/plot_exp1a.txt","../logs/plot_exp1b.txt")
+	# # Parse exp1 file
+	# parse_exp1("../logs/plot_exp1a.txt","../logs/plot_exp1b.txt")
 
-	# Parse exp2 file
-	parse_exp2("../logs/plot_exp2a.txt","../logs/plot_exp2b.txt")
+	# # Parse exp2 file
+	# parse_exp2("../logs/plot_exp2a.txt","../logs/plot_exp2b.txt")
 
-	# # Parse exp4 file
-	# parse_exp4("../logs/plot_exp4a.txt","../logs/plot_exp4b.txt")
+	# # # Parse exp4 file
+	# # parse_exp4("../logs/plot_exp4a.txt","../logs/plot_exp4b.txt")
 
-	# Parse exp5 file
-	parse_exp5("../logs/plot_exp5a.txt","../logs/plot_exp5b.txt")
+	# # Parse exp5 file
+	# parse_exp5("../logs/plot_exp5a.txt","../logs/plot_exp5b.txt")
 
-	# Parse exp6 file
-	parse_exp6("../logs/plot_exp6a.txt","../logs/plot_exp6b.txt", "../logs/plot_exp6c.txt", "../logs/plot_exp6d.txt")
+	# # Parse exp6 file
+	# parse_exp6("../logs/plot_exp6a.txt","../logs/plot_exp6b.txt", "../logs/plot_exp6c.txt", "../logs/plot_exp6d.txt")
 
-	# Parse exp7 file
-	parse_exp7("../logs/plot_exp7a.txt","../logs/plot_exp7b.txt", "../logs/plot_exp7c.txt", "../logs/plot_exp7d.txt")
+	# # Parse exp7 file
+	# parse_exp7("../logs/plot_exp7a.txt","../logs/plot_exp7b.txt", "../logs/plot_exp7c.txt", "../logs/plot_exp7d.txt")
 
-	# Fix exp7 files for plotting: 
-	compare_load("../logs/plot_exp6a.txt","../logs/plot_exp6b.txt", "../logs/plot_exp6c.txt", "../logs/plot_exp6d.txt",
-				"../logs/plot_exp7a.txt","../logs/plot_exp7b.txt", "../logs/plot_exp7c.txt", "../logs/plot_exp7d.txt",
-				"../logs/plot_exp7a_comp.txt","../logs/plot_exp7b_comp.txt", "../logs/plot_exp7c_comp.txt", "../logs/plot_exp7d_comp.txt")
+	# # Fix exp7 files for plotting: 
+	# compare_load("../logs/plot_exp6a.txt","../logs/plot_exp6b.txt", "../logs/plot_exp6c.txt", "../logs/plot_exp6d.txt",
+	# 			"../logs/plot_exp7a.txt","../logs/plot_exp7b.txt", "../logs/plot_exp7c.txt", "../logs/plot_exp7d.txt",
+	# 			"../logs/plot_exp7a_comp.txt","../logs/plot_exp7b_comp.txt", "../logs/plot_exp7c_comp.txt", "../logs/plot_exp7d_comp.txt")
+
+	# Parse exp8 file
+	parse_exp8("../logs/plot_exp8.txt")
 
 	return
 

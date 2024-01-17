@@ -549,7 +549,7 @@ main <- function(){
 	}
 	# Experiment 8: Load net from empty & rebuild random
 	else if (e_id==8){
-		exp8(filenames,10000)
+		exp8(filenames,100000)
 	}
 	#
 	# ... Other experiments here ...
