@@ -102,6 +102,76 @@ function exp7(filenames)
     return exp2(filenames)
 end
 
+# Read generated multiplex network (1000-4-10). Then, for each of S steps, 
+#   delete an edge and add an edge.
+function exp8(filenames,s)
+    # Read network from filenames
+    time_load_s = Dates.value(now())
+    net = load_net(filenames)
+    time_load_e = Dates.value(now())
+    time_load_t = time_load_e - time_load_s
+
+    # 
+
+end
+
+
+function add_edge(edges)
+    n1 = rand(1:NUM_NODES)
+    
+    if !(n1 in keys(edges))
+        edges[n1] = Dict()
+    end
+    
+    n2 = rand(1:NUM_NODES)
+    
+    if !(n2 in keys(edges[n1]))
+        edges[n1][n2] = Dict()
+    end
+    
+    l = rand(1:NUM_LAYERS)
+    
+    if !(l in keys(edges[n1][n2]))
+        edges[n1][n2][l] = true
+        println("ADD_EDGE($n1, $n2, $l)")
+    end
+end
+
+function delete_edge(edges)
+    n1_idx = rand(1:length(keys(edges)))
+    n1 = parse(Int, keys(edges)[n1_idx])
+    
+    n2_idx = rand(1:length(keys(edges[n1])))
+    n2 = parse(Int, keys(edges[n1])[n2_idx])
+    
+    l_idx = rand(1:length(keys(edges[n1][n2])))
+    l = parse(Int, keys(edges[n1][n2])[l_idx])
+    
+    delete!(edges[n1][n2], l)
+    
+    if isempty(keys(edges[n1][n2]))
+        delete!(edges[n1], n2)
+    end
+    
+    if isempty(keys(edges[n1]))
+        delete!(edges, n1)
+    end
+    
+    println("REMOVE_EDGE($n1, $n2, $l)")
+end
+
+edges = Dict()
+
+for i in 1:GROWING_STEPS
+    add_edge(edges)
+end
+
+for i in 1:EVOLUTION_STEPS
+    delete_edge(edges)
+    add_edge(edges)
+end
+
+
 # Load network from file and visualize
 function exp99(filenames)
     # Not available for current libraries. Populate here if necessary.
@@ -252,6 +322,9 @@ function main()
     # Experiment 7: Load net from synth and calculate degree
     elseif e_id==7
         exp7(filenames)
+    # Experiment 8: Load net from empty and rebuild
+    elseif e_id==8
+        exp8(filenames)
 
     #
     # ...Add other experiments here...

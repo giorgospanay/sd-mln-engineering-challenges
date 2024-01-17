@@ -63,6 +63,17 @@ def gen_network(n,l):
 	net=pymnet.er_multilayer(n,l,p)
 	return net
 
+# --- EXTRA FUNCTIONS ---
+# Adds (n1,n2,l) edge on a multiplex network net
+def add_edge(net,n1,n2,l):
+	net[n1,n2,l]=1
+	return net
+
+# Removes (n1,n2,l) edge from a multiplex network net
+def rem_edge(net,n1,n2,l):
+	net[n1,n2,l]=0
+	return net
+
 # # Main plotting for poster visuals
 # def main():
 # 	#net=load_net(["../data/florentine/Padgett-Florentine-Families_nodes.txt","../data/florentine/Padgett-Florentine-Families_multiplex.edges","../data/florentine/Padgett-Florentine-Families_layers.txt"])

@@ -66,6 +66,18 @@ def gen_network(n,l):
 	return net
 
 
+# --- EXTRA FUNCTIONS ---
+# Adds (n1,n2,l) edge on a multiplex network net
+def add_edge(net,n1,n2,l):
+    net.add_edges([[n1,l,n2,l,1]],input_type="list")
+    return net
+
+# Removes (n1,n2,l) edge from a multiplex network net
+def rem_edge(net,n1,n2,l):
+    net.remove_edges([[n1,l,n2,l,1]],input_type="list")
+    return net
+
+
 # 
 # ---------------------------------------------------------------------
 # Auxiliary function. Copied as is from py3plex source.

@@ -132,10 +132,23 @@ gen_network <- function(n,l){
 	return(sam)
 }
 
+
+# --- EXTRA FUNCTIONS ---
+
+# Add edge (n1,n2,l) to multiplex network net
+add_edge <- function(net,n1,n2,l){
+	return()
+}
+
+# Remove edge (n1,n2,l) from multiplex network net
+rem_edge <- function(net,n1,n2,l){
+	return()
+}
+
+
 #
 # -----------------------------------------------------------------------------
 # 
-
 
 # Main function. 
 main <- function(){

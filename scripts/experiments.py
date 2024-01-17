@@ -2,6 +2,7 @@ import sys
 import importlib.util
 # Imports for timing and memory trace
 import time
+import random
 #import tracemalloc
 
 # Global variables for module importers. See main(.). 
@@ -206,6 +207,110 @@ def exp7(filenames):
 	# Behaviour identical to exp2. Different id for logging
 	return exp2(filenames)
 
+# experiment 8: Read synth multiplex network (1000-4-10), then for each of S steps
+# 	delete and create an edge
+def exp8(filenames,s):
+	edges=dict()
+
+	init_time=list()
+	rem_time=list()
+	add_time=list()
+	all_time=list()
+	all_time.append(0.0)
+
+	# Graph init: read network (synth-empty/1000-0-10)
+	net=module.load_net(filenames)
+	# Set constants:
+	NUM_NODES=1000
+	NUM_LAYERS=10
+	NUM_INIT=10000
+	
+	# Graph init steps (=E)
+	for i in range(NUM_INIT):
+		# Add random edge
+		n1 = random.randrange(0,NUM_NODES)
+		if n1 not in edges:
+			edges[n1] = dict()
+		n2 = random.randrange(0,NUM_NODES)
+		if n1==n2:
+			continue
+		if n2 not in edges[n1]:
+			edges[n1][n2] = dict()
+		l = random.randrange(0,NUM_LAYERS)
+		if l not in edges[n1][n2]:
+			edges[n1][n2][l] = True
+
+			time_add1_s=time.time()
+			# --- MODULE ADD CALL START ---
+			net=module.add_edge(net,n1,n2,l)
+			# --- MODULE ADD CALL END ---
+			time_add1_e=time.time()
+			time_add1_t=time_add1_e-time_add1_s
+			# Add to init_time list for plotting later
+			init_time.append(time_add1_t)
+			all_time.append(time_add1_t)
+
+	
+	# Graph evolution steps (=S)
+	for i in range(s):
+		# Delete random edge
+		n1_idx = random.randrange(0, len(edges))
+		n1 = list(edges.keys())[n1_idx]
+		n2_idx = random.randrange(0, len(edges[n1]))
+		n2 = list(edges[n1].keys())[n2_idx]
+		l_idx = random.randrange(0, len(edges[n1][n2]))
+		l = list(edges[n1][n2].keys())[l_idx]
+		edges[n1][n2].pop(l, -1)
+		if len(edges[n1][n2]) == 0:
+			edges[n1].pop(n2, -1)
+		if len(edges[n1]) == 0:
+			edges.pop(n1, -1)
+
+		time_remv_s=time.time()
+		# --- MODULE ADD CALL START ---
+		net=module.rem_edge(net,n1,n2,l)
+		# --- MODULE ADD CALL END ---
+		time_remv_e=time.time()
+		time_remv_t=time_remv_e-time_remv_s
+		# Add to rem_time list for plotting later
+		rem_time.append(time_remv_t)
+		all_time.append(time_remv_t)
+
+		# Add random edge
+		n1 = random.randrange(0,NUM_NODES)
+		if n1 not in edges:
+			edges[n1] = dict()
+		n2 = random.randrange(0,NUM_NODES)
+		if n1==n2:
+			continue
+		if n2 not in edges[n1]:
+			edges[n1][n2] = dict()
+		l = random.randrange(0,NUM_LAYERS)
+		if l not in edges[n1][n2]:
+			edges[n1][n2][l] = True
+
+			time_add2_s=time.time()
+			# --- MODULE ADD CALL START ---
+			net=module.add_edge(net,n1,n2,l)
+			# --- MODULE ADD CALL END ---
+			time_add2_e=time.time()
+			time_add2_t=time_add2_e-time_add2_s
+			# Add to add_time list for plotting later
+			add_time.append(time_add2_t)
+			all_time.append(time_add2_t)
+
+	# Print all times:
+	sum_time=0 
+	for t in all_time:
+		sum_time=sum_time+t
+		print(sum_time)
+
+	print("-----------------")
+
+	return edges
+
+
+
 # Chicken chow main. Set up so that the same main util template can be used
 #   on all experiments; most of the changes need to be done on the load_net(), 
 #   build(), aggregate(), ... methods. 
@@ -249,7 +354,7 @@ def main():
 	#		config.file
 	#	4 -- Custom file for netmem. First line: max_node_id, max_layer_id. Rest is
 	#		normal multiplex edgelist file.
- 	# Pymnet import
+	# Pymnet import
 	if lib=="pymnet":
 		spec=importlib.util.spec_from_file_location("pymnet_util","pymnet-util.py")
 		lib_input_type=2
@@ -372,9 +477,12 @@ def main():
 	# Experiment 6: Load net from synth & aggregate
 	elif e_id==6:
 		exp6(filenames)
-	# Experiment 7; Load net from synth & calculate degrees
+	# Experiment 7: Load net from synth & calculate degrees
 	elif e_id==7:
 		exp7(filenames)
+	# Experiment 8: Load net from empty & rebuild random
+	elif e_id==8:
+		exp8(filenames,10000)
 	#
 	# ... Other experiments here ...
 	#

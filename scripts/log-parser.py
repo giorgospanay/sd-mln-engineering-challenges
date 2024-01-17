@@ -763,23 +763,23 @@ def compare_load(in6a,in6b,in6c,in6d,in7a,in7b,in7c,in7d,out1,out2,out3,out4):
 
 # Portland, Main(e)
 def main():
-	# # Parse exp1 file
-	# parse_exp1("../logs/plot_exp1a.txt","../logs/plot_exp1b.txt")
+	# Parse exp1 file
+	parse_exp1("../logs/plot_exp1a.txt","../logs/plot_exp1b.txt")
 
-	# # Parse exp2 file
-	# parse_exp2("../logs/plot_exp2a.txt","../logs/plot_exp2b.txt")
+	# Parse exp2 file
+	parse_exp2("../logs/plot_exp2a.txt","../logs/plot_exp2b.txt")
 
-	# # # Parse exp4 file
-	# # parse_exp4("../logs/plot_exp4a.txt","../logs/plot_exp4b.txt")
+	# # Parse exp4 file
+	# parse_exp4("../logs/plot_exp4a.txt","../logs/plot_exp4b.txt")
 
-	# # Parse exp5 file
-	# parse_exp5("../logs/plot_exp5a.txt","../logs/plot_exp5b.txt")
+	# Parse exp5 file
+	parse_exp5("../logs/plot_exp5a.txt","../logs/plot_exp5b.txt")
 
-	# # Parse exp6 file
-	# parse_exp6("../logs/plot_exp6a.txt","../logs/plot_exp6b.txt", "../logs/plot_exp6c.txt", "../logs/plot_exp6d.txt")
+	# Parse exp6 file
+	parse_exp6("../logs/plot_exp6a.txt","../logs/plot_exp6b.txt", "../logs/plot_exp6c.txt", "../logs/plot_exp6d.txt")
 
-	# # Parse exp7 file
-	# parse_exp7("../logs/plot_exp7a.txt","../logs/plot_exp7b.txt", "../logs/plot_exp7c.txt", "../logs/plot_exp7d.txt")
+	# Parse exp7 file
+	parse_exp7("../logs/plot_exp7a.txt","../logs/plot_exp7b.txt", "../logs/plot_exp7c.txt", "../logs/plot_exp7d.txt")
 
 	# Fix exp7 files for plotting: 
 	compare_load("../logs/plot_exp6a.txt","../logs/plot_exp6b.txt", "../logs/plot_exp6c.txt", "../logs/plot_exp6d.txt",

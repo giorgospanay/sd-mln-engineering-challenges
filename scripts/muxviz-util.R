@@ -45,6 +45,10 @@ load_net <- function(filenames){
 	l <- nrow(df_layers)
 	df_nodes <- utils::read.table(as.character(df_config$layout.file),header=T)
 	n <- nrow(df_nodes)
+
+  print("done reading 1")
+  print(l)
+
 	# Convert dataframe to SupraAdjacencyMatrix
 	net_sam <- BuildSupraAdjacencyMatrixFromExtendedEdgelist(
 		df_edges,				# dataframe
@@ -128,6 +132,30 @@ gen_network <- function(n,l){
   net<-GetSampleMultiplex(l,n,p)
   return(c(net,l,n))
 }
+
+
+# --- EXTRA FUNCTIONS ---
+
+# Makes sample (one edge) empty network
+read_empty <- function(filenames){
+  net<-load_net(filenames)
+  return(net)
+}
+
+# Add edge (n1,n2,l) to multiplex network net
+add_edge <- function(net,n1,n2,l){
+  n<-net[[1]] # net in SAM
+  n[n1*l][n2*l]<-1    # change for edge. Assume unweighted
+  return(c(n,net[[2]],net[[3]]))
+}
+
+# Remove edge (n1,n2,l) from multiplex network net
+rem_edge <- function(net,n1,n2,l){
+  n<-net[[1]]         # net in SAM
+  n[n1*l][n2*l]<-0    # Remove edge
+  return(c(n,net[[2]],net[[3]]))
+}
+
 
 # --------------------------------------------------------------------------------
 

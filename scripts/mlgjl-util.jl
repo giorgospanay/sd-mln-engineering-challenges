@@ -127,6 +127,38 @@ function gen_network(n,l)
     return net
 end
 
+# --- EXTRA FUNCTIONS ---
+# Add edge (n1,n2,l) to network net
+function add_edge(net,n1,n2,l)
+    
+
+    # Construct native Node and MV items.
+    # Note: the package does not (at the time, I presume) offer a good 
+    #   interface to retrieve nodes and edges from the layer, so this
+    #   information should be kept locally. For the time being, however,
+    #   add_vertex!() and add_edge!() fail if duplicate node is added.
+    n1,n2=Node("$node1"),Node("$node2")
+    mv1,mv2=MV(n1),MV(n2)
+            
+    # If first time discovering a layer id:
+    if !haskey(layers, layer)
+        # Construct empty layer and fill later
+        layers[layer] = layer_simpleweightedgraph(Symbol(layer),MultilayerVertex{nothing}[],MultilayerEdge{}[])
+    end
+
+    # Add vertices and edge to layer identified
+    fv1=add_vertex!(layers[layer],mv1)
+    fv2=add_vertex!(layers[layer],mv2)
+    fe1=add_edge!(layers[layer],mv1,mv2,weight) 
+
+    return net   
+end
+
+# Remove edge (n1,n2,l) from network net
+function rem_edge(net,n1,n2,l)
+
+end
+
 # Main function for debug
 function main()
 	#net=load_net(["../data/london-transport/london_transport_nodes.txt","../data/london-transport/london_transport_multiplex.edges","../data/london-transport/london_transport_layers.txt"])

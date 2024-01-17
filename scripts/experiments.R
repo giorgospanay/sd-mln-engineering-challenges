@@ -1,5 +1,6 @@
 # Other imports
 #library(pryr)
+library(hash)
 
 # Loads a network from file and aggregates it into a monoplex.
 # Time performance. Also, track memory consumption -- to be done manually??
@@ -209,6 +210,125 @@ exp7 <- function(filenames){
 	# Behaviour identical to exp2. Different experiment id for logging purposes.
 	return (exp2(filenames))
 }
+
+
+# experiment 8: Read synth multiplex network (1000-0-10), then for each of S steps
+# delete and create an edge
+exp8 <- function(filenames, s) {
+  edges <- hash()
+
+  init_time <- c()
+  rem_time <- c()
+  add_time <- c()
+  all_time<-c(0.0)
+
+  # Graph init: read network (synth-empty/1000-0-10)
+  #net <- load_net(filenames)
+  net<-read_empty(filenames)
+
+  # Set constants:
+  NUM_NODES <- 1000
+  NUM_LAYERS <- 10
+  NUM_INIT<-10000
+
+
+# Graph init steps (=E)
+for (i in 1:NUM_INIT) {
+  # Add random edge
+  n1 <- sample(1:NUM_NODES, 1)
+  n2 <- sample(1:NUM_NODES, 1)
+  l <- sample(1:NUM_LAYERS, 1)
+  
+  if (!(as.character(n1) %in% keys(edges))) {
+    edges[[as.character(n1)]] <- hash()
+  }
+  
+  if (!(as.character(n2) %in% keys(edges[[as.character(n1)]]))) {
+    edges[[as.character(n1)]][[as.character(n2)]] <- hash()
+  }
+  
+  if (!(as.character(l) %in% keys(edges[[as.character(n1)]][[as.character(n2)]]))) {
+    edges[[as.character(n1)]][[as.character(n2)]][[as.character(l)]] <- TRUE 
+
+    time_add1_s <- Sys.time()
+    # --- MODULE ADD CALL START ---
+    net <- add_edge(net, n1, n2, l)
+    # --- MODULE ADD CALL END ---
+    time_add1_e <- Sys.time()
+    time_add1_t <- as.numeric(difftime(time_add1_e, time_add1_s, units = "secs"))
+    # Add to init_time list for plotting later
+    init_time <- c(init_time, time_add1_t)
+    all_time <- c(all_time, time_add1_t)
+  }
+}
+
+# Graph evolution steps (=S)
+for (i in 1:s) {
+  # Delete random edge
+  n1 <- as.character(sample(keys(edges), 1))
+  n2 <- as.character(sample(keys(edges[[n1]]), 1))
+  l <- as.character(sample(keys(edges[[n1]][[n2]]), 1))
+  
+  del(l,edges[[n1]][[n2]])
+  
+  if (length(keys(edges[[n1]][[n2]])) == 0) {
+    edges[[n1]][[n2]] <- NULL
+  }
+  
+  if (length(keys(edges[[n1]])) == 0) {
+    edges[[n1]] <- NULL
+  }
+
+  time_remv_s <- Sys.time()
+  # --- MODULE ADD CALL START ---
+  net <- rem_edge(net, as.numeric(n1), as.numeric(n2), as.numeric(l))
+  # --- MODULE ADD CALL END ---
+  time_remv_e <- Sys.time()
+  time_remv_t <- as.numeric(difftime(time_remv_e, time_remv_s, units = "secs"))
+  # Add to rem_time list for plotting later
+  rem_time <- c(rem_time, time_remv_t)
+  all_time <- c(all_time, time_remv_t)
+
+  # Add random edge
+  n1 <- sample(1:NUM_NODES, 1)
+  n2 <- sample(1:NUM_NODES, 1)
+  l <- sample(1:NUM_LAYERS, 1)
+
+  if (!(as.character(n1) %in% keys(edges))) {
+    edges[[as.character(n1)]] <- hash()
+  }
+  
+  if (!(as.character(n2) %in% keys(edges[[as.character(n1)]]))) {
+    edges[[as.character(n1)]][[as.character(n2)]] <- hash()
+  }
+  
+  if (!(as.character(l) %in% keys(edges[[as.character(n1)]][[as.character(n2)]]))) {
+    edges[[as.character(n1)]][[as.character(n2)]][[as.character(l)]] <- TRUE
+
+   time_add2_s <- Sys.time()
+    # --- MODULE ADD CALL START ---
+    net <- add_edge(net, n1, n2, l)
+    # --- MODULE ADD CALL END ---
+    time_add2_e <- Sys.time()
+    time_add2_t <- as.numeric(difftime(time_add2_e, time_add2_s, units = "secs"))
+    # Add to add_time list for plotting later
+    add_time <- c(add_time, time_add2_t)
+    all_time <- c(all_time, time_add2_t)
+  }
+}
+
+  # Print times sum
+  sum_time<-0.0
+  for (t in all_time){
+  	sum_time=sum_time+t
+  	cat(sprintf("%f\n",sum_time))
+  }
+
+  cat(sprintf("-----------------\n"))
+
+  return(edges)
+}
+
 
 # More experiments go here
 
@@ -426,6 +546,10 @@ main <- function(){
 	# Experiment 7: Load net from synth & calculate degree
 	else if (e_id==7){
 		exp7(filenames)
+	}
+	# Experiment 8: Load net from empty & rebuild random
+	else if (e_id==8){
+		exp8(filenames,10000)
 	}
 	#
 	# ... Other experiments here ...
