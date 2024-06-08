@@ -6,11 +6,9 @@ import time
 from matplotlib import pyplot as plt
 
 # Path to log exports
-log_path="../logs/"
 
 # Result parser
-def parse_exp1(out1,out2):
-	global log_path
+def parse_exp1(log_path,out1,out2):
 	df=pd.DataFrame(columns=["dataset","library","load_time","load_mem","aggr_time","aggr_mem"])
 	# Open all logfiles in path
 	for filename in glob.glob(log_path+"exp1/1_*.txt"):
@@ -402,8 +400,7 @@ def parse_exp5(out1,out2):
 	return
 
 # Result parser, Exp 6
-def parse_exp6(out1,out2,out3,out4):
-	global log_path
+def parse_exp6(log_path,out1,out2,out3,out4):
 	df=pd.DataFrame(columns=["node_size","edge_size","layer_size","library","load_time","load_mem","aggr_time","aggr_mem"])
 	# Open all logfiles in path
 	for filename in glob.glob(log_path+"exp6/6_*.txt"):
@@ -681,8 +678,7 @@ def parse_exp7(out1,out2,out3,out4):
 	return
 
 # Result parser, Exp 8
-def parse_exp8(out1):
-	global log_path
+def parse_exp8(log_path,out1):
 	df=pd.DataFrame(columns=["multinet","muxviz","pymnet","py3plex"])
 	multinet_list=list()
 	muxviz_list=list()
@@ -836,35 +832,153 @@ def compare_load(in6a,in6b,in6c,in6d,in7a,in7b,in7c,in7d,out1,out2,out3,out4):
 	df74.to_csv(out4,sep=" ",index=False)
 
 
+# Compare runs
+log_folders=["../logs-0/","../logs-1/","../logs-2/","../logs-3/","../logs-4/"]
+
+def compare_runs_exp1(log_path):
+	dfa_list=list()
+	dfb_list=list()
+	df_a=None
+	df_b=None
+
+	for folder in log_folders:
+		df_a=pd.read_csv(f"{folder}plot_exp1a.txt",sep=" ",header=0,index_col="dataset")
+		df_b=pd.read_csv(f"{folder}plot_exp1b.txt",sep=" ",header=0,index_col="dataset")
+
+		# Add read to list
+		dfa_list.append(df_a.sort_values(["dataset"]).to_numpy())
+		dfb_list.append(df_b.sort_values(["dataset"]).to_numpy())
+
+	# Calculate standard deviation and average on axis
+	avg_a=np.dstack((dfa_list)).mean(axis=2)
+	std_a=np.dstack((dfa_list)).std(axis=2)
+	avg_b=np.dstack((dfb_list)).mean(axis=2)
+	std_b=np.dstack((dfb_list)).std(axis=2)
+
+
+	# Create common dataframes and merge
+	ndf_a=pd.DataFrame(np.array(avg_a))
+	ndf_a.index=df_a.index
+	ndf_a.columns=df_a.columns
+	ndf_std_a=pd.DataFrame(np.array(std_a))
+	ndf_std_a.index=df_a.index
+	ndf_std_a.columns=[f"std_{i}" for i in df_a.columns]
+
+	ndf_b=pd.DataFrame(np.array(avg_b))
+	ndf_b.index=df_b.index
+	ndf_b.columns=df_b.columns
+	ndf_std_b=pd.DataFrame(np.array(std_b))
+	ndf_std_b.index=df_b.index
+	ndf_std_b.columns=[f"std_{i}" for i in df_b.columns]
+
+	ndf_a=pd.concat([ndf_a,ndf_std_a],axis=1)
+	ndf_b=pd.concat([ndf_b,ndf_std_b],axis=1)
+
+	# Print values
+	ndf_a.to_csv(f"{log_path}plot_exp1a.txt",sep=" ")
+	ndf_b.to_csv(f"{log_path}plot_exp1b.txt",sep=" ")
+
+	return
+
+
+def compare_runs_exp6(log_path):
+	dfa_list=list()
+	dfb_list=list()
+	dfc_list=list()
+	dfd_list=list()
+	df_a=None
+	df_b=None
+	df_c=None
+	df_d=None
+
+	for folder in log_folders:
+		df_a=pd.read_csv(f"{folder}plot_exp6a.txt",sep=" ",header=0,index_col="node_size")
+		df_b=pd.read_csv(f"{folder}plot_exp6b.txt",sep=" ",header=0,index_col="node_size")
+		df_c=pd.read_csv(f"{folder}plot_exp6c.txt",sep=" ",header=0,index_col="layer_size")
+		df_d=pd.read_csv(f"{folder}plot_exp6d.txt",sep=" ",header=0,index_col="layer_size")
+
+		# Add read to list
+		dfa_list.append(df_a.sort_values(["node_size"]).to_numpy())
+		dfb_list.append(df_b.sort_values(["node_size"]).to_numpy())
+		dfc_list.append(df_c.sort_values(["layer_size"]).to_numpy())
+		dfd_list.append(df_d.sort_values(["layer_size"]).to_numpy())
+
+	# Calculate standard deviation and average on axis
+	avg_a=np.dstack((dfa_list)).mean(axis=2)
+	std_a=np.dstack((dfa_list)).std(axis=2)
+	avg_b=np.dstack((dfb_list)).mean(axis=2)
+	std_b=np.dstack((dfb_list)).std(axis=2)
+
+
+	# Create common dataframes and merge
+	ndf_a=pd.DataFrame(np.array(avg_a))
+	ndf_a.index=df_a.index
+	ndf_a.columns=df_a.columns
+	ndf_std_a=pd.DataFrame(np.array(std_a))
+	ndf_std_a.index=df_a.index
+	ndf_std_a.columns=[f"std_{i}" for i in df_a.columns]
+
+	ndf_b=pd.DataFrame(np.array(avg_b))
+	ndf_b.index=df_b.index
+	ndf_b.columns=df_b.columns
+	ndf_std_b=pd.DataFrame(np.array(std_b))
+	ndf_std_b.index=df_b.index
+	ndf_std_b.columns=[f"std_{i}" for i in df_b.columns]
+
+	ndf_c=pd.DataFrame(np.array(avg_c))
+	ndf_c.index=df_c.index
+	ndf_c.columns=df_c.columns
+	ndf_std_c=pd.DataFrame(np.array(std_c))
+	ndf_std_c.index=df_c.index
+	ndf_std_c.columns=[f"std_{i}" for i in df_c.columns]
+
+	ndf_d=pd.DataFrame(np.array(avg_d))
+	ndf_d.index=df_d.index
+	ndf_d.columns=df_d.columns
+	ndf_std_d=pd.DataFrame(np.array(std_d))
+	ndf_std_d.index=df_d.index
+	ndf_std_d.columns=[f"std_{i}" for i in df_d.columns]
+
+
+	ndf_a=pd.concat([ndf_a,ndf_std_a],axis=1)
+	ndf_b=pd.concat([ndf_b,ndf_std_b],axis=1)
+	ndf_c=pd.concat([ndf_c,ndf_std_c],axis=1)
+	ndf_d=pd.concat([ndf_d,ndf_std_d],axis=1)
+
+	# Print values
+	ndf_a.to_csv(f"{log_path}plot_exp6a.txt",sep=" ")
+	ndf_b.to_csv(f"{log_path}plot_exp6b.txt",sep=" ")
+	ndf_c.to_csv(f"{log_path}plot_exp6c.txt",sep=" ")
+	ndf_d.to_csv(f"{log_path}plot_exp6d.txt",sep=" ")
+
+	return
+
 
 
 # Portland, Main(e)
 def main():
-	# # Parse exp1 file
-	# parse_exp1("../logs/plot_exp1a.txt","../logs/plot_exp1b.txt")
+	# Parse exp1 files
+	parse_exp1("../logs-0/","../logs-0/plot_exp1a.txt","../logs-0/plot_exp1b.txt")
+	parse_exp1("../logs-1/","../logs-1/plot_exp1a.txt","../logs-1/plot_exp1b.txt")
+	parse_exp1("../logs-2/","../logs-2/plot_exp1a.txt","../logs-2/plot_exp1b.txt")
+	parse_exp1("../logs-3/","../logs-3/plot_exp1a.txt","../logs-3/plot_exp1b.txt")
+	parse_exp1("../logs-4/","../logs-4/plot_exp1a.txt","../logs-4/plot_exp1b.txt")
+	# Compare all exp1 runs, calculate mean and std
+	compare_runs_exp1("../logs/")
 
-	# # Parse exp2 file
-	# parse_exp2("../logs/plot_exp2a.txt","../logs/plot_exp2b.txt")
 
-	# # # Parse exp4 file
-	# # parse_exp4("../logs/plot_exp4a.txt","../logs/plot_exp4b.txt")
+	# Parse exp6 file
+	parse_exp6("../logs-0/","../logs-0/plot_exp6a.txt","../logs-0/plot_exp6b.txt", "../logs-0/plot_exp6c.txt", "../logs-0/plot_exp6d.txt")
+	parse_exp6("../logs-1/","../logs-1/plot_exp6a.txt","../logs-1/plot_exp6b.txt", "../logs-1/plot_exp6c.txt", "../logs-1/plot_exp6d.txt")
+	parse_exp6("../logs-2/","../logs-2/plot_exp6a.txt","../logs-2/plot_exp6b.txt", "../logs-2/plot_exp6c.txt", "../logs-2/plot_exp6d.txt")
+	parse_exp6("../logs-3/","../logs-3/plot_exp6a.txt","../logs-3/plot_exp6b.txt", "../logs-3/plot_exp6c.txt", "../logs-3/plot_exp6d.txt")
+	parse_exp6("../logs-4/","../logs-4/plot_exp6a.txt","../logs-4/plot_exp6b.txt", "../logs-4/plot_exp6c.txt", "../logs-4/plot_exp6d.txt")
+	# Compare all exp6 runs, calculate mean and std
+	compare_runs_exp6("../logs/")
 
-	# # Parse exp5 file
-	# parse_exp5("../logs/plot_exp5a.txt","../logs/plot_exp5b.txt")
 
-	# # Parse exp6 file
-	# parse_exp6("../logs/plot_exp6a.txt","../logs/plot_exp6b.txt", "../logs/plot_exp6c.txt", "../logs/plot_exp6d.txt")
-
-	# # Parse exp7 file
-	# parse_exp7("../logs/plot_exp7a.txt","../logs/plot_exp7b.txt", "../logs/plot_exp7c.txt", "../logs/plot_exp7d.txt")
-
-	# # Fix exp7 files for plotting: 
-	# compare_load("../logs/plot_exp6a.txt","../logs/plot_exp6b.txt", "../logs/plot_exp6c.txt", "../logs/plot_exp6d.txt",
-	# 			"../logs/plot_exp7a.txt","../logs/plot_exp7b.txt", "../logs/plot_exp7c.txt", "../logs/plot_exp7d.txt",
-	# 			"../logs/plot_exp7a_comp.txt","../logs/plot_exp7b_comp.txt", "../logs/plot_exp7c_comp.txt", "../logs/plot_exp7d_comp.txt")
-
-	# Parse exp8 file
-	parse_exp8("../logs/plot_exp8.txt")
+	# # Parse exp8 file
+	# parse_exp8("../logs/plot_exp8.txt")
 
 	return
 
