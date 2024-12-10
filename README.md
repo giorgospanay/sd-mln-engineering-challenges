@@ -1,5 +1,5 @@
 # Supplemental material for paper "Current challenges in multilayer network engineering" 
-Supplemental material (experimental comparison scripts) for the paper "Current challenges in multilayer network engineering". See publication here: <>
+Supplemental material (experimental comparison scripts) for the paper "Current challenges in multilayer network engineering". See publication here: <https://appliednetsci.springeropen.com/articles/10.1007/s41109-024-00686-4>
 This repository contains the scripts necessary to replicate the experiments in the paper.
 
 ## Requirements
